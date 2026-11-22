@@ -101,7 +101,7 @@ function decorateSource(t){
   $$('.code-line').forEach(row=>{
     const n=+row.dataset.line,meta=springs[n],paused=t.source==='main'&&t.path===data.debugger.file&&n===data.debugger.line;
     const gutter=$('.source-gutter',row);
-    gutter.innerHTML=paused?'<span class="breakpoint" title="Breakpoint · suspended at line 65" aria-label="Breakpoint at line 65">✓</span>':meta?`<button class="spring-gutter" data-action="spring-nav" data-line="${n}" title="${esc(meta.title)}" aria-label="${esc(meta.title)} at line ${n}">${icon('bean')}</button>`:'';
+    gutter.innerHTML=paused?'<span class="breakpoint" title="Breakpoint · suspended at line 65" aria-label="Breakpoint at line 65">✓</span>':meta?`<button class="spring-gutter" data-action="spring-nav" data-line="${n}" title="${esc(meta.title)}" aria-label="${esc(meta.title)} at line ${n}">${icon(meta.title.startsWith('Choose Autowired')?'spring-autowires':meta.title==='Choose Bean Usage'?'spring-usages':'bean')}</button>`:'';
     if(paused)row.classList.add('execution-line');
     $$('.syn-type',row).forEach(span=>{
       if(!['NotificationDispatcher','ChannelService','TemplateResolver','NotificationLogRepository','MessageTransformer','Notification'].includes(span.textContent))return;
@@ -125,11 +125,31 @@ function decorateSource(t){
   });
   decorateSourceLogpoint(t);
 }
-function springPopup(el){
+function navigateSpring(el){
   const t=activeTab(),meta=data.spring[t.path]?.[el.dataset.line];if(!meta)return;
-  closeOverlay();const r=el.getBoundingClientRect();const w=Math.min(490,innerWidth-24),left=Math.max(8,Math.min(innerWidth-w-12,r.right+8)),top=Math.min(r.top,innerHeight-200);
-  $('#overlay-root').innerHTML=`<section class="spring-popup" role="dialog" aria-label="${esc(meta.title)}" style="left:${left}px;top:${top}px;width:${w}px"><header>${esc(meta.title)}<span class="grow"></span>${ib('close','Close navigation popup','close-overlay')}</header><div>${meta.targets.map((x,i)=>`<button class="spring-target" data-action="spring-target" data-origin-line="${el.dataset.line}" data-index="${i}">${fileIcon(x.path)}<span><b>${esc(x.label)}</b><small>${esc(parent(x.path).replace('src/main/java/','').replaceAll('/','.'))}</small></span><span class="grow"></span><span class="muted">${x.line}</span></button>`).join('')}</div><footer>Enter to navigate · Esc to close</footer></section>`;
-  $('.spring-target')?.focus();$$('.spring-target').forEach((b,i,all)=>b.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();all[(i+(e.key==='ArrowDown'?1:-1)+all.length)%all.length].focus()}}));
+  closeOverlay();
+  if(meta.targets.length===1){const target=meta.targets[0];goToSource(target.path,target.line,t.source);return}
+  if(!meta.targets.length)return;
+  overlayPreviousFocus=el;
+  $('#overlay-root').innerHTML=`<section class="spring-popup" role="dialog" aria-label="Choose Bean"><header>Choose Bean</header><div role="listbox" aria-label="Beans">${meta.targets.map((x,i)=>{
+    const file=base(x.path),name=file.replace(/\.java$/,''),bean=x.beanName||(/^[A-Z]{2}/.test(name)?name:name[0].toLowerCase()+name.slice(1));
+    return `<button class="spring-target" role="option" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-action="spring-target" data-origin-line="${el.dataset.line}" data-index="${i}">${projectIcon('spring-class')}<span>${esc(bean)} <span class="spring-target-file">(${esc(file)})</span></span></button>`;
+  }).join('')}</div></section>`;
+  const popup=$('.spring-popup'),r=el.getBoundingClientRect();
+  const width=popup.offsetWidth,height=popup.offsetHeight;
+  popup.style.left=Math.max(8,Math.min(r.right,innerWidth-width-8))+'px';
+  popup.style.top=Math.max(8,r.bottom+1+height<=innerHeight-8?r.bottom+1:r.top-height-1)+'px';
+  const options=$$('.spring-target',popup);
+  const select=button=>options.forEach(option=>{const selected=option===button;option.setAttribute('aria-selected',selected);option.tabIndex=selected?0:-1});
+  options.forEach((button,i)=>{
+    button.addEventListener('focus',()=>select(button));
+    button.addEventListener('pointermove',()=>{select(button);button.focus({preventScroll:true})});
+    button.addEventListener('keydown',e=>{
+      let next;if(e.key==='ArrowDown')next=(i+1)%options.length;else if(e.key==='ArrowUp')next=(i-1+options.length)%options.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=options.length-1;
+      if(next!==undefined){e.preventDefault();options[next].focus({preventScroll:true})}
+    });
+  });
+  options[0].focus({preventScroll:true});
 }
 function scenarioAction(name,el,e){
   if(debugAction(name,el,e))return true;
@@ -150,7 +170,7 @@ function scenarioAction(name,el,e){
     case 'reset-scene':localStorage.removeItem(storageKey);location.reload();return true;
     case 'nav-back':navigateBack();return true;
     case 'execution-point':closeOverlay();state.debugFrame=0;state.showDebugger=true;renderDebugger();goToSource(data.debugger.file,65,'main');return true;
-    case 'spring-nav':springPopup(el);return true;
+    case 'spring-nav':navigateSpring(el);return true;
     case 'spring-target':{const t=activeTab(),target=data.spring[t.path][el.dataset.originLine].targets[+el.dataset.index];closeOverlay();goToSource(target.path,target.line,t.source);return true}
     case 'type-nav':{const target=el.dataset.path,t=activeTab(),text=project(t.source).files[target].text;const line=text.split('\n').findIndex(l=>/public (class|interface|record)/.test(l))+1;goToSource(target,line||1,t.source);return true}
     case 'terminal-file':{const path=Object.keys(project('baseline').files).find(x=>base(x)===el.dataset.name);if(path)goToSource(path,1,'baseline');return true}

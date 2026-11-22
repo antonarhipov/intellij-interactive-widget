@@ -98,7 +98,8 @@ spring={controller:{'23':{'title':'Choose Autowired Bean','targets':[target('Not
     '37':{'title':'Choose Autowired Bean','targets':[target('ChannelService.java','public class')]},
     '38':{'title':'Choose Autowired Bean','targets':[target('TemplateResolver.java','public class')]},
     '39':{'title':'Choose Autowired Bean','targets':[target('NotificationLogRepository.java','public interface')]},
-    '40':{'title':'Choose Autowired Beans','targets':[target(n+'.java','public class') for n in ['HeaderTransformer','FooterTransformer','StyleTransformer']]}}}
+    '40':{'title':'Choose Autowired Beans','targets':[target(n+'.java','public class') for n in ['HeaderTransformer','FooterTransformer','StyleTransformer']]}},
+    path_for('ChannelService.java'):{'28':{'title':'Choose Autowired Beans','targets':[target(n+'.java','public class') for n in ['EmailNotificationSender','PushNotificationSender','SmsNotificationSender']]}}}
 data={'exportedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'targetSession':codex['id'],'projects':[p,base_project], 'sessions':[codex,claude],'debugger':debugger,'spring':spring,'scenario':'debugger-v6','provenance':'Codex acp:eccab739 is imported from its recorded ACP events, including its one-file patch. Project files are a local snapshot. Claude review is authored. Debugger values reconstruct the supplied screenshots and the paused IDEA instance. This prototype does not run agents or code.'}
 (APP/'dist/data.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
 print(json.dumps({'projectFiles':len(p['files']),'changedFiles':[c['path'] for c in changes],'sessions':len(data['sessions']),'suspendedLine':65,'dataBytes':(APP/'dist/data.json').stat().st_size},indent=2))
