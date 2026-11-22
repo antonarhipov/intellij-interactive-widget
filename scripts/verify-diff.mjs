@@ -1,4 +1,4 @@
-import {readFile,writeFile} from 'node:fs/promises';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 const root=new URL('../',import.meta.url),data=JSON.parse(await readFile(new URL('dist/data.json',root),'utf8'));
@@ -27,4 +27,5 @@ assert.equal(projectChanges.length,1);assert.equal(projectChanges[0].path,change
 assert(data.projects.every(p=>!p.files['demo-test.sh']&&!p.changes.some(c=>c.path==='demo-test.sh')));
 const html=sandbox.diffHighlight('<img src=x onerror=alert(1)>');assert(!html.includes('<img'));assert(html.includes('&lt;img'));
 const report={result:'PASS',turn:{beforeLines:partial.before.length,afterLines:partial.after.length,differences:partial.groups.length},full:{beforeLines:full.before.length,afterLines:full.after.length,differences:full.groups.length},checks:['Recorded patch fragments and relative line numbers','Two difference groups','Unified deletions precede additions','Complete before/after source fidelity','Unchanged context folding preserves differences','Only SecurityConfig appears in project changes; leftover script is excluded','Escaped source remains inert']};
+await mkdir(new URL('evidence/air-diff-v4/',root),{recursive:true});
 await writeFile(new URL('evidence/air-diff-v4/model-verification.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));

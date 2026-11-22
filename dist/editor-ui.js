@@ -1,6 +1,6 @@
 'use strict';
 // Presentation of the recorded running session; these controls never execute code.
-function editorIcon(name){return `<img class="icon" src="icons/editor/${name}.svg" alt="" aria-hidden="true">`}
+function editorIcon(name){return `<img class="icon" src="${assetURL(`icons/editor/${name}.svg`)}" alt="" aria-hidden="true">`}
 function capturedRunButton(name,title,cls='',menu=false){return `<button class="icon-button captured-run ${cls}" disabled aria-label="${esc(title)}" title="${esc(title)}">${editorIcon(name+(menu&&['restart','stop'].includes(name)?'-menu':''))}</button>`}
 function runningConfigurationIcon(){return `<span class="running-configuration-icon">${editorIcon('spring-boot')}<i></i></span>`}
 function runControls(menu=false){return capturedRunButton('resume',"Resume 'NotifyHubApplication'",'',menu)+capturedRunButton('restart',"Restart Debug 'NotifyHubApplication'",menu?'':'restart-filled',menu)+capturedRunButton('stop',"Stop 'NotifyHubApplication'",menu?'':'stop-filled',menu)}

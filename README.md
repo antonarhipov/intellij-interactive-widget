@@ -1,10 +1,37 @@
 # NotifyHub · IntelliJ IDEA scenario prototype
 
-Open **http://127.0.0.1:4173/**. The app is local and read-only.
+**[Open the interactive prototype](https://antonarhipov.github.io/intellij-interactive-widget/)** — available in a browser without installation or sign-in.
+
+For local development, open **http://127.0.0.1:4173/**. The prototype is read-only.
 
 To restart, run `npm start` in this directory. Node.js is the only runtime dependency; no installation or build is needed. The server binds to `127.0.0.1` and accepts GET and HEAD only. Use `PORT=4174 npm start` for another local port.
 
 Git includes the runnable `dist/` snapshot, its local assets, fixtures and maintenance scripts. Generated screenshots and verification reports under `evidence/`, Playwright artifacts and local caches are ignored; the evidence paths below refer to local verification runs.
+
+## Share without a server
+
+Run `npm run build:static` once to create `release/notify-hub-prototype.html`. Send that HTML file to colleagues, optionally inside a ZIP. They can extract it and double-click it to open the full interactive prototype in their browser. They do not need Node.js, npm, a server, or an internet connection.
+
+The single file embeds the project and library snapshots, both agent sessions, diffs, debugger state, full console log, icons, scripts, styles and JetBrains Mono font. It can be moved or renamed freely and also works on ordinary static hosting. Its content security policy prevents network connections. Like the local prototype, it is a read-only snapshot; it contains the included project/session data.
+
+Regenerate the HTML after changing the implementation or refreshing the snapshots. `npm run verify:static` checks the exported artifact in an offline Chromium browser, including sources, sessions, both diff layouts, library sources, variables, console and AI Usage. The browser automation blocks `file:` navigation, so verification loads a moved copy of the HTML through an intercepted document request with networking disabled.
+
+The initial portable export passed all 22 offline browser checks with no missing assets or runtime errors. Its screenshots and report are in `evidence/static-v13/2026-11-22T18-34-30.178Z/`. The regular served UI also passed all 50 editor regression checks after adding embedded asset support.
+
+## GitHub Pages
+
+The public site is **https://antonarhipov.github.io/intellij-interactive-widget/**. The **Deploy GitHub Pages** workflow runs on every push to `main` and can also be started manually from the repository's Actions tab. It checks the browser code and snapshot models, exports the self-contained page, and deploys it to GitHub Pages. The repository's Pages source is **GitHub Actions**.
+
+To prepare the same output locally, run:
+
+```sh
+npm run check:site
+npm run build:pages
+```
+
+The published artifact is `release/site/index.html`; it contains all runtime assets and works under the repository's URL prefix. No npm packages or backend are needed. Colleagues can open the URL directly without a GitHub account.
+
+Deployment uses the committed `dist/` snapshots. After changing the prototype, commit and push to `main` to publish a new version. Refreshing project/session snapshots with `npm run snapshot` remains a local maintenance task because it reads the original IntelliJ session files and Java project. Generated releases and verification evidence are excluded from Git.
 
 ## Opening scene
 

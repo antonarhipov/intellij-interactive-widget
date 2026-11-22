@@ -3,13 +3,15 @@ const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nativeIconNames=new Set(['commit-tool','project-tool','sessions-tool','structure-tool','spring-bean','spring-category','spring-autowires','spring-usages','spring-endpoint','spring-repository','spring-config']);
-const icon = (id, cls='') => nativeIconNames.has(id)?`<img class="icon ${cls}" src="icons/ide/${id}.svg" alt="" aria-hidden="true">`:`<svg class="icon ${cls}" aria-hidden="true"><use href="#${id}"></use></svg>`;
+const icon = (id, cls='') => nativeIconNames.has(id)?`<img class="icon ${cls}" src="${assetURL(`icons/ide/${id}.svg`)}" alt="" aria-hidden="true">`:`<svg class="icon ${cls}" aria-hidden="true"><use href="#${id}"></use></svg>`;
 const ib = (id,title,action,cls='') => `<button class="icon-button ${cls}" title="${esc(title)}" aria-label="${esc(title)}" data-action="${action}">${icon(id)}</button>`;
 const base = p => p.split('/').pop();
 const parent = p => p.includes('/')?p.slice(0,p.lastIndexOf('/')):'';
 const workspaceKey=new URLSearchParams(location.search).get('workspace');
 const storageKey='notifyhub-ide-state-v2'+(workspaceKey?'-'+workspaceKey.replace(/[^a-zA-Z0-9_-]/g,'').slice(0,64):'');
 let data, state;
+const bundledAssets=Object.create(null);
+function assetURL(path){return bundledAssets[path]||path}
 let toastTimer;
 function toast(s){$('#toast').textContent=s;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2600)}
 function fileIcon(path){const ext=path.split('.').pop();if(ext==='java')return `<span class="file-glyph java ${/Sender\.java$/.test(path)&&base(path)==='NotificationSender.java'?'interface':''}" aria-hidden="true">${base(path)==='NotificationSender.java'?'I':'C'}</span>`;if(['yml','yaml','xml','md','js','css','html','sql'].includes(ext))return `<span class="file-glyph ${ext}" aria-hidden="true">${({yml:'Y',yaml:'Y',xml:'<>',md:'M↓',js:'JS',css:'#',html:'<>',sql:'DB'})[ext]}</span>`;return icon('file')}
@@ -112,4 +114,10 @@ function bindShell(){
 }
 function initResizers(){const split=$('.splitter');split.addEventListener('pointerdown',e=>{e.preventDefault();split.setPointerCapture(e.pointerId);const move=ev=>{state.width=Math.min(600,Math.max(220,ev.clientX-42));document.documentElement.style.setProperty('--sidebar',state.width+'px')};const end=()=>{split.removeEventListener('pointermove',move);split.removeEventListener('pointerup',end);persist()};split.addEventListener('pointermove',move);split.addEventListener('pointerup',end)});split.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();state.width=Math.min(600,Math.max(220,state.width+(e.key==='ArrowRight'?15:-15)));document.documentElement.style.setProperty('--sidebar',state.width+'px');persist()}});const grip=$('.panel-grip');grip.addEventListener('pointerdown',e=>{e.preventDefault();grip.setPointerCapture(e.pointerId);const stack=$('.side-stack').getBoundingClientRect();const move=ev=>{state.sideRatio=Math.max(.15,Math.min(.8,(ev.clientY-stack.y)/stack.height));$('.side-stack').style.setProperty('--top-tool-ratio',state.sideRatio)};const end=()=>{grip.removeEventListener('pointermove',move);grip.removeEventListener('pointerup',end);persist()};grip.addEventListener('pointermove',move);grip.addEventListener('pointerup',end)});grip.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();state.sideRatio=Math.max(.15,Math.min(.8,state.sideRatio+(e.key==='ArrowDown'?.05:-.05)));$('.side-stack').style.setProperty('--top-tool-ratio',state.sideRatio);persist()}});}
 
-Promise.all(['data.json','logical-libraries.json'].map(url=>fetch(url).then(r=>{if(!r.ok)throw Error('Snapshot could not be loaded');return r.json()}))).then(([d,libraries])=>{data={...d,logicalLibraries:libraries};boot()}).catch(e=>{$('#app').innerHTML=`<div class="error-screen"><h1>Could not open project snapshot</h1><p>${esc(e.message)}</p><p>Run <code>npm start</code> from the prototype directory.</p></div>`;console.error(e)});
+async function loadSnapshot(){
+  const bundle=$('#prototype-snapshot');
+  if(bundle){const embedded=JSON.parse(bundle.textContent);Object.assign(bundledAssets,embedded.assets);return embedded.snapshot}
+  const [snapshot,libraries]=await Promise.all(['data.json','logical-libraries.json'].map(url=>fetch(url).then(r=>{if(!r.ok)throw Error('Snapshot could not be loaded');return r.json()})));
+  return {...snapshot,logicalLibraries:libraries};
+}
+loadSnapshot().then(snapshot=>{data=snapshot;boot()}).catch(e=>{$('#app').innerHTML=`<div class="error-screen"><h1>Could not open project snapshot</h1><p>${esc(e.message)}</p><p>Open the complete prototype or regenerate its static export.</p></div>`;console.error(e)});

@@ -1,6 +1,6 @@
 'use strict';
 // Scenario-specific read-only views. The source browser and diff engine are in app.js.
-function agentIcon(agent){return `<img src="icons/${agent==='claude'?'claude':'codex'}.svg" class="icon brand-icon ${agent==='claude'?'claude-icon':'codex-icon'}" alt="" aria-hidden="true">`}
+function agentIcon(agent){return `<img src="${assetURL(`icons/${agent==='claude'?'claude':'codex'}.svg`)}" class="icon brand-icon ${agent==='claude'?'claude-icon':'codex-icon'}" alt="" aria-hidden="true">`}
 let navigationHistory=[];
 let airScrollObserver;
 function initScenario(){

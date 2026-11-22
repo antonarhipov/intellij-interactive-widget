@@ -9,3 +9,6 @@ __pycache__/
 .playwright-cli/
 evidence/
 output/playwright/
+
+# Portable sharing exports
+release/

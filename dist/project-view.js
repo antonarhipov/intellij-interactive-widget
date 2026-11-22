@@ -1,7 +1,7 @@
 'use strict';
 // IDEA's Project pane, backed by the same frozen project and source snapshots.
 let projectTreeNodes=new Map();
-const projectIcon=name=>`<img class="icon project-native-icon" src="icons/project/${name}.svg" alt="" aria-hidden="true">`;
+const projectIcon=name=>`<img class="icon project-native-icon" src="${assetURL(`icons/project/${name}.svg`)}" alt="" aria-hidden="true">`;
 const projectTool=(name,title,action,extra='')=>`<button class="icon-button" title="${esc(title)}" aria-label="${esc(title)}" data-action="${action}" ${extra}>${projectIcon(name)}</button>`;
 
 function projectWindowShell(){return `<section class="side-panel project-panel" aria-label="Project">

@@ -1,4 +1,4 @@
-import {readFile,writeFile} from 'node:fs/promises';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 
@@ -43,5 +43,6 @@ assert.equal(sandbox.state.primaryTool,'commit');
 assert(sandbox.state.active.startsWith('session:'));
 assert(!sandbox.state.tabs.some(t=>t.type==='changes'));
 const report={result:'PASS',componentCounts:counts,endpoints:9,producedBeans:3,libraryJars:19,autoConfigurations:data.logicalLibraries.reduce((n,g)=>n+g.configs.length,0),checks:['Native component groups and endpoint counts','Autowired and reverse-injection relationships','Method signatures and exact source targets','Produced Beans and native configuration labels','Cached source JAR groupings and JavaBeans names','Unique cycle-safe tree identities','Legacy changes editor migrates to Commit dock']};
+await mkdir(new URL('evidence/tool-windows-v5/',root),{recursive:true});
 await writeFile(new URL('evidence/tool-windows-v5/model-verification.json',root),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify(report,null,2));
