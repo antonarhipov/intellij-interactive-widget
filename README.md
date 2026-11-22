@@ -1,6 +1,6 @@
 # NotifyHub · IntelliJ IDEA scenario prototype
 
-**[Open the interactive prototype](https://antonarhipov.github.io/intellij-interactive-widget/)** — available in a browser without installation or sign-in.
+**[Open the interactive prototype](https://antonarhipov.com/intellij-interactive-widget/)** — available in a browser without installation or sign-in.
 
 For local development, open **http://127.0.0.1:4173/**. The prototype is read-only.
 
@@ -20,7 +20,7 @@ The initial portable export passed all 22 offline browser checks with no missing
 
 ## GitHub Pages
 
-The public site is **https://antonarhipov.github.io/intellij-interactive-widget/**. The **Deploy GitHub Pages** workflow runs on every push to `main` and can also be started manually from the repository's Actions tab. It checks the browser code and snapshot models, exports the self-contained page, and deploys it to GitHub Pages. The repository's Pages source is **GitHub Actions**.
+The public site is **https://antonarhipov.com/intellij-interactive-widget/**, using this account's existing GitHub Pages domain. The **Deploy GitHub Pages** workflow runs on every push to `main` and can also be started manually from the repository's Actions tab. It checks the browser code and snapshot models, exports the self-contained page, and deploys it to GitHub Pages. The repository's Pages source is **GitHub Actions**.
 
 To prepare the same output locally, run:
 
