@@ -94,5 +94,9 @@
   "agent-cloud": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
     "resource": "icons/cloud_dark.svg"
+  },
+  "logpoint": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/breakpoints/breakpointUnsuspendentValid_dark.svg"
   }
 }

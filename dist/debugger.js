@@ -72,8 +72,30 @@ function inspectVariable(n){if(!n)return;dialog(n.name,`<div class="dialog-body 
 function debugSecurityMenu(anchor){
   closeOverlay();const r=anchor.getBoundingClientRect();$('#overlay-root').innerHTML=`<div class="debug-security-menu" role="menu" aria-label="Endpoint security" style="left:${Math.max(8,Math.min(innerWidth-410,r.left))}px;top:${r.bottom+4}px"><button role="menuitem" disabled>Unlock POST /api/notify</button><button role="menuitem" disabled>Unlock POST /api/notify with Custom Credentials</button><button role="menuitem" data-action="debug-security-config">Navigate to Configuration</button></div>`;
 }
+// The logpoint is an editor inlay, separate from the captured Java source.
+function decorateSourceLogpoint(t){
+  if(t.source!=='main'||t.path!==data.debugger.file)return;
+  const row=$('.code-line[data-line="67"]');if(!row)return;
+  const expanded=t.logpointExpanded!==false;
+  const marker=`<button class="logpoint-marker" data-action="debug-logpoint-toggle" title="${expanded?'Hide':'Show'} logpoint expression · line 67" aria-label="Logpoint at line 67" aria-expanded="${expanded}" aria-controls="notification-logpoint">${editorIcon('logpoint')}</button>`;
+  const inlay=document.createElement('div');inlay.className='logpoint-inlay';inlay.dataset.logpointLine='67';inlay.hidden=!expanded;
+  inlay.innerHTML=`<span class="logpoint-line-number" aria-hidden="true"></span><span class="source-gutter logpoint-gutter">${expanded?marker:''}</span><div class="logpoint-expression" id="notification-logpoint" role="group" aria-label="Read-only logpoint expression at line 67" tabindex="0"><span class="logpoint-label">Log:</span><pre><code><span class="syn-str">&quot;Notification &quot;</span> + result.<span class="syn-prop">notificationId</span> +<span class="logpoint-newline" aria-hidden="true">↵</span>
+<span class="logpoint-continuation" aria-hidden="true">↳ </span><span class="syn-str">&quot;dispatched: &quot;</span> + result.<span class="syn-prop">message</span></code></pre></div>`;
+  row.before(inlay);
+  if(!expanded)$('.source-gutter',row).innerHTML=marker;
+}
+function toggleSourceLogpoint(){
+  const t=activeTab(),sc=$('.code-scroll');if(!sc||t?.type!=='file')return;
+  const top=sc.scrollTop,left=sc.scrollLeft;
+  t.logpointExpanded=t.logpointExpanded===false;
+  $('.logpoint-inlay')?.remove();$('.logpoint-marker')?.remove();
+  decorateSourceLogpoint(t);
+  sc.scrollTop=top;sc.scrollLeft=left;t.scroll=sc.scrollTop;
+  $('.logpoint-marker')?.focus({preventScroll:true});persist();
+}
 function debugAction(name,el,e){
   switch(name){
+    case 'debug-logpoint-toggle':toggleSourceLogpoint();return true;
     case 'debug-tab':state.debugTab=el.dataset.tabName;renderDebugger();persist();return true;
     case 'debug-frame-view':state.debugView=el.dataset.view;renderDebugger();persist();return true;
     case 'debug-hidden-frames':state.debugHiddenFrames=!state.debugHiddenFrames;renderDebugger();persist();return true;

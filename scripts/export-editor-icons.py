@@ -23,6 +23,7 @@ assets = {name: (platform, resource) for name, resource in {
     'chevron': 'expui/general/chevronDown_dark.svg',
     'doc-edit': 'expui/gutter/javadocEdit_dark.svg',
     'doc-read': 'expui/gutter/javadocRead_dark.svg',
+    'logpoint': 'expui/breakpoints/breakpointUnsuspendentValid_dark.svg',
 }.items()}
 assets.update({
     'spring-boot': ('plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.shared.jar', 'icons/expui/springBoot_dark.svg'),

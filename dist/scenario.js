@@ -123,7 +123,7 @@ function decorateSource(t){
       if(n===60&&!meta)gutter.innerHTML=`<button class="spring-gutter" data-action="debug-security-menu" aria-label="POST /api/notify endpoint">${icon('spring-endpoint')}</button>`;
     }
   });
-
+  decorateSourceLogpoint(t);
 }
 function springPopup(el){
   const t=activeTab(),meta=data.spring[t.path]?.[el.dataset.line];if(!meta)return;
