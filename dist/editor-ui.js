@@ -27,6 +27,7 @@ function editorToolbarMenu(kind,anchor){
 function editorUIAction(name,el){
   if(toolbarDropdownAction(name,el))return true;
   if(name==='toggle-auto-tour'){autoTour.setEnabled(!autoTour.enabled);closeOverlay();return true}
+  if(name==='toggle-auto-tour-loop'){autoTour.setLoop(!autoTour.loop);closeOverlay();return true}
   if(['run-config-menu','run-more-menu','new-session-menu','ide-settings-menu'].includes(name)){editorToolbarMenu(name,el);return true}
   if(name==='select-session-agent'){
     const agent=sessionAgentChoices.find(a=>a.id===el.dataset.agent);if(!agent)return true;

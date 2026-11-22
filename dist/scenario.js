@@ -32,16 +32,30 @@ function airGroupLabel(tools){
   else{if(reads)parts.push('read '+plural(reads,'file'));if(searches)parts.push('ran '+plural(searches,'search').replace(/searchs$/,'searches'));const rest=tools.length-commands-reads-searches;if(rest)parts.push('used '+plural(rest,'tool'))}
   return parts.join(', ').replace(/^./,c=>c.toUpperCase());
 }
-function airToolRow(a){
+function airToolOutput(a){return a.content?.find(c=>c.type==='diff')?.patch.text||a.output||'No file contents or tool output were included in the session record.'}
+function airOutputMarkup(text){
+  // Highlight the recorded text as data. Never interpret terminal escape codes
+  // or markup from a command's output as HTML.
+  const tokens=/\b(?:[a-zA-Z_$][\w$]*\.){2,}[a-zA-Z_$][\w$]*\b|\b[\da-f]{7,}\b|\b\d+(?:\.\d+)?\b/g;
+  let html='',at=0;
+  for(const match of text.matchAll(tokens)){html+=esc(text.slice(at,match.index))+`<span class="air-output-token">${esc(match[0])}</span>`;at=match.index+match[0].length}
+  return html+esc(text.slice(at));
+}
+function airToolPanel(a,t){
+  const command=typeof a.rawInput==='string'?a.rawInput:a.rawInput?.command,expanded=!!t.toolOutputExpanded?.[a.id];
+  return `<div class="air-tool-output ${expanded?'expanded':''}" data-output-tool="${esc(a.id)}"><details class="air-output-options"><summary class="icon-button" title="Tool output options" aria-label="Tool output options">${icon('more')}</summary><div class="air-output-menu"><button data-action="air-copy-output" data-tool="${esc(a.id)}">Copy output</button></div></details><div class="air-tool-preview" id="output-${esc(a.id)}">${command?`<pre class="air-tool-input">${esc(command)}</pre>`:''}<pre class="air-tool-result">${airOutputMarkup(airToolOutput(a))}</pre></div><button class="air-tool-show-more" data-action="air-tool-output-size" data-tool="${esc(a.id)}" aria-expanded="${expanded}" aria-controls="output-${esc(a.id)}"><span>Show ${expanded?'less':'more'}</span>${icon('chevron')}</button></div>`;
+}
+function airToolRow(a,t){
   const edit=a.content?.find(c=>c.type==='diff'),path=edit?.path||a.locations?.[0]?.path;
   let content;
   if(edit)content=`<span>Edited</span><button class="air-file-link" data-action="air-edit-diff" data-tool="${esc(a.id)}">${esc(base(path))}</button><span class="air-inline-stats"><span class="green">+${edit.diffStats.added}</span> <span class="red">−${edit.diffStats.removed}</span></span>`;
   else if(a.kind==='read'&&path)content=`<span>Read</span><button class="air-file-link" data-action="air-tool-file" data-tool="${esc(a.id)}">${esc(base(path))}</button>`;
-  else content=`<button class="air-tool-command" data-action="air-tool-details" data-tool="${esc(a.id)}" title="${esc(a.title)}"><span>${a.kind==='search'?'Searched':a.kind==='execute'?'Ran':'Used'}</span> <span class="air-tool-description">${esc(a.title)}</span></button>`;
-  return `<div class="air-tool-row">${content}${ib('more','Inspect recorded tool activity','air-tool-details','air-tool-inspect').replace('data-action=',`data-tool="${esc(a.id)}" data-action=`)}</div>`;
+  else content=`<span>${a.kind==='search'?'Searched':a.kind==='execute'?'Ran':a.kind==='read'?'Read':'Used'}</span> <span class="air-tool-description">${esc(a.title)}</span>`;
+  if(edit)return `<div class="air-tool-row">${content}</div>`;
+  return `<details class="air-tool-entry" data-tool-entry="${esc(a.id)}" ${t.toolEntries?.[a.id]?'open':''}><summary class="air-tool-row air-tool-command" title="${esc(a.title)}">${content}${icon('chevron','air-tool-chevron')}</summary>${airToolPanel(a,t)}</details>`;
 }
 function airActivity(turn,t){
-  return airToolGroups(turn.activity).map((g,i)=>g.message?`<div class="air-commentary markdown">${markdown(g.message.text)}</div>`:`<details class="air-tool-group" data-tool-group="${i}" ${t.toolGroups?.[i]?'open':''}><summary>${icon(g.tools.some(x=>x.kind==='edit')?'terminal':g.tools.some(x=>x.kind==='search')?'search':'eye')}<span>${esc(airGroupLabel(g.tools))}</span>${icon('chevron','air-disclosure')}</summary><div class="air-tool-list">${g.tools.map(airToolRow).join('')}</div></details>`).join('');
+  return airToolGroups(turn.activity).map((g,i)=>g.message?`<div class="air-commentary markdown">${markdown(g.message.text)}</div>`:`<details class="air-tool-group" data-tool-group="${i}" ${t.toolGroups?.[i]?'open':''}><summary>${icon(g.tools.some(x=>x.kind==='edit')?'terminal':g.tools.some(x=>x.kind==='search')?'search':'eye')}<span>${esc(airGroupLabel(g.tools))}</span>${icon('chevron','air-disclosure')}</summary><div class="air-tool-list">${g.tools.map(a=>airToolRow(a,t)).join('')}</div></details>`).join('');
 }
 function airChangesCard(turn,s){
   return `<div class="changes-card air-changes-card"><div class="changes-heading">${turn.changes.length} file${turn.changes.length===1?'':'s'} changed <span class="muted">· Since last turn</span></div>${turn.changes.map(ch=>`<button class="change-row" data-action="chat-diff" data-session="${s.id}" data-turn="${turn.id}" data-path="${esc(ch.path)}" title="Open diff: ${esc(ch.path)}">${icon('java')}<span class="change-name">${esc(base(ch.path))}</span><span class="air-inline-stats"><span class="green">+${ch.added}</span> <span class="red">−${ch.removed}</span></span></button>`).join('')}</div>`;
@@ -50,26 +64,36 @@ function renderCodex(t){
   const s=session(t.session),turn=s.turns[0],totals=project('main').changes.reduce((v,c)=>({added:v.added+c.added,removed:v.removed+c.removed}),{added:0,removed:0});
   const completed=new Date(turn.endedAt).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Europe/Tallinn'});
   $('#content').innerHTML=`<div class="content-toolbar session-toolbar air-session-toolbar codex-toolbar"><span class="session-path">notify-hub</span>${icon('branch')}<span class="scope">main</span><span class="grow"></span><div class="air-review"><button class="text-button" data-action="review-session">${icon('review')}<span>Review Code</span><span class="air-inline-stats"><span class="green">+${totals.added}</span> <span class="red">−${totals.removed}</span></span></button><button class="icon-button air-review-menu" data-action="air-review-menu" title="Choose code comparison" aria-label="Choose code comparison">${icon('chevron','down')}</button></div>${ib('search','Find in chat','find-chat')}${ib('more','Session information','session-info')}</div><div id="chat-find" ${t.findOpen?'':'hidden'}></div>
-  <div class="air-chat-viewport"><div class="chat-scroll codex-scroll" tabindex="0" aria-label="Codex session transcript"><div class="chat-body"><article class="chat-turn" id="turn-0"><div class="user-message markdown">${markdown(turn.prompt)}</div><details class="work-details air-work" data-activity-turn="${turn.id}" ${t.activityOpen?'open':''}><summary><span>Worked for ${turn.workSeconds}s</span>${icon('chevron','air-disclosure')}</summary><div class="air-activity">${airActivity(turn,t)}</div></details><div class="assistant-answer markdown">${markdown(turn.answer)}</div>${airChangesCard(turn,s)}<div class="air-answer-actions">${ib('copy','Copy response','air-copy-answer')}${ib('flag','Response details','air-response-details')}<time datetime="${new Date(turn.endedAt).toISOString()}">${completed}</time></div></article></div></div><div class="air-scroll-anchor"><button class="icon-button air-scroll-bottom" data-action="air-scroll-bottom" title="Scroll to bottom" aria-label="Scroll to bottom" hidden>${icon('arrow-down')}</button></div></div>
+  <div class="air-chat-viewport"><div class="chat-scroll codex-scroll" tabindex="0" aria-label="Codex session transcript"><div class="chat-body"><article class="chat-turn" id="turn-0"><div class="user-message markdown">${markdown(turn.prompt)}</div><details class="work-details air-work" data-activity-turn="${turn.id}" ${t.activityOpen?'open':''}><summary><span>Worked for ${turn.workSeconds}s</span>${icon('chevron','air-disclosure')}</summary><div class="air-activity">${airActivity(turn,t)}</div></details><div class="assistant-answer markdown">${markdown(turn.answer)}</div>${airChangesCard(turn,s)}<div class="air-answer-actions">${ib('copy','Copy response','air-copy-answer')}<button class="icon-button air-report-problem" title="Report a problem" aria-label="Report a problem" disabled>${icon('flag')}</button><time datetime="${new Date(turn.endedAt).toISOString()}">${completed}</time></div></article></div></div><div class="air-scroll-anchor"><button class="icon-button air-scroll-bottom" data-action="air-scroll-bottom" title="Scroll to bottom" aria-label="Scroll to bottom" hidden>${icon('arrow-down')}</button></div></div>
   <div class="air-compose-area"><div class="ide-composer air-composer" tabindex="0" role="textbox" aria-readonly="true" aria-label="Read-only suggested follow-up"><span class="composer-draft">${esc(s.draft)}</span><div class="composer-controls"><button disabled aria-label="Add attachment (read-only)">${icon('plus')}</button><span class="grow"></span><span class="context-ring" title="${esc(s.events.filter(e=>e.type==='UsageUpdated').at(-1)?.payload.totalTokens.toLocaleString())} tokens used" aria-label="Context usage"></span><button disabled aria-label="Voice input (read-only)">${icon('mic')}</button><button class="composer-send" disabled aria-label="Send (read-only)">${icon('arrow-up')}</button></div></div><div class="composer-model">${agentIcon('codex')}<span>${esc(s.model)}</span><span class="air-review-mode">Auto review</span><span class="grow"></span>${icon('user')}<span>JetBrains AI</span></div></div>`;
   const sc=$('.codex-scroll'),bottom=$('.air-scroll-bottom');
-  const updateScroll=()=>{t.scroll=sc.scrollTop;bottom.hidden=sc.scrollHeight-sc.clientHeight-sc.scrollTop<35};
+  const updateScroll=()=>{
+    t.scroll=sc.scrollTop;bottom.hidden=sc.scrollHeight-sc.clientHeight-sc.scrollTop<35;
+    $$('.air-tool-output').forEach(panel=>{const preview=$('.air-tool-preview',panel);if(preview.getClientRects().length)$('.air-tool-show-more',panel).hidden=!panel.classList.contains('expanded')&&preview.scrollHeight<=preview.clientHeight+1});
+  };
   sc.scrollTop=t.scroll||0;sc.addEventListener('scroll',updateScroll,{passive:true});
   $('[data-activity-turn]').addEventListener('toggle',e=>{t.activityOpen=e.target.open;updateScroll();persist()});
   $$('[data-tool-group]').forEach(g=>g.addEventListener('toggle',()=>{t.toolGroups||={};t.toolGroups[g.dataset.toolGroup]=g.open;updateScroll();persist()}));
-  airScrollObserver=new ResizeObserver(updateScroll);airScrollObserver.observe(sc);
+  $$('[data-tool-entry]').forEach(entry=>entry.addEventListener('toggle',()=>{t.toolEntries||={};t.toolEntries[entry.dataset.toolEntry]=entry.open;updateScroll();persist()}));
+  airScrollObserver=new ResizeObserver(updateScroll);airScrollObserver.observe(sc);airScrollObserver.observe($('.chat-body'));
   updateScroll();
   if(t.findOpen)renderChatFind(t);
 }
 function airTool(id){return session(activeTab().session).turns[0].activity.find(a=>a.id===id)}
 function inspectAirTool(a){
   if(!a)return;
-  const path=a.content?.find(c=>c.type==='diff')?.path||a.locations?.[0]?.path;
-  const inProject=path&&Object.keys(project('main').files).find(p=>path.endsWith('/'+p));
-  const command=typeof a.rawInput==='string'?a.rawInput:a.rawInput?.command;
-  const patch=a.content?.find(c=>c.type==='diff')?.patch.text;
-  dialog(a.kind==='edit'?'Recorded file edit':'Recorded tool activity',`<div class="dialog-body air-tool-dialog"><p class="air-tool-detail-title">${esc(a.title)}</p><p class="muted">${esc(a.status)} · ${new Date(a.timestamp).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',timeZone:'Europe/Tallinn'})}</p>${inProject?`<button class="text-button blue" data-action="air-source" data-path="${esc(inProject)}">${icon('file')}Open ${esc(base(inProject))}</button>`:''}${command?`<h3>Command</h3><pre>${esc(command)}</pre>`:''}<h3>${patch?'Patch':'Recorded output'}</h3><pre>${esc(patch||a.output||'No file contents or tool output were included in the session record.')}</pre></div>`);
+  const entry=$$('[data-tool-entry]').find(el=>el.dataset.toolEntry===a.id);
+  if(entry)entry.open=!entry.open;
 }
+function resizeAirToolOutput(el){
+  const t=activeTab(),panel=el.closest('.air-tool-output'),expanded=!panel.classList.contains('expanded');
+  t.toolOutputExpanded||={};t.toolOutputExpanded[el.dataset.tool]=expanded;
+  panel.classList.toggle('expanded',expanded);el.setAttribute('aria-expanded',expanded);$('span',el).textContent=expanded?'Show less':'Show more';
+  const sc=$('.codex-scroll');
+  if(!expanded&&el.getBoundingClientRect().top<sc.getBoundingClientRect().top)sc.scrollTop+=panel.getBoundingClientRect().top-sc.getBoundingClientRect().top-10;
+  persist();
+}
+
 function renderClaude(t){
   const s=session(t.session),turn=s.turns[0];
   const commands=[
@@ -170,12 +194,12 @@ function scenarioAction(name,el,e){
   if(debugAction(name,el,e))return true;
   switch(name){
     case 'air-scroll-bottom':$('.codex-scroll').scrollTo({top:$('.codex-scroll').scrollHeight,behavior:'smooth'});return true;
-    case 'air-tool-details':inspectAirTool(airTool(el.dataset.tool));return true;
+    case 'air-tool-output-size':resizeAirToolOutput(el);return true;
+    case 'air-copy-output':el.closest('details').open=false;navigator.clipboard.writeText(airToolOutput(airTool(el.dataset.tool))).then(()=>toast('Tool output copied.'),()=>toast('Clipboard access is unavailable in this browser.'));return true;
     case 'air-tool-file':{const a=airTool(el.dataset.tool),path=a.locations?.[0]?.path,match=path&&Object.keys(project('main').files).find(p=>path.endsWith('/'+p));if(match)goToSource(match,1,'main');else inspectAirTool(a);return true}
     case 'air-edit-diff':{const a=airTool(el.dataset.tool),edit=a.content.find(c=>c.type==='diff'),path=Object.keys(project('main').files).find(p=>edit.path.endsWith('/'+p));openDiff(path,{session:activeTab().session,turn:session(activeTab().session).turns[0].id});return true}
     case 'air-source':closeOverlay();goToSource(el.dataset.path,1,'main');return true;
     case 'air-copy-answer':navigator.clipboard.writeText(session(activeTab().session).turns[0].answer).then(()=>toast('Response copied.'),()=>toast('Clipboard access is unavailable in this browser.'));return true;
-    case 'air-response-details':{const s=session(activeTab().session);dialog('Response details',`<div class="dialog-body dialog-copy"><p>${esc(s.id)} · ${esc(s.model)}</p><p>Completed ${new Date(s.turns[0].endedAt).toLocaleString('en-GB',{timeZone:'Europe/Tallinn'})}</p><p>Imported from the recorded Air session.</p><button class="text-button blue" data-action="air-show-events">Browse raw session events</button></div>`);return true}
     case 'air-show-events':closeOverlay();openEvents(activeTab().session);return true;
     case 'air-review-menu':{const s=session(activeTab().session),sum=cs=>cs.reduce((v,c)=>({added:v.added+c.added,removed:v.removed+c.removed}),{added:0,removed:0});dialog('Review Code',`<div class="dialog-body air-review-options"><button data-action="air-review-turn">${icon('agent')}<span>This session<small>1 file changed · ${esc(s.id)}</small></span>${stats(sum(s.changes))}</button><button data-action="air-review-workspace">${icon('branch')}<span>Working tree<small>All changes in the project snapshot</small></span>${stats(sum(project('main').changes))}</button></div>`);return true}
     case 'air-review-turn':closeOverlay();{const s=session(activeTab().session);openDiff(s.changes[0].path,{session:s.id})}return true;

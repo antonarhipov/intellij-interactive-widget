@@ -8,9 +8,9 @@
 #auto-tour-cursor.clicking .tour-cursor-core{opacity:1}
 @keyframes tour-click{0%{transform:scale(.75);opacity:1}100%{transform:scale(2);opacity:0}}
 .auto-tour-hover{outline:1px solid #9bbcf447!important;outline-offset:-1px}
-.air-tool-inspect.auto-tour-hover{opacity:1}
 .native-toolbar-menu .automatic-tour-option{display:flex;align-items:center;gap:8px;outline:none;border-radius:4px}
 .native-toolbar-menu .automatic-tour-option:focus-visible{background:#2e4773}
+.native-toolbar-menu .automatic-tour-loop{padding-left:24px;color:#b9bdc6}
 .automatic-tour-hint{margin:0 10px 7px;color:#8b8e96;font-size:12px;line-height:17px}
 @media(prefers-reduced-motion:reduce){#auto-tour-cursor.clicking .tour-click-ring{animation:none}.tour-cursor-core{transition:none}}
 @media(max-width:760px){.main-toolbar .main-settings{display:flex!important}}
