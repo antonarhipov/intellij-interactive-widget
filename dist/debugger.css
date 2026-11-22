@@ -56,7 +56,6 @@
 .debug-sticky-bean .icon{width:16px;height:16px}.debug-source-toolbar>.icon-button{height:23px;width:23px;flex-shrink:0}
 .code-lines{line-height:26px}.code-line{min-height:26px;height:26px}.source-gutter{height:26px}.code-text{padding-right:0}
 .execution-line,.execution-line:hover{background:#2d5190}.execution-line .line-number,.execution-line .source-gutter{background:#202127;color:#8e94a0}.execution-line .code-text{background:transparent}
-.breakpoint{background:#e65c61;width:14px;height:14px;left:2px;box-shadow:none;color:#c5c9d1;font:bold 16px/9px -apple-system,sans-serif;text-shadow:1px 1px #23242a}
 .debug-inline-values{display:inline-flex;gap:20px;align-items:center;white-space:nowrap;margin-left:22px;padding-right:25px}
 .inline-value{font:italic 13px var(--mono);color:#737b84;background:transparent;border:0;padding:0;margin:0;border-radius:0;max-width:none;display:inline-flex;align-items:center;gap:5px}
 .inline-value .icon{width:16px;height:16px;flex-shrink:0}.inline-value:hover{background:#303845!important;color:#a8b7cb}.execution-line .inline-value{color:#92a9cb}

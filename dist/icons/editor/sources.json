@@ -102,5 +102,9 @@
   "spring-property": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
     "resource": "icons/expui/gutter/springProperty@14x14_dark.svg"
+  },
+  "breakpoint": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/breakpoints/breakpointValid_dark.svg"
   }
 }

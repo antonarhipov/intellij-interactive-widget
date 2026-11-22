@@ -107,7 +107,7 @@ function decorateSource(t){
   $$('.code-line').forEach(row=>{
     const n=+row.dataset.line,meta=springs[n],paused=t.source==='main'&&t.path===data.debugger.file&&n===data.debugger.line;
     const gutter=$('.source-gutter',row);
-    gutter.innerHTML=paused?'<span class="breakpoint" title="Breakpoint · suspended at line 65" aria-label="Breakpoint at line 65">✓</span>':meta?`<button class="spring-gutter ${meta.kind==='property'?'property-gutter':''}" data-action="spring-nav" data-line="${n}" title="${esc(meta.title)}" aria-label="${esc(meta.title)} at line ${n}">${meta.kind==='property'?editorIcon('spring-property'):icon(meta.title.startsWith('Choose Autowired')?'spring-autowires':'spring-usages')}</button>`:'';
+    gutter.innerHTML=paused?`<span class="breakpoint" title="Breakpoint · suspended at line 65" aria-label="Breakpoint at line 65">${editorIcon('breakpoint')}</span>`:meta?`<button class="spring-gutter ${meta.kind==='property'?'property-gutter':''}" data-action="spring-nav" data-line="${n}" title="${esc(meta.title)}" aria-label="${esc(meta.title)} at line ${n}">${meta.kind==='property'?editorIcon('spring-property'):icon(meta.title.startsWith('Choose Autowired')?'spring-autowires':'spring-usages')}</button>`:'';
     if(meta?.propertyKey){
       const text=$('.code-text',row),walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT);
       let node;while(node=walker.nextNode()){
