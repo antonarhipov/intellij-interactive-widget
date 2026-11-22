@@ -59,8 +59,14 @@ for path,lines in d['spring'].items():
     for line,meta in lines.items():
         assert 0<int(line)<=after['files'][path]['lines']
         for target in meta['targets']:
-            assert target['path'] in after['files']
-            assert 0<target['line']<=after['files'][target['path']]['lines']
+            if target.get('library'):
+                libraries=json.loads((app/'dist/logical-libraries.json').read_text())
+                source=next(c for group in libraries for c in group['configs'] if c['id']==target['library'])
+                assert source['path']==target['path']
+                assert 0<target['line']<=len(source['text'].splitlines())
+            else:
+                assert target['path'] in after['files']
+                assert 0<target['line']<=after['files'][target['path']]['lines']
             report['springTargets']+=1
 db=d['debugger']
 assert db['line']==65

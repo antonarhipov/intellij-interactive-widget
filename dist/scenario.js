@@ -5,7 +5,7 @@ let navigationHistory=[];
 let airScrollObserver;
 function initScenario(){
   document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='5'){e.preventDefault();scenarioAction('toggle-debug')}if(e.altKey&&e.key==='ArrowLeft'&&!/INPUT|SELECT/.test(e.target.tagName)){e.preventDefault();navigateBack()}});
-  document.addEventListener('click',e=>{if($('.spring-popup')&&!e.target.closest('.spring-popup')&&!e.target.closest('.spring-gutter'))closeOverlay()});
+  document.addEventListener('click',e=>{if($('.spring-popup')&&!e.target.closest('.spring-popup')&&!e.target.closest('[data-action="spring-nav"]'))closeOverlay()});
   bindDebugInteractions();
   $('.snapshot-status').textContent='Local scenario';
   renderDebugger();
@@ -96,12 +96,26 @@ function goToSource(path,line=1,source=state.project,remember=true){
   const row=sourceLineElement(line);if(row){row.classList.add('navigation-line');const sc=$('.code-scroll');sc.scrollTop=Math.max(0,sourceLineTop(row,sc)-sc.clientHeight/2);activeTab().scroll=sc.scrollTop;persist()}
 }
 function navigateBack(){const prev=navigationHistory.pop();if(!prev)return;openTab(prev.tab);if($('.code-scroll')&&prev.scroll!==undefined)$('.code-scroll').scrollTop=prev.scroll;}
+function springNavigation(t=activeTab()){return (data.springByProject?.[t.source]||data.spring||{})[t.path]||{}}
+function goToSpringTarget(target,source){
+  if(!target.library){goToSource(target.path,target.line,source);return}
+  const t=activeTab();if(t)navigationHistory.push({tab:{...t},scroll:$('.code-scroll')?.scrollTop});
+  openLibrarySource(target.library,target.line);
+}
 function decorateSource(t){
-  const springs=data.spring[t.path]||{};
+  const springs=springNavigation(t);
   $$('.code-line').forEach(row=>{
     const n=+row.dataset.line,meta=springs[n],paused=t.source==='main'&&t.path===data.debugger.file&&n===data.debugger.line;
     const gutter=$('.source-gutter',row);
-    gutter.innerHTML=paused?'<span class="breakpoint" title="Breakpoint · suspended at line 65" aria-label="Breakpoint at line 65">✓</span>':meta?`<button class="spring-gutter" data-action="spring-nav" data-line="${n}" title="${esc(meta.title)}" aria-label="${esc(meta.title)} at line ${n}">${icon(meta.title.startsWith('Choose Autowired')?'spring-autowires':meta.title==='Choose Bean Usage'?'spring-usages':'bean')}</button>`:'';
+    gutter.innerHTML=paused?'<span class="breakpoint" title="Breakpoint · suspended at line 65" aria-label="Breakpoint at line 65">✓</span>':meta?`<button class="spring-gutter ${meta.kind==='property'?'property-gutter':''}" data-action="spring-nav" data-line="${n}" title="${esc(meta.title)}" aria-label="${esc(meta.title)} at line ${n}">${meta.kind==='property'?editorIcon('spring-property'):icon(meta.title.startsWith('Choose Autowired')?'spring-autowires':'spring-usages')}</button>`:'';
+    if(meta?.propertyKey){
+      const text=$('.code-text',row),walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT);
+      let node;while(node=walker.nextNode()){
+        const index=node.textContent.indexOf(meta.propertyKey);if(index<0)continue;
+        const link=document.createElement('button');link.className='type-link property-link';link.textContent=meta.propertyKey;link.dataset.action='spring-nav';link.dataset.line=n;link.title='Go to configuration property '+meta.propertyKey;
+        node.replaceWith(document.createTextNode(node.textContent.slice(0,index)),link,document.createTextNode(node.textContent.slice(index+meta.propertyKey.length)));break;
+      }
+    }
     if(paused)row.classList.add('execution-line');
     $$('.syn-type',row).forEach(span=>{
       if(!['NotificationDispatcher','ChannelService','TemplateResolver','NotificationLogRepository','MessageTransformer','Notification'].includes(span.textContent))return;
@@ -126,14 +140,15 @@ function decorateSource(t){
   decorateSourceLogpoint(t);
 }
 function navigateSpring(el){
-  const t=activeTab(),meta=data.spring[t.path]?.[el.dataset.line];if(!meta)return;
+  const t=activeTab(),meta=springNavigation(t)[el.dataset.line];if(!meta)return;
   closeOverlay();
-  if(meta.targets.length===1){const target=meta.targets[0];goToSource(target.path,target.line,t.source);return}
+  if(meta.targets.length===1){goToSpringTarget(meta.targets[0],t.source);return}
   if(!meta.targets.length)return;
   overlayPreviousFocus=el;
-  $('#overlay-root').innerHTML=`<section class="spring-popup" role="dialog" aria-label="Choose Bean"><header>Choose Bean</header><div role="listbox" aria-label="Beans">${meta.targets.map((x,i)=>{
+  const property=meta.kind==='property',usage=meta.kind==='usage',title=property?'Choose Property':usage?'Choose Bean Usage':'Choose Bean';
+  $('#overlay-root').innerHTML=`<section class="spring-popup" role="dialog" aria-label="${title}"><header>${title}</header><div role="listbox" aria-label="${property?'Properties':usage?'Bean usages':'Beans'}">${meta.targets.map((x,i)=>{
     const file=base(x.path),name=file.replace(/\.java$/,''),bean=x.beanName||(/^[A-Z]{2}/.test(name)?name:name[0].toLowerCase()+name.slice(1));
-    return `<button class="spring-target" role="option" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-action="spring-target" data-origin-line="${el.dataset.line}" data-index="${i}">${projectIcon('spring-class')}<span>${esc(bean)} <span class="spring-target-file">(${esc(file)})</span></span></button>`;
+    return `<button class="spring-target" role="option" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-action="spring-target" data-origin-line="${el.dataset.line}" data-index="${i}">${projectIcon(property?(file.endsWith('.properties')?'properties':'yaml'):'spring-class')}<span>${esc(property?x.label+' = '+x.value:bean)} <span class="spring-target-file">(${esc(file)}${property?':'+x.line:''})</span></span></button>`;
   }).join('')}</div></section>`;
   const popup=$('.spring-popup'),r=el.getBoundingClientRect();
   const width=popup.offsetWidth,height=popup.offsetHeight;
@@ -171,7 +186,7 @@ function scenarioAction(name,el,e){
     case 'nav-back':navigateBack();return true;
     case 'execution-point':closeOverlay();state.debugFrame=0;state.showDebugger=true;renderDebugger();goToSource(data.debugger.file,65,'main');return true;
     case 'spring-nav':navigateSpring(el);return true;
-    case 'spring-target':{const t=activeTab(),target=data.spring[t.path][el.dataset.originLine].targets[+el.dataset.index];closeOverlay();goToSource(target.path,target.line,t.source);return true}
+    case 'spring-target':{const t=activeTab(),target=springNavigation(t)[el.dataset.originLine].targets[+el.dataset.index];closeOverlay();goToSpringTarget(target,t.source);return true}
     case 'type-nav':{const target=el.dataset.path,t=activeTab(),text=project(t.source).files[target].text;const line=text.split('\n').findIndex(l=>/public (class|interface|record)/.test(l))+1;goToSource(target,line||1,t.source);return true}
     case 'terminal-file':{const path=Object.keys(project('baseline').files).find(x=>base(x)===el.dataset.name);if(path)goToSource(path,1,'baseline');return true}
     case 'finding-file':{const f=session('claude-review').findings[+el.dataset.index];goToSource(f.path,f.line,'baseline');return true}

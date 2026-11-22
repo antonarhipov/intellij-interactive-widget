@@ -26,6 +26,7 @@ assets = {name: (platform, resource) for name, resource in {
     'logpoint': 'expui/breakpoints/breakpointUnsuspendentValid_dark.svg',
 }.items()}
 assets.update({
+    'spring-property': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/gutter/springProperty@14x14_dark.svg'),
     'spring-boot': ('plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.shared.jar', 'icons/expui/springBoot_dark.svg'),
     'database': ('plugins/DatabaseTools/lib/modules/intellij.database.jar', 'icons/expui/dbms@20x20_dark.svg'),
     'maven': ('plugins/maven-plugin/lib/intellij.maven.jar', 'images/expui/toolwindow/maven@20x20_dark.svg'),

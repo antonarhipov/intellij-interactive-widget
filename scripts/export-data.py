@@ -84,22 +84,8 @@ claude={'id':'claude-review','title':'Review project quality','tabTitle':'Projec
 from debugger_snapshot import debugger_snapshot
 debugger = debugger_snapshot(controller, dispatcher, p['files'])
 
-def path_for(name):
-    return next(x for x in p['files'] if x.endswith('/'+name))
-def target(name,needle,label=None):
-    path=path_for(name)
-    line=next(i+1 for i,l in enumerate(p['files'][path]['text'].splitlines()) if needle in l)
-    return {'path':path,'line':line,'label':label or name.removesuffix('.java')}
-spring={controller:{'23':{'title':'Choose Autowired Bean','targets':[target('NotificationDispatcher.java','public class')]}},dispatcher:{
-    '19':{'title':'Choose Bean Usage','targets':[target('NotificationController.java','private final NotificationDispatcher','dispatcher · NotificationController')]},
-    '23':{'title':'Spring Configuration Property','targets':[target('application.yml','#  default-channel','notifyhub.default-channel · default: email')]},
-    '26':{'title':'Spring Configuration Property','targets':[target('application.yml','  rate-limit','notifyhub.rate-limit = 50')]},
-    '29':{'title':'Spring Configuration Property','targets':[target('application.yml','    max-attempts','notifyhub.retry.max-attempts = 3')]},
-    '37':{'title':'Choose Autowired Bean','targets':[target('ChannelService.java','public class')]},
-    '38':{'title':'Choose Autowired Bean','targets':[target('TemplateResolver.java','public class')]},
-    '39':{'title':'Choose Autowired Bean','targets':[target('NotificationLogRepository.java','public interface')]},
-    '40':{'title':'Choose Autowired Beans','targets':[target(n+'.java','public class') for n in ['HeaderTransformer','FooterTransformer','StyleTransformer']]}},
-    path_for('ChannelService.java'):{'28':{'title':'Choose Autowired Beans','targets':[target(n+'.java','public class') for n in ['EmailNotificationSender','PushNotificationSender','SmsNotificationSender']]}}}
-data={'exportedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'targetSession':codex['id'],'projects':[p,base_project], 'sessions':[codex,claude],'debugger':debugger,'spring':spring,'scenario':'debugger-v6','provenance':'Codex acp:eccab739 is imported from its recorded ACP events, including its one-file patch. Project files are a local snapshot. Claude review is authored. Debugger values reconstruct the supplied screenshots and the paused IDEA instance. This prototype does not run agents or code.'}
+from spring_navigation import update_navigation
+data={'exportedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'targetSession':codex['id'],'projects':[p,base_project], 'sessions':[codex,claude],'debugger':debugger,'scenario':'debugger-v6','provenance':'Codex acp:eccab739 is imported from its recorded ACP events, including its one-file patch. Project files are a local snapshot. Claude review is authored. Debugger values reconstruct the supplied screenshots and the paused IDEA instance. This prototype does not run agents or code.'}
+update_navigation(data,json.loads((APP/'dist/logical-libraries.json').read_text()))
 (APP/'dist/data.json').write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')))
 print(json.dumps({'projectFiles':len(p['files']),'changedFiles':[c['path'] for c in changes],'sessions':len(data['sessions']),'suspendedLine':65,'dataBytes':(APP/'dist/data.json').stat().st_size},indent=2))
