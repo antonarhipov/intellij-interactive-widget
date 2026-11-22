@@ -22,6 +22,7 @@ function editorToolbarMenu(kind,anchor){
   else if(agents)content=sessionAgentMenu();
   else content=`<button role="menuitem" disabled>Settings…</button><button role="menuitem" disabled>Plugins…</button><hr>${automaticTourMenu()}<hr><button role="menuitem" data-action="about">About this prototype</button>`;
   $('#overlay-root').innerHTML=`<div class="menu native-toolbar-menu ${config?'run-configuration-menu':agents?'agent-selector-menu':''}" role="menu" aria-label="${config?'Run / Debug Configurations':agents?'New Session':kind==='run-more-menu'?'Run actions':'IDE and Project Settings'}" style="left:${left}px;top:${r.bottom+4}px;width:${width}px">${content}</div>`;
+  $('#auto-tour-speed')?.addEventListener('change',e=>autoTour.setSpeed(Number(e.target.value)));
   anchor.setAttribute('aria-expanded','true');(agents?$('.selected-agent'):$('.native-toolbar-menu [tabindex="0"],.native-toolbar-menu button:not(:disabled)'))?.focus();
 }
 function editorUIAction(name,el){
@@ -48,6 +49,7 @@ function initEditorUI(){
       if(visibleDoc){e.preventDefault();toggleDocComment(+visibleDoc.dataset.startLine)}
     }
     const menu=$('.native-toolbar-menu');if(!menu)return;
+    if(e.target.matches('select'))return;
     if(menu.classList.contains('vcs-dropdown')&&toolbarVcsKeydown(e))return;
     if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){
       e.preventDefault();const items=$$('[role^="menuitem"]:not(:disabled)',menu),index=items.indexOf(document.activeElement);

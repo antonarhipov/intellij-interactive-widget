@@ -5,9 +5,9 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root=new URL('../',import.meta.url),runId=new Date().toISOString().replaceAll(':','-');
-const evidence=new URL('output/playwright/auto-tour-v23/'+runId+'/',root);mkdirSync(evidence,{recursive:true});
+const evidence=new URL('output/playwright/auto-tour-v24/'+runId+'/',root);mkdirSync(evidence,{recursive:true});
 const wrapper=resolve(homedir(),'.codex/skills/playwright/scripts/playwright_cli.sh');
-const cli=(...args)=>spawnSync('bash',[wrapper,'--session','tour-v23',...args],{encoding:'utf8',maxBuffer:4e6,env:{...process.env,npm_config_loglevel:'silent'}});
+const cli=(...args)=>spawnSync('bash',[wrapper,'--session','tour-v24',...args],{encoding:'utf8',maxBuffer:4e6,env:{...process.env,npm_config_loglevel:'silent'}});
 const opened=cli('open','about:blank');if(opened.status||opened.stdout.includes('### Error'))throw Error(opened.stdout+opened.stderr);
 const code=String.raw`async page => {
   const checks=[],errors=[],warnings=[];
@@ -15,17 +15,25 @@ const code=String.raw`async page => {
   const shot=async name=>{await page.locator('img').evaluateAll(imgs=>Promise.all(imgs.map(i=>i.decode().catch(()=>{}))));await page.screenshot({path:${JSON.stringify(evidence.pathname)}+name+'.png'})};
   const settings=()=>page.getByRole('button',{name:'IDE and Project Settings',exact:true});
   const toggle=()=>page.getByRole('menuitemcheckbox',{name:'Automatic tour',exact:true});
-  const fresh=async suffix=>{await page.goto('http://127.0.0.1:4173/?workspace=tour-v23-${runId}-'+suffix);await settings().waitFor()};
+  const fresh=async suffix=>{await page.goto('http://127.0.0.1:4173/?workspace=tour-v24-${runId}-'+suffix);await settings().waitFor()};
   const startFast=async()=>{await page.evaluate(()=>{autoTour.stop();autoTour.setEnabled(true);autoTour.pace=.025;document.activeElement?.blur();autoTour.enabled=true;autoTour.start()});await page.waitForFunction(()=>autoTour.playing)};
-  const completed=async()=>{await page.waitForFunction(()=>!autoTour.playing,{timeout:45000});check(await page.evaluate(()=>document.documentElement.dataset.autoTourStep==='complete'),'Tour completes every scene without missing controls')};
+  const completed=async()=>{await page.waitForFunction(()=>!autoTour.playing,null,{timeout:45000});check(await page.evaluate(()=>document.documentElement.dataset.autoTourStep==='complete'),'Tour completes every scene without missing controls')};
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());if(m.type()==='warning')warnings.push(m.text())});
   try{
     await page.setViewportSize({width:1728,height:1117});await fresh('desktop');
     const saved=await page.evaluate(()=>localStorage.getItem(storageKey));
     check(await page.evaluate(()=>autoTour.enabled&&!autoTour.playing),'Automatic tour is enabled initially and waits before starting');
+    check(await page.evaluate(()=>autoTour.speed===1.5),'Playback defaults to 1.5 times the previous pace');
+    // Remove the controller tab to prove the debugger frame can open it without search.
+    await page.evaluate(()=>{state.tabs=state.tabs.filter(t=>t.path!==data.debugger.file);state.active='session:claude-review';renderTabs();renderContent()});
     await page.evaluate(()=>{
-      window.tourProof={};window.tourSteps=[];window.reportClicks=0;
-      document.addEventListener('click',e=>{if(e.target.closest('.air-report-problem'))reportClicks++},true);
+      window.tourProof={};window.tourSteps=[];window.reportClicks=0;window.tourClicks=[];
+      document.addEventListener('click',e=>{
+        if(e.target.closest('.air-report-problem'))reportClicks++;
+        if(!autoTour.playing)return;
+        const el=e.target.closest('button,summary'),entry=el?.matches('summary')&&el.parentElement.matches('.air-tool-entry')?el.parentElement:null;
+        tourClicks.push({action:el?.dataset.action,tool:entry?.dataset.toolEntry,opening:entry?!entry.open:undefined,key:el?.dataset.key,line:el?.dataset.line,property:!!el?.matches('.property-link'),gutter:!!el?.matches('.spring-gutter'),frame:!!el?.matches('.frame-row[data-index="0"]')});
+      },true);
       document.addEventListener('auto-tour-step',e=>tourSteps.push(e.detail));
       const seen=(name,ok)=>{if(ok)tourProof[name]=true};
       const expanded=selector=>document.querySelector(selector)?.closest('[role="treeitem"]')?.getAttribute('aria-expanded')==='true';
@@ -33,6 +41,8 @@ const code=String.raw`async page => {
         seen('claude',!!document.querySelector('.claude-scroll'));
         seen('claudeScroll',(document.querySelector('.claude-scroll')?.scrollTop||0)>100);
         seen('claudeTool',!!document.querySelector('.terminal-tool[open]'));
+        seen('codexScroll',(document.querySelector('.codex-scroll')?.scrollTop||0)>100);
+        seen('fileSearch',!!document.querySelector('#file-search'));
         seen('codexTools',!!document.querySelector('.air-work[open] .air-tool-group[open]'));
         seen('inlineSource',!!document.querySelector('.air-tool-entry[open] .air-tool-result')?.textContent.includes('package com.example.notifyhub.service;'));
         seen('expandedOutput',!!document.querySelector('.air-tool-entry[open] .air-tool-output.expanded'));
@@ -45,22 +55,29 @@ const code=String.raw`async page => {
         seen('fullUnified',!document.querySelector('.jd-snapshot-banner')&&!!document.querySelector('.jd-unified'));
         seen('fullSplit',!document.querySelector('.jd-snapshot-banner')&&!!document.querySelector('.jd-split'));
         seen('notificationRules',expanded('.debug-variables [data-key="variables-2-5"]'));
-        seen('inlineInspector',expanded('.debug-inspector [data-key="inspector-0-5"]'));
+        seen('controller',activeTab()?.path===data.debugger.file&&!!document.querySelector('.execution-line[data-line="65"]'));
+        seen('inlineDispatcher',debugInspector?.node.name==='dispatcher'&&expanded('.debug-inspector [data-key="inspector-0-5"]'));
+        seen('inlineNotification',debugInspector?.node.name==='notification'&&expanded('.debug-inspector [data-key="inspector-0-5"]'));
         seen('savedWatches',expanded('.debug-variables [data-key="savedWatches-1"]'));
         seen('console',document.querySelectorAll('.console-line').length===58&&(document.querySelector('.debug-console-output')?.scrollTop||0)>100);
         seen('springNavigation',document.documentElement.dataset.autoTourStep==='spring-navigation'&&activeTab()?.path?.endsWith('/NotificationDispatcher.java'));
       };
       window.proofObserver=new MutationObserver(inspect);proofObserver.observe(document.body,{subtree:true,childList:true,attributes:true});document.addEventListener('scroll',inspect,true);
     });
-    await page.waitForFunction(()=>autoTour.playing,{timeout:10000});
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:10000});
     check(await page.locator('#auto-tour-cursor').isVisible(),'Idle autoplay starts and displays its cursor');
     check(await page.locator('#auto-tour-cursor').evaluate(el=>getComputedStyle(el).pointerEvents==='none'&&el.getAttribute('aria-hidden')==='true'),'Cursor neither intercepts input nor enters the accessibility tree');
-    await page.waitForFunction(()=>document.querySelector('.claude-scroll')&&document.querySelector('#auto-tour-cursor.clicking'),{timeout:15000});await shot('claude-cursor');
+    await page.waitForFunction(()=>document.querySelector('.claude-scroll')&&document.querySelector('#auto-tour-cursor.clicking'),null,{timeout:15000});await shot('claude-cursor');
     await page.evaluate(()=>autoTour.pace=.025);
     await completed();
     const proof=await page.evaluate(()=>{proofObserver.disconnect();return tourProof});
-    for(const [key,label] of Object.entries({claude:'Claude Air TUI opens',claudeScroll:'Claude findings scroll into view',claudeTool:'Claude recorded tool expands',codexTools:'Codex work and tool groups expand',inlineSource:'Recorded Java source opens inline',expandedOutput:'Show more expands the inline output',inlineDiff:'Recorded git diff opens inline',partialSplit:'Partial side-by-side diff opens',partialUnified:'Partial unified diff opens',fullUnified:'Full unified diff opens',fullSplit:'Full side-by-side diff opens',notificationRules:'Notification rules expand in Variables',inlineInspector:'Inline dispatcher inspector expands channelService',savedWatches:'Saved notification rules watch expands',console:'Full startup console scrolls',springNavigation:'Autowired gutter navigates directly to NotificationDispatcher'}))check(!!proof[key],label);
-    check(await page.evaluate(()=>activeTab().path===data.debugger.file&&!!document.querySelector('.execution-line[data-line="65"]')),'Tour returns to NotificationController at the breakpoint');
+    for(const [key,label] of Object.entries({claude:'Claude Air TUI opens',claudeScroll:'Claude findings scroll into view',codexScroll:'Codex transcript scrolls',codexTools:'Codex work and one tool group expand',inlineSource:'One recorded Java source preview opens inline',partialSplit:'SecurityConfig partial side-by-side diff opens',controller:'Debugger opens NotificationController at line 65 with its tab initially absent',inlineDispatcher:'Inline dispatcher inspector expands channelService',inlineNotification:'Inline notification inspector expands rules',springNavigation:'Autowired gutter navigates directly to NotificationDispatcher'}))check(!!proof[key],label);
+    check(await page.evaluate(()=>activeTab().path==='src/main/resources/application-prod.yml'&&!!document.querySelector('.code-line[data-line="13"].navigation-line')),'Tour finishes at the injected property declaration in application-prod.yml');
+    const clicks=await page.evaluate(()=>tourClicks),toolClicks=clicks.filter(c=>c.tool);
+    check(JSON.stringify(toolClicks.map(c=>[c.tool,c.opening]))===JSON.stringify([['exec-86124221-7782-4d3d-a353-6a29952fcd3e',true],['exec-86124221-7782-4d3d-a353-6a29952fcd3e',false]]),'The tour expands exactly one Codex tool preview then collapses it');
+    check(!proof.claudeTool&&!proof.expandedOutput&&!proof.inlineDiff&&!proof.partialUnified&&!proof.fullUnified&&!proof.fullSplit&&!proof.notificationRules&&!proof.savedWatches&&!proof.console&&!proof.fileSearch,'The tour skips Claude tools, Show more, other tools, extra diff variants, variable pane expansion, watches, console and file search');
+    check(clicks.some(c=>c.frame)&&clicks.some(c=>c.gutter&&c.line==='23')&&clicks.at(-1)?.property&&clicks.at(-1)?.line==='23','Navigation uses the debugger frame, Spring gutter and injected property source text');
+    check(await page.evaluate(()=>JSON.stringify(tourSteps)===JSON.stringify(['agent-sessions','claude-session','claude-review','codex-session','codex-tools','session-diff','notification-controller','inline-variables','spring-navigation','configuration-property','complete'])),'Tour follows the exact requested scene order');
     check(await page.evaluate(()=>localStorage.getItem(storageKey))===saved,'Autoplay leaves the saved visitor layout untouched');
     await shot('complete');
     check(!proof.rawEvents&&await page.evaluate(()=>!tourSteps.includes('session-log')&&!state.tabs.some(t=>t.type==='events')),'The tour never exposes or visits raw session events');
@@ -97,15 +114,29 @@ const code=String.raw`async page => {
     await page.reload();await settings().waitFor();
     check(await page.evaluate(ids=>!state.tabs.some(t=>t.type==='events')&&JSON.stringify(state.tabs.map(t=>t.id))===JSON.stringify(ids)&&!!activeTab()&&!!document.querySelector('.chat-scroll,.code-scroll,.jd-split,.jd-unified'),tabsBeforeMigration),'Saved raw-event tabs are removed while retaining the other tabs and a valid active view');
     await page.evaluate(()=>autoTour.setEnabled(true));
-    await settings().click();check(await toggle().getAttribute('aria-checked')==='true','Top-right settings exposes the checked Automatic tour option');await shot('settings-enabled');
+    await settings().click();check(await toggle().getAttribute('aria-checked')==='true','Top-right settings exposes the checked Automatic tour option');
+    const speed=()=>page.getByLabel('Playback speed',{exact:true});
+    check(await speed().inputValue()==='1.5'&&JSON.stringify(await speed().locator('option').allTextContents())===JSON.stringify(['0.5×','1×','1.5×','2×','3×']),'Settings offers five playback speeds with 1.5× selected by default');
+    await shot('settings-enabled');await speed().selectOption('2');
+    check(await page.evaluate(()=>autoTour.speed===2&&!autoTour.playing)&&await speed().isVisible(),'Changing playback speed saves it and leaves settings open');
+    await speed().focus();await page.keyboard.press('3');await page.keyboard.press('Tab');
+    check(await speed().inputValue()==='3'&&await page.evaluate(()=>autoTour.speed===3),'Native keyboard typeahead changes the playback speed');
+    await page.reload();await settings().waitFor();check(await page.evaluate(()=>autoTour.speed===3),'The playback speed survives reload');
+    const timing=await page.evaluate(async()=>{
+      autoTour.stop();const signal=new AbortController().signal,samples=[];
+      for(const speed of [1,1.5,3]){autoTour.setSpeed(speed);clearTimeout(autoTour.timer);const start=performance.now();await autoTour.wait(300,signal);const wait=performance.now()-start,animationStart=performance.now();await autoTour.animate(300,()=>{},signal);samples.push({speed,wait,animation:performance.now()-animationStart})}
+      autoTour.setSpeed(0);const rejected=autoTour.speed===3;autoTour.setSpeed(1.5);clearTimeout(autoTour.timer);return {samples,rejected};
+    });
+    check(timing.rejected&&timing.samples.every(s=>Math.abs(s.wait-300/s.speed)<75&&Math.abs(s.animation-300/s.speed)<85),'Reading pauses and cursor motion both scale with speed; invalid speed is rejected');
+    await settings().click();
     await toggle().click();check(await page.evaluate(()=>!autoTour.enabled&&!autoTour.playing)&&await page.locator('#auto-tour-cursor').isHidden(),'Disabling the tour hides the cursor and cancels playback');
     await page.reload();await settings().waitFor();check(await page.evaluate(()=>!autoTour.enabled&&document.documentElement.dataset.autoTour==='off'),'The disabled preference survives reload');
-    await settings().click();check(await page.getByRole('menuitemcheckbox',{name:'Loop playback',exact:true}).count()===0,'Loop playback is hidden when the automatic tour is disabled');await page.keyboard.press('Escape');
-    await settings().click();await toggle().click();await page.waitForFunction(()=>autoTour.playing,{timeout:4000});
+    await settings().click();check(await page.getByRole('menuitemcheckbox',{name:'Loop playback',exact:true}).count()===0&&await speed().count()===0,'Loop playback and speed are hidden when the automatic tour is disabled');await page.keyboard.press('Escape');
+    await settings().click();await toggle().click();await page.waitForFunction(()=>autoTour.playing,null,{timeout:4000});
     check(await page.evaluate(()=>autoTour.enabled),'Enabling the option restarts the tour');
     await page.mouse.move(600,150);check(await page.evaluate(()=>!autoTour.playing)&&await page.locator('#auto-tour-cursor').isHidden(),'A real pointer movement immediately hands control to the visitor');
     const paused=await page.evaluate(()=>state.active);await page.evaluate(()=>autoTour.schedule(30));await page.waitForTimeout(650);check(await page.evaluate(()=>state.active)===paused&&!await page.evaluate(()=>autoTour.playing),'Interrupted playback cannot restart or fire a delayed click');
-    await startFast();await page.mouse.wheel(0,100);await page.waitForFunction(()=>!autoTour.playing,{timeout:1000});check(await page.evaluate(()=>!autoTour.playing),'A real wheel event interrupts playback');
+    await startFast();await page.mouse.wheel(0,100);await page.waitForFunction(()=>!autoTour.playing,null,{timeout:1000});check(await page.evaluate(()=>!autoTour.playing),'A real wheel event interrupts playback');
     await startFast();await page.keyboard.press('Escape');check(await page.evaluate(()=>!autoTour.playing),'Keyboard input interrupts playback');
     await settings().click();await page.evaluate(()=>{autoTour.setEnabled(true);autoTour.start()});check(await page.evaluate(()=>!autoTour.playing),'Autoplay waits while a visitor has a menu open');await page.keyboard.press('Escape');
     await page.getByRole('button',{name:'Search Everywhere',exact:true}).click();await page.evaluate(()=>{autoTour.setEnabled(true);autoTour.start()});check(await page.evaluate(()=>!autoTour.playing),'Autoplay waits while the visitor is searching');await page.keyboard.press('Escape');
@@ -117,11 +148,11 @@ const code=String.raw`async page => {
     await fresh('loop');await page.evaluate(()=>{autoTour.stop();autoTour.pace=.025;window.loopRuns=0;document.addEventListener('auto-tour-step',e=>{if(e.detail==='complete')loopRuns++})});
     await settings().click();const loopToggle=()=>page.getByRole('menuitemcheckbox',{name:'Loop playback',exact:true});
     check(await loopToggle().getAttribute('aria-checked')==='false','Loop playback defaults to off while Automatic tour is enabled');await loopToggle().click();
-    await page.waitForFunction(()=>autoTour.playing,{timeout:4000});await completed();await page.waitForFunction(()=>autoTour.playing,{timeout:15000});await completed();
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:4000});await completed();await page.waitForFunction(()=>autoTour.playing,null,{timeout:15000});await completed();
     check(await page.evaluate(()=>autoTour.loop&&loopRuns===2),'Loop playback automatically completes a second full pass after its pause');
     await page.reload();await settings().waitFor();check(await page.evaluate(()=>autoTour.loop),'The enabled loop preference survives reload');await page.evaluate(()=>{autoTour.pace=.025});
     await settings().click();check(await loopToggle().getAttribute('aria-checked')==='true','Settings shows the saved loop mode');await shot('settings-loop-enabled');await loopToggle().click();
-    await page.waitForFunction(()=>autoTour.playing,{timeout:4000});await completed();await page.evaluate(()=>autoTour.schedule(30));await page.waitForTimeout(100);
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:4000});await completed();await page.evaluate(()=>autoTour.schedule(30));await page.waitForTimeout(100);
     check(await page.evaluate(()=>!autoTour.loop&&autoTour.completed&&!autoTour.playing),'Turning loop playback off returns to a single pass');
     await page.emulateMedia({reducedMotion:'reduce'});await fresh('reduced');check(await page.evaluate(()=>!autoTour.enabled),'Reduced motion defaults the tour to off');
     await settings().click();check(await toggle().getAttribute('aria-checked')==='false','Reduced-motion visitors see the unchecked option');await page.keyboard.press('Escape');
@@ -129,7 +160,7 @@ const code=String.raw`async page => {
     check(await settings().isVisible(),'The tour setting remains accessible on narrow windows');await startFast();await completed();await shot('narrow-complete');
     if(!await page.locator('.sessions-panel').isVisible())await page.locator('.sessions-rail').click();await page.locator('.session-item[data-session="acp:eccab739"]').click();await page.evaluate(()=>autoTour.setEnabled(false));await openDetails(page.locator('.air-work'));await openDetails(source.locator('xpath=ancestor::details[contains(@class,"air-tool-group")]'));await openDetails(source);if(await page.evaluate(()=>state.showDebugger))await page.locator('.debug-rail').click();await source.locator('.air-tool-output').scrollIntoViewIfNeeded();await shot('narrow-inline-output');
     check(await page.locator('body').evaluate(el=>el.scrollWidth===innerWidth),'Inline output wraps without horizontal page overflow on narrow windows');
-    const requests=[],url='http://127.0.0.1:4173/tour-static?workspace=tour-v23-offline-${runId}';
+    const requests=[],url='http://127.0.0.1:4173/tour-static?workspace=tour-v24-offline-${runId}';
     page.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url())});
     await page.route(url,r=>r.fulfill({path:${JSON.stringify(fileURLToPath(new URL('release/notify-hub-prototype.html',root)))},contentType:'text/html'}));
     await page.context().setOffline(true);await page.setViewportSize({width:1280,height:800});await page.goto(url);await settings().waitFor();
