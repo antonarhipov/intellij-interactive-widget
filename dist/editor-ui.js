@@ -20,12 +20,13 @@ function editorToolbarMenu(kind,anchor){
   if(config)content=`<div class="run-config-option" role="menuitem" tabindex="0" aria-current="true">${runningConfigurationIcon()}<span>NotifyHubApplication</span><span class="config-actions">${runControls(true)}<button class="icon-button" disabled aria-label="More configuration actions">${editorIcon('more')}</button></span></div><hr><button role="menuitem" disabled class="config-text-option">Current File</button><hr><button role="menuitem" disabled class="config-text-option">Edit Configurations…</button>`;
   else if(kind==='run-more-menu')content=`<button role="menuitem" data-action="execution-point">Show Execution Point</button><hr><button role="menuitem" disabled>Attach to Process…</button><button role="menuitem" disabled>Edit Configurations…</button>`;
   else if(agents)content=sessionAgentMenu();
-  else content=`<button role="menuitem" disabled>Settings…</button><button role="menuitem" disabled>Plugins…</button><hr><button role="menuitem" data-action="about">About this prototype</button>`;
+  else content=`<button role="menuitem" disabled>Settings…</button><button role="menuitem" disabled>Plugins…</button><hr>${automaticTourMenu()}<hr><button role="menuitem" data-action="about">About this prototype</button>`;
   $('#overlay-root').innerHTML=`<div class="menu native-toolbar-menu ${config?'run-configuration-menu':agents?'agent-selector-menu':''}" role="menu" aria-label="${config?'Run / Debug Configurations':agents?'New Session':kind==='run-more-menu'?'Run actions':'IDE and Project Settings'}" style="left:${left}px;top:${r.bottom+4}px;width:${width}px">${content}</div>`;
   anchor.setAttribute('aria-expanded','true');(agents?$('.selected-agent'):$('.native-toolbar-menu [tabindex="0"],.native-toolbar-menu button:not(:disabled)'))?.focus();
 }
 function editorUIAction(name,el){
   if(toolbarDropdownAction(name,el))return true;
+  if(name==='toggle-auto-tour'){autoTour.setEnabled(!autoTour.enabled);closeOverlay();return true}
   if(['run-config-menu','run-more-menu','new-session-menu','ide-settings-menu'].includes(name)){editorToolbarMenu(name,el);return true}
   if(name==='select-session-agent'){
     const agent=sessionAgentChoices.find(a=>a.id===el.dataset.agent);if(!agent)return true;
