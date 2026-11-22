@@ -1,0 +1,48 @@
+/* Project and Git popups follow the captured IDEA toolbar menus. */
+.main-toolbar .toolbar-project,.main-toolbar .toolbar-branch{height:28px;padding:0 7px;gap:7px;white-space:nowrap;font-size:14px;border-radius:6px}
+.main-toolbar .toolbar-project>.icon:last-child,.main-toolbar .toolbar-branch>.icon:last-child{width:12px;height:12px;margin-left:1px}
+.main-toolbar .toolbar-project .project-logo{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:16px;height:16px;padding:0;font:10px/16px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:-.7px}
+.main-toolbar .toolbar-branch>.icon:first-child{width:16px;height:16px}
+.toolbar-project[aria-expanded="true"],.toolbar-branch[aria-expanded="true"]{background:#393b40}
+.vcs-branch-icon{filter:brightness(0) invert(.81)}
+.native-toolbar-menu.toolbar-popup{position:fixed;z-index:40;padding:8px;background:#25272a;border:1px solid #47494c;border-radius:8px;box-shadow:0 5px 16px #0005;font:14px/22px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-height:var(--toolbar-popup-space);overflow:auto;scrollbar-width:thin}
+.toolbar-popup hr{height:1px;border:0;border-top:1px solid #383a3f;margin:10px 0}
+.toolbar-popup .toolbar-popup-row{display:flex;align-items:center;gap:7px;width:100%;height:22px;min-height:22px;padding:0 8px;text-align:left;border-radius:4px;font:inherit;color:#ced0d6;outline:none}
+.toolbar-popup-row>.icon,.toolbar-icon-space{display:inline-block;width:16px;height:16px;flex-shrink:0}
+.toolbar-popup .toolbar-popup-row.selected,.toolbar-popup .toolbar-popup-row:hover,.toolbar-popup .toolbar-popup-row:focus-visible{background:#2e4773}
+.toolbar-shortcut{margin-left:auto;color:#7a7d82;padding-left:16px}
+.toolbar-popup-row.selected .toolbar-shortcut,.toolbar-popup-row:hover .toolbar-shortcut{color:#ced0d6}
+.toolbar-popup.vcs-dropdown{min-height:min(464px,var(--toolbar-popup-space))}
+.vcs-popup-header{height:40px;padding:6px 4px 8px;display:flex;gap:9px;align-items:center}
+.vcs-popup-search{display:flex;align-items:center;gap:8px;flex:1;min-width:0;height:26px;padding:0 8px;border:1px solid #43464d;border-radius:3px}
+.vcs-popup-search>.icon{width:16px;height:16px;flex-shrink:0}
+.vcs-popup-search input,.vcs-popup-search input:focus{width:100%;height:24px;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0;font:inherit;color:#ced0d6}
+.vcs-popup-search input::placeholder{color:#797c82;opacity:1}
+.vcs-popup-header .icon-button{width:20px;height:26px;min-height:26px;padding:0;justify-content:center;flex-shrink:0}
+.vcs-popup-header .icon-button:disabled{color:#b4b8bf;opacity:1}
+.vcs-popup-body>.vcs-action-list>.toolbar-popup-row{padding-left:12px}
+.vcs-popup-body .vcs-branches{padding-bottom:20px}
+.toolbar-popup .vcs-tree-row{gap:7px;padding-left:calc(12px + var(--vcs-depth)*8px)}
+.vcs-tree-caret{display:flex;align-items:center;justify-content:center;width:12px;height:16px;flex-shrink:0}
+.vcs-tree-caret>.icon{width:12px;height:12px;transform:rotate(-90deg)}
+.vcs-tree-caret.expanded>.icon{transform:none}
+.vcs-tree-row[aria-level="1"]{gap:7px}
+.vcs-tree-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vcs-tracking{margin-left:auto;color:#777a80}
+.vcs-leaf-arrow{display:flex;align-items:center;justify-content:center;width:12px;height:16px;margin-left:auto}
+.vcs-tracking+.vcs-leaf-arrow{margin-left:0}
+.vcs-leaf-arrow>.icon{width:12px;height:12px;transform:rotate(-90deg)}
+.vcs-no-results{padding:10px 12px;color:#8b8e96}
+.project-dropdown .toolbar-popup-row{gap:8px}
+.project-dropdown>hr:first-of-type{margin:4px 0 10px}
+.project-dropdown>hr:last-of-type{margin:10px 0 4px}
+.open-projects-heading{height:22px;padding:0 8px;color:#787b81;font-size:13px;font-weight:600;line-height:22px}
+.project-dropdown .open-project-card{display:grid;grid-template-columns:20px minmax(0,1fr);grid-template-rows:repeat(3,22px);gap:0 8px;width:100%;height:76px;min-height:76px;padding:5px 8px;text-align:left;background:#243658;border-radius:4px;font:14px/22px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;outline:none}
+.open-project-card .project-logo{display:flex;align-items:center;justify-content:center;width:20px;height:20px;margin-top:3px;background:#d98560;color:#fff;border-radius:4px;font-size:12px;letter-spacing:-.6px;grid-row:1/4}
+.open-project-name,.open-project-path,.open-project-branch{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.open-project-path,.open-project-branch{color:#798393}
+.open-project-branch{display:flex;align-items:center;gap:5px}
+.open-project-branch>.icon{width:16px;height:16px;opacity:.65}
+.project-dropdown .open-project-card:hover,.project-dropdown .open-project-card:focus-visible{background:#2e4773}
+@media(max-width:900px){.main-toolbar .toolbar-branch{display:none}}
+@media(max-width:760px){.main-toolbar .toolbar-project{font-size:11px;padding:0 3px;gap:4px}.main-toolbar .toolbar-project .project-logo{display:none}.open-project-path{font-size:12px}}

@@ -8,8 +8,8 @@
     "build:static": "node scripts/export-static.mjs",
     "build:pages": "node scripts/export-static.mjs release/site/index.html",
     "verify:static": "node scripts/verify-static-browser.mjs",
-    "check:site": "node --check dist/app.js && node --check dist/editor-ui.js && node --check dist/scenario.js && node --check dist/project-view.js && node --check dist/debugger.js && node --check dist/diff.js && node --check dist/tool-windows.js && node --check scripts/export-static.mjs && node scripts/verify-diff.mjs && node scripts/verify-tool-windows.mjs && python3 scripts/verify-spring.py",
+    "check:site": "node --check dist/app.js && node --check dist/editor-ui.js && node --check dist/toolbar-menus.js && node --check dist/scenario.js && node --check dist/project-view.js && node --check dist/debugger.js && node --check dist/diff.js && node --check dist/tool-windows.js && node --check scripts/export-static.mjs && node scripts/verify-diff.mjs && node scripts/verify-tool-windows.mjs && python3 scripts/verify-spring.py",
     "snapshot": "python3 scripts/export-data.py && python3 scripts/export-logical-libraries.py",
-    "check": "node --check dist/app.js && node --check dist/editor-ui.js && node --check dist/scenario.js && node --check dist/project-view.js && node --check dist/debugger.js && node --check dist/diff.js && node --check dist/tool-windows.js && node --check scripts/export-static.mjs && node --check server.mjs && python3 scripts/verify-data.py && node scripts/verify-diff.mjs && node scripts/verify-tool-windows.mjs && python3 scripts/verify-spring.py"
+    "check": "node --check dist/app.js && node --check dist/editor-ui.js && node --check dist/toolbar-menus.js && node --check dist/scenario.js && node --check dist/project-view.js && node --check dist/debugger.js && node --check dist/diff.js && node --check dist/tool-windows.js && node --check scripts/export-static.mjs && node --check server.mjs && python3 scripts/verify-data.py && node scripts/verify-diff.mjs && node scripts/verify-tool-windows.mjs && python3 scripts/verify-spring.py"
   }
 }

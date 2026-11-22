@@ -25,6 +25,7 @@ function editorToolbarMenu(kind,anchor){
   anchor.setAttribute('aria-expanded','true');(agents?$('.selected-agent'):$('.native-toolbar-menu [tabindex="0"],.native-toolbar-menu button:not(:disabled)'))?.focus();
 }
 function editorUIAction(name,el){
+  if(toolbarDropdownAction(name,el))return true;
   if(['run-config-menu','run-more-menu','new-session-menu','ide-settings-menu'].includes(name)){editorToolbarMenu(name,el);return true}
   if(name==='select-session-agent'){
     const agent=sessionAgentChoices.find(a=>a.id===el.dataset.agent);if(!agent)return true;
@@ -36,7 +37,7 @@ function editorUIAction(name,el){
   return false;
 }
 function initEditorUI(){
-  document.addEventListener('click',e=>{if($('.native-toolbar-menu')&&!e.target.closest('.native-toolbar-menu,.run-config,.run-more,.new-session-dropdown,.main-settings'))closeOverlay()});
+  document.addEventListener('click',e=>{if($('.native-toolbar-menu')&&!e.composedPath().some(n=>n instanceof Element&&n.matches('.native-toolbar-menu,.toolbar-project,.toolbar-branch,.run-config,.run-more,.new-session-dropdown,.main-settings')))closeOverlay()});
   document.addEventListener('keydown',e=>{
     if(e.ctrlKey&&e.altKey&&e.key.toLowerCase()==='q'){
       const focused=document.activeElement,doc=focused?.closest('.doc-comment');
@@ -45,6 +46,7 @@ function initEditorUI(){
       if(visibleDoc){e.preventDefault();toggleDocComment(+visibleDoc.dataset.startLine)}
     }
     const menu=$('.native-toolbar-menu');if(!menu)return;
+    if(menu.classList.contains('vcs-dropdown')&&toolbarVcsKeydown(e))return;
     if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){
       e.preventDefault();const items=$$('[role^="menuitem"]:not(:disabled)',menu),index=items.indexOf(document.activeElement);
       const next=e.key==='Home'?0:e.key==='End'?items.length-1:(index+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;items[next]?.focus();

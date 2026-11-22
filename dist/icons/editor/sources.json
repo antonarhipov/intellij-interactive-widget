@@ -106,5 +106,53 @@
   "breakpoint": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
     "resource": "expui/breakpoints/breakpointValid_dark.svg"
+  },
+  "toolbar-add": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/add_dark.svg"
+  },
+  "toolbar-open": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/open_dark.svg"
+  },
+  "vcs-branch": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/vcs.svg"
+  },
+  "vcs-update": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/vcs/update_dark.svg"
+  },
+  "vcs-commit": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/vcs/commit_dark.svg"
+  },
+  "vcs-push": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/vcs/push_dark.svg"
+  },
+  "vcs-fetch": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/vcs/fetch_dark.svg"
+  },
+  "vcs-favorite": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/star_dark.svg"
+  },
+  "toolbar-home": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/vcs-github/lib/modules/intellij.vcs.github.ultimate.features.jar",
+    "resource": "icons/action/home.svg"
+  },
+  "vcs-worktree": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/vcs-git/lib/vcs-git.jar",
+    "resource": "icons/worktree_dark.svg"
+  },
+  "vcs-current": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.vcs.dvcs.impl.shared.jar",
+    "resource": "icons/new/currentBranchFavoriteLabel_dark.svg"
+  },
+  "vcs-tag": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.vcs.dvcs.impl.shared.jar",
+    "resource": "icons/new/branchLabel_dark.svg"
   }
 }
