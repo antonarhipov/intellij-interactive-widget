@@ -1,0 +1,11 @@
+{
+  "name": "notifyhub-intellij-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local read-only IntelliJ IDEA prototype for NotifyHub and its ACP sessions",
+  "scripts": {
+    "start": "node server.mjs",
+    "snapshot": "python3 scripts/export-data.py && python3 scripts/export-logical-libraries.py",
+    "check": "node --check dist/app.js && node --check dist/editor-ui.js && node --check dist/scenario.js && node --check dist/project-view.js && node --check dist/debugger.js && node --check dist/diff.js && node --check dist/tool-windows.js && node --check server.mjs && python3 scripts/verify-data.py && node scripts/verify-diff.mjs && node scripts/verify-tool-windows.mjs"
+  }
+}

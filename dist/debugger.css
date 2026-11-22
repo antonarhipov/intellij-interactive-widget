@@ -1,0 +1,75 @@
+/* IDEA 2026.3 Threads & Variables, console, and inline value inspectors. */
+.debugger-window{background:#191a1c;min-height:180px;max-height:calc(100dvh - 230px);border-top-width:5px;border-radius:8px 8px 0 0;overflow:hidden}
+.debug-header{height:34px;padding:0 12px;gap:14px;border-color:#2b2c2f;font-size:14px}
+.debug-header strong{font-size:14px}
+.debug-config{height:26px;padding:0 5px 0 9px;border:1px solid #3e4148;background:#25262a;font-size:14px;color:#c9cbd1;gap:7px}
+.debug-config>.icon{width:18px;height:18px}.debug-config .icon-button{width:22px;height:23px}
+.debug-config .icon-button .icon{height:12px;width:12px;color:#727780}
+.debug-toolbar{display:flex;align-items:center;height:34px;padding:0 9px;gap:12px;flex-shrink:0;border-bottom:1px solid #2b2c2f;overflow-x:auto;scrollbar-width:none}
+.debug-actions{flex-direction:row;align-items:center;gap:3px;width:auto;padding:0;border:0;flex-shrink:0}
+.debug-actions>button,.debug-toolbar>.icon-button{height:26px;width:25px;padding:4px;color:#b5b8bf}
+.debug-actions>button:disabled{opacity:1;cursor:default}.debug-actions .icon{width:18px;height:18px}
+.debug-actions .debug-resume,.debug-actions .debug-rerun{color:#579560}.debug-actions .debug-stop{color:#df5e67}
+.debug-action-divider{height:20px!important;width:1px;background:#3a3b3e;margin:0 3px}
+.debug-tabs{padding:0;gap:4px;height:30px;border:0;flex-shrink:0;align-items:center;font-size:14px}
+.debug-tabs>button{height:26px;border:1px solid transparent;border-radius:4px;padding:2px 9px;color:#c5c7ce;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.debug-tabs>button.active{background:#273a5c;border-color:#3a5b96;color:#d4d8e0}.debug-tabs>button.active:after{display:none}
+.debug-tabs .icon{width:17px;height:17px}.environment-braces{color:#b88aee;font:15px var(--mono)}
+.debug-body{overflow:hidden}.debug-frames{width:280px;min-width:160px;max-width:none;flex-shrink:0;border:0;position:relative}
+.debug-frame-tabs{height:29px;display:flex;align-items:center;gap:5px;padding:1px 5px;border-bottom:1px solid #2b2c2f;font-size:14px;flex-shrink:0}
+.debug-frame-tabs button{border:1px solid transparent;padding:2px 10px;border-radius:4px;height:25px}
+.debug-frame-tabs button.active{background:#27282c;border-color:#3e4148}
+.debug-thread{height:31px;display:flex;align-items:center;gap:6px;padding:0 7px;background:#25262a;font-size:14px;flex-shrink:0}
+.debug-thread>.icon{width:11px;height:11px;flex-shrink:0}.debug-thread .icon-button{height:24px;width:24px;background:#3b3d42}.debug-thread .icon-button .icon{width:16px;height:16px}
+.thread-check{color:#b97a4e}.debug-thread>.truncate{flex:1;min-width:0}
+.frame-list{padding:4px 7px;flex:1;min-height:0}.frame-row{height:25px;padding:3px 6px;font-size:14px;border-radius:4px;gap:6px;color:#c7c9d0}
+.frame-row.active{background:#323438}.frame-icon{color:#a7abb2;font-size:16px}
+.hidden-frames{color:#757881;padding:3px 0 2px 25px;font-size:14px;text-align:left;width:100%}.hidden-frames:hover{color:#a5a9b2}
+.debug-frame-hint{height:23px;font-size:12px;color:#737780;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:1px 8px;flex-shrink:0}
+.debug-frame-resizer{width:1px;background:#2e3034;cursor:col-resize;position:relative;flex-shrink:0}.debug-frame-resizer:after{content:'';position:absolute;inset:0 -3px;z-index:2}
+.debug-frame-resizer:hover{background:#5376aa}
+.debug-variables{flex:1;min-width:0;border:0}.debug-evaluate{height:29px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #2b2c2f;padding:0 9px;color:#73767d;flex-shrink:0;overflow:hidden}
+.debug-evaluate>span:first-child{font:13px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.debug-language{font-size:13px}.debug-evaluate .icon-button{height:23px;width:23px;flex-shrink:0}.debug-evaluate .icon{height:14px;width:14px}
+.variable-tree{font:14px/23px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:2px 8px 12px;overflow:auto;scrollbar-width:thin}
+.debug-node{min-width:100%;width:max-content}.variable-row{display:flex;align-items:center;gap:3px;height:23px;min-width:100%;font:inherit;line-height:23px;padding:0 7px 0 5px;border-radius:4px;outline:none;cursor:default;white-space:nowrap}
+.variable-row:hover{background:#24262a!important}.variable-row.selected,.variable-row.selected:hover,.variable-row:focus{background:#2c4774!important}.variable-row:focus-visible{outline:1px solid #628cdc;outline-offset:-1px}
+.variable-label{display:flex;align-items:center;gap:4px;min-width:0;font:inherit;white-space:nowrap;text-align:left;line-height:23px;cursor:default;outline:none}.variable-label:hover{background:transparent!important}
+.variable-label>.icon{width:16px;height:16px;flex-shrink:0}.variable-caret{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:13px;height:22px;cursor:default}
+.variable-caret:disabled{opacity:0}.variable-caret .icon{width:11px;height:11px}.variable-caret:hover{background:transparent!important;color:#d7dbe3}
+.debug-field-symbol{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c57d48;color:#e3a06f;border-radius:50%;font:italic 11px Georgia,serif;width:14px;height:14px;flex-shrink:0;margin-inline:1px}
+.variable-name{color:#f3aa77}.variable-equals{color:#c6c8cf;padding-inline:1px}.variable-value{color:#c5c7cf}.variable-value.string{color:#67a96e}.variable-value.number{color:#c5c7cf}.variable-value.object-reference{color:#757982}.variable-summary{color:#c9cbd2}
+.watch-symbol{width:18px;height:15px;margin-left:1px;flex-shrink:0;color:#b2b5bd}
+.debug-value-link{color:#6b9fff;font:inherit;white-space:nowrap;cursor:pointer;margin-left:1px;padding:0 2px}.debug-value-link:hover{text-decoration:underline;background:transparent!important}
+.debug-saved-label{padding:6px 6px 2px;color:#7e838e;font-size:12px}.debug-unavailable{font-size:13px}
+.debug-console{padding:0;display:flex;overflow:hidden;min-height:0;flex:1}.console-actions{width:33px;display:flex;flex-direction:column;align-items:center;flex-shrink:0;border-right:1px solid #2a2b2e;padding-top:3px;gap:3px}
+.console-actions .icon-button{height:25px;width:27px;color:#b4b8c2}.console-actions .icon{height:18px;width:18px}.console-actions button:disabled{opacity:.5}
+.debug-console-output{flex:1;min-width:0;overflow:auto;padding:0 12px 9px;font:14px/26px var(--mono);white-space:pre;scrollbar-width:thin;outline:none}
+.console-line{min-height:26px;width:max-content;min-width:100%;color:#bcbec7}.console-level{color:#56972e}.console-pid{color:#a26abb}.console-class{font:inherit;color:#00a4a8;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:#6d7476;text-underline-offset:3px}
+.console-class:hover{background:transparent!important;color:#19c4c6}.console-cursor{display:block;width:2px;height:20px;background:#c5c7cd;margin:2px 0}.debug-console-output.soft-wrap{white-space:pre-wrap;overflow-wrap:anywhere}.soft-wrap .console-line{width:auto}
+.console-command{font:inherit;line-height:26px;white-space:inherit;overflow-wrap:anywhere;max-width:100%;text-align:left;color:#868991;background:#393b40;vertical-align:top}
+.console-command:hover{background:#44464d!important}
+.debug-inspector{position:fixed;z-index:30;background:#25262a;border:1px solid #484a50;box-shadow:0 7px 24px #0007;border-radius:8px;display:flex;flex-direction:column;max-height:min(65vh,480px);padding:2px 5px 0}
+.debug-inspector>.variable-tree{padding:0 2px 12px;min-height:0;flex:1;max-height:420px;overflow:auto}.debug-inspector .variable-row:first-child{background:transparent}.debug-inspector>.variable-tree>.debug-node>.variable-row{background:#2c4774!important}
+.debug-inspector footer{display:flex;align-items:center;gap:17px;padding:7px 5px 5px;font-size:14px;flex-shrink:0;color:#6b9fff}.debug-inspector footer>button:disabled{opacity:1;cursor:default}.debug-inspector footer .icon-button{height:23px;width:23px;color:#8b909b}.debug-inspector footer .icon{height:13px;width:13px}
+.debug-source-toolbar{height:28px;padding:0 10px 0 0;gap:12px;background:#191a1c;font:13px var(--mono);border-color:#303236;overflow:hidden}
+.sticky-line-number{width:46px;color:#62656d;flex-shrink:0;text-align:right;padding-right:9px}.debug-sticky-class{margin-left:23px;white-space:nowrap;color:#bfc1c9}.debug-sticky-bean{font:italic 13px var(--mono);color:#727982;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.debug-sticky-bean .icon{width:16px;height:16px}.debug-source-toolbar>.icon-button{height:23px;width:23px;flex-shrink:0}
+.code-lines{line-height:26px}.code-line{min-height:26px;height:26px}.source-gutter{height:26px}.code-text{padding-right:0}
+.execution-line,.execution-line:hover{background:#2d5190}.execution-line .line-number,.execution-line .source-gutter{background:#202127;color:#8e94a0}.execution-line .code-text{background:transparent}
+.breakpoint{background:#e65c61;width:14px;height:14px;left:2px;box-shadow:none;color:#c5c9d1;font:bold 16px/9px -apple-system,sans-serif;text-shadow:1px 1px #23242a}
+.debug-inline-values{display:inline-flex;gap:20px;align-items:center;white-space:nowrap;margin-left:22px;padding-right:25px}
+.inline-value{font:italic 13px var(--mono);color:#737b84;background:transparent;border:0;padding:0;margin:0;border-radius:0;max-width:none;display:inline-flex;align-items:center;gap:5px}
+.inline-value .icon{width:16px;height:16px;flex-shrink:0}.inline-value:hover{background:#303845!important;color:#a8b7cb}.execution-line .inline-value{color:#92a9cb}
+.debug-expression{font:inherit;color:#b879b7;line-height:inherit}.debug-expression:hover{background:transparent!important;text-decoration:underline;text-underline-offset:3px}
+.debug-security-inlay{color:#92969f;display:inline-flex;gap:6px;align-items:center;margin-left:10px;font:13px -apple-system,sans-serif;white-space:nowrap}.debug-security-inlay .icon{height:16px;width:16px}.debug-security-inlay .icon:last-child{height:11px;width:11px;margin-left:-4px}
+.debug-endpoint-link{font:inherit;color:#6aa978;text-decoration:underline;text-underline-offset:2px;display:inline-flex;align-items:center}.debug-endpoint-link .icon{height:14px;width:14px;color:#9da3af;margin-right:2px}
+.debug-security-menu{position:fixed;z-index:30;max-width:calc(100vw - 20px);padding:6px;background:#25262a;border:1px solid #494b51;border-radius:8px;box-shadow:0 5px 20px #0007;font-size:14px}
+.debug-security-menu>button{display:block;text-align:left;width:100%;border-radius:4px;padding:4px 9px}.debug-security-menu>button:disabled{color:#c4c7cf;opacity:.7}.debug-security-menu>button:not(:disabled):hover{background:#2c4774}
+.debug-spring-snapshot{flex:1;overflow:auto;padding:7px 12px;font-size:13px}.debug-spring-title{padding:4px 6px 9px;display:flex;gap:15px}.debug-spring-row{display:flex;gap:12px;align-items:center;min-height:26px;text-align:left;width:100%;padding:2px 6px}.debug-spring-row>.icon{width:16px;height:16px}.debug-spring-row>span:first-of-type{min-width:210px}
+@media(min-width:1800px){.code-lines{font-size:15px;line-height:26px}.inline-value{font-size:15px}.debug-sticky-class,.debug-sticky-bean{font-size:15px}}
+@media(max-width:1150px){.debug-tabs{font-size:13px}.debug-tabs>button{padding-inline:7px}.debug-toolbar{gap:7px}.debug-actions{gap:1px}.debug-actions>button{width:23px}.debug-actions .debug-action-divider{margin-inline:2px}.debug-frames{min-width:160px}.inline-value{display:inline-flex}}
+@media(max-width:760px){.debugger-window{max-height:55vh}.debug-frames{min-width:145px;width:160px!important}.debug-variables{min-width:160px}.debug-header{gap:8px}.debug-header strong{font-size:13px}.debug-config{max-width:none;font-size:12px}.debug-tabs{font-size:12px}.debug-toolbar{padding-left:4px}.debug-actions{gap:1px}.debug-frame-tabs,.debug-thread,.frame-row,.hidden-frames,.variable-tree{font-size:12px}.debug-evaluate{padding-inline:5px}.debug-evaluate>span:first-child{font-size:11px}.debug-language{display:none}.debug-inspector .variable-tree{font-size:12px}.debug-inspector footer{font-size:12px;gap:12px}.debug-sticky-bean{display:none}.debug-sticky-class{margin-left:12px;font-size:11px}.debug-source-toolbar{gap:6px}.sticky-line-number{width:39px}.debug-console-output{font-size:12px}.debug-inspector{max-height:55vh}}
+
+.soft-wrap .code-line{height:auto}
+
+.debug-resizer{top:0;height:5px}

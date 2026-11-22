@@ -1,0 +1,162 @@
+{
+  "module": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/module_dark.svg"
+  },
+  "folder": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/folder_dark.svg"
+  },
+  "package": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/package_dark.svg"
+  },
+  "source": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/sourceRoot_dark.svg"
+  },
+  "test-source": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/testSourceFolder_dark.svg"
+  },
+  "resources": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/resourcesRoot_dark.svg"
+  },
+  "test-resources": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/testResourcesRoot_dark.svg"
+  },
+  "libraries": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/library_dark.svg"
+  },
+  "jar": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/jarDirectory_dark.svg"
+  },
+  "class": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/class_dark.svg"
+  },
+  "interface": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/interface_dark.svg"
+  },
+  "record": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/record_dark.svg"
+  },
+  "enum": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/enum_dark.svg"
+  },
+  "exception": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/exception_dark.svg"
+  },
+  "ignored": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/ignored_dark.svg"
+  },
+  "text": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/text_dark.svg"
+  },
+  "markdown": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/markdown_dark.svg"
+  },
+  "docker": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/docker_dark.svg"
+  },
+  "shell": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/shell_dark.svg"
+  },
+  "windows": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/microsoftWindows_dark.svg"
+  },
+  "yaml": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/yaml_dark.svg"
+  },
+  "properties": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/properties_dark.svg"
+  },
+  "xml": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/xml_dark.svg"
+  },
+  "sql": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/sql_dark.svg"
+  },
+  "html": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/html_dark.svg"
+  },
+  "css": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/css_dark.svg"
+  },
+  "js": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/javaScript_dark.svg"
+  },
+  "add": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/add_dark.svg"
+  },
+  "locate": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/locate_dark.svg"
+  },
+  "expand": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/expandAll_dark.svg"
+  },
+  "collapse": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/collapseAll_dark.svg"
+  },
+  "more": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/moreVertical_dark.svg"
+  },
+  "hide": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/hide_dark.svg"
+  },
+  "chevron": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/chevronRight_dark.svg"
+  },
+  "chevron-down": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/chevronDown_dark.svg"
+  },
+  "spring-class": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/springJavaBean_dark.svg"
+  },
+  "spring-factory": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/springBeanFactory_dark.svg"
+  },
+  "spring-repository": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/repositoryBean_dark.svg"
+  },
+  "maven": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/maven-plugin/lib/intellij.maven.jar",
+    "resource": "images/expui/build/mavenProject_dark.svg"
+  },
+  "compose": {
+    "jar": "/Users/anton/Library/Application Support/JetBrains/IntelliJIdea2026.3/plugins/clouds-docker-impl/lib/modules/intellij.clouds.docker.shared.jar",
+    "resource": "icons/expui/dockerCompose_dark.svg"
+  }
+}

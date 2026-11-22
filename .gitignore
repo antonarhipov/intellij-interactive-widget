@@ -1,0 +1,11 @@
+# Local dependencies and caches
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store
+.idea/
+
+# Generated browser verification artifacts
+.playwright-cli/
+evidence/
+output/playwright/

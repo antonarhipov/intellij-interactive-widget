@@ -1,0 +1,98 @@
+{
+  "resume": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/resume_dark.svg"
+  },
+  "restart": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/restartDebug_stroke.svg"
+  },
+  "restart-menu": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/restartDebug_dark.svg"
+  },
+  "stop": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/stop_stroke.svg"
+  },
+  "stop-menu": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/stop_dark.svg"
+  },
+  "more": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/moreVertical_dark.svg"
+  },
+  "search": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/search@20x20_dark.svg"
+  },
+  "settings": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/settings@20x20_dark.svg"
+  },
+  "settings-small": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/settings_dark.svg"
+  },
+  "refresh": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/refresh_dark.svg"
+  },
+  "notifications": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/notifications@20x20_dark.svg"
+  },
+  "chevron": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/chevronDown_dark.svg"
+  },
+  "doc-edit": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/gutter/javadocEdit_dark.svg"
+  },
+  "doc-read": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/gutter/javadocRead_dark.svg"
+  },
+  "spring-boot": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.shared.jar",
+    "resource": "icons/expui/springBoot_dark.svg"
+  },
+  "database": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/DatabaseTools/lib/modules/intellij.database.jar",
+    "resource": "icons/expui/dbms@20x20_dark.svg"
+  },
+  "maven": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/maven-plugin/lib/intellij.maven.jar",
+    "resource": "images/expui/toolwindow/maven@20x20_dark.svg"
+  },
+  "usage-details": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar",
+    "resource": "icons/statisticsEventLogExternal_dark.svg"
+  },
+  "agent-junie": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
+    "resource": "icons/junie.svg"
+  },
+  "agent-codex": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
+    "resource": "icons/codex_dark.svg"
+  },
+  "agent-claude": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
+    "resource": "icons/claude.svg"
+  },
+  "agent-opencode": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
+    "resource": "icons/opencode_dark.svg"
+  },
+  "agent-copilot": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
+    "resource": "icons/copilot_dark.svg"
+  },
+  "agent-cloud": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.shared.core.jar",
+    "resource": "icons/cloud_dark.svg"
+  }
+}
