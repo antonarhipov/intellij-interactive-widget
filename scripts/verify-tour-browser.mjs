@@ -5,9 +5,9 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root=new URL('../',import.meta.url),runId=new Date().toISOString().replaceAll(':','-');
-const evidence=new URL('output/playwright/auto-tour-v22/'+runId+'/',root);mkdirSync(evidence,{recursive:true});
+const evidence=new URL('output/playwright/auto-tour-v23/'+runId+'/',root);mkdirSync(evidence,{recursive:true});
 const wrapper=resolve(homedir(),'.codex/skills/playwright/scripts/playwright_cli.sh');
-const cli=(...args)=>spawnSync('bash',[wrapper,'--session','tour-v22',...args],{encoding:'utf8',maxBuffer:4e6,env:{...process.env,npm_config_loglevel:'silent'}});
+const cli=(...args)=>spawnSync('bash',[wrapper,'--session','tour-v23',...args],{encoding:'utf8',maxBuffer:4e6,env:{...process.env,npm_config_loglevel:'silent'}});
 const opened=cli('open','about:blank');if(opened.status||opened.stdout.includes('### Error'))throw Error(opened.stdout+opened.stderr);
 const code=String.raw`async page => {
   const checks=[],errors=[],warnings=[];
@@ -15,7 +15,7 @@ const code=String.raw`async page => {
   const shot=async name=>{await page.locator('img').evaluateAll(imgs=>Promise.all(imgs.map(i=>i.decode().catch(()=>{}))));await page.screenshot({path:${JSON.stringify(evidence.pathname)}+name+'.png'})};
   const settings=()=>page.getByRole('button',{name:'IDE and Project Settings',exact:true});
   const toggle=()=>page.getByRole('menuitemcheckbox',{name:'Automatic tour',exact:true});
-  const fresh=async suffix=>{await page.goto('http://127.0.0.1:4173/?workspace=tour-v22-${runId}-'+suffix);await settings().waitFor()};
+  const fresh=async suffix=>{await page.goto('http://127.0.0.1:4173/?workspace=tour-v23-${runId}-'+suffix);await settings().waitFor()};
   const startFast=async()=>{await page.evaluate(()=>{autoTour.stop();autoTour.setEnabled(true);autoTour.pace=.025;document.activeElement?.blur();autoTour.enabled=true;autoTour.start()});await page.waitForFunction(()=>autoTour.playing)};
   const completed=async()=>{await page.waitForFunction(()=>!autoTour.playing,{timeout:45000});check(await page.evaluate(()=>document.documentElement.dataset.autoTourStep==='complete'),'Tour completes every scene without missing controls')};
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());if(m.type()==='warning')warnings.push(m.text())});
@@ -39,7 +39,7 @@ const code=String.raw`async page => {
         seen('inlineDiff',!!document.querySelector('.air-tool-entry[open] .air-tool-input')?.textContent.startsWith('git diff --'));
         seen('toolModal',!!document.querySelector('.air-tool-dialog'));
         seen('reportClicked',window.reportClicks>0);
-        seen('sessionLog',document.querySelector('.event-detail')?.textContent.includes('toolCallId'));
+        seen('rawEvents',!!document.querySelector('.events-layout,[data-action="air-show-events"],[data-action="raw-events"],[data-action="chat-events"]'));
         seen('partialSplit',!!document.querySelector('.jd-snapshot-banner')&&!!document.querySelector('.jd-split'));
         seen('partialUnified',!!document.querySelector('.jd-snapshot-banner')&&!!document.querySelector('.jd-unified'));
         seen('fullUnified',!document.querySelector('.jd-snapshot-banner')&&!!document.querySelector('.jd-unified'));
@@ -59,10 +59,11 @@ const code=String.raw`async page => {
     await page.evaluate(()=>autoTour.pace=.025);
     await completed();
     const proof=await page.evaluate(()=>{proofObserver.disconnect();return tourProof});
-    for(const [key,label] of Object.entries({claude:'Claude Air TUI opens',claudeScroll:'Claude findings scroll into view',claudeTool:'Claude recorded tool expands',codexTools:'Codex work and tool groups expand',inlineSource:'Recorded Java source opens inline',expandedOutput:'Show more expands the inline output',inlineDiff:'Recorded git diff opens inline',sessionLog:'Raw session tool events are browsed',partialSplit:'Partial side-by-side diff opens',partialUnified:'Partial unified diff opens',fullUnified:'Full unified diff opens',fullSplit:'Full side-by-side diff opens',notificationRules:'Notification rules expand in Variables',inlineInspector:'Inline dispatcher inspector expands channelService',savedWatches:'Saved notification rules watch expands',console:'Full startup console scrolls',springNavigation:'Autowired gutter navigates directly to NotificationDispatcher'}))check(!!proof[key],label);
+    for(const [key,label] of Object.entries({claude:'Claude Air TUI opens',claudeScroll:'Claude findings scroll into view',claudeTool:'Claude recorded tool expands',codexTools:'Codex work and tool groups expand',inlineSource:'Recorded Java source opens inline',expandedOutput:'Show more expands the inline output',inlineDiff:'Recorded git diff opens inline',partialSplit:'Partial side-by-side diff opens',partialUnified:'Partial unified diff opens',fullUnified:'Full unified diff opens',fullSplit:'Full side-by-side diff opens',notificationRules:'Notification rules expand in Variables',inlineInspector:'Inline dispatcher inspector expands channelService',savedWatches:'Saved notification rules watch expands',console:'Full startup console scrolls',springNavigation:'Autowired gutter navigates directly to NotificationDispatcher'}))check(!!proof[key],label);
     check(await page.evaluate(()=>activeTab().path===data.debugger.file&&!!document.querySelector('.execution-line[data-line="65"]')),'Tour returns to NotificationController at the breakpoint');
     check(await page.evaluate(()=>localStorage.getItem(storageKey))===saved,'Autoplay leaves the saved visitor layout untouched');
     await shot('complete');
+    check(!proof.rawEvents&&await page.evaluate(()=>!tourSteps.includes('session-log')&&!state.tabs.some(t=>t.type==='events')),'The tour never exposes or visits raw session events');
     check(!proof.toolModal&&!proof.reportClicked,'The tour never opens a tool modal or clicks the report-problem flag');
     await page.mouse.move(600,150);await page.mouse.wheel(0,100);
     await page.evaluate(()=>{window.dispatchEvent(new Event('resize'));document.dispatchEvent(new Event('visibilitychange'));autoTour.schedule(30);autoTour.start()});await page.waitForTimeout(150);
@@ -90,6 +91,11 @@ const code=String.raw`async page => {
     check(await diff.locator('.air-tool-result').textContent().then(text=>text.startsWith('diff --git a/src/main/')),'The git diff command also displays its recorded patch inline');
     await page.evaluate(()=>{document.querySelector('.air-report-problem').click()});check(await page.getByRole('button',{name:'Report a problem',exact:true}).isDisabled()&&await page.locator('.dialog').count()===0,'Report a problem stays visible, disabled and inert');
     await page.reload();await settings().waitFor();check(await source.getAttribute('open')!==null&&await diff.getAttribute('open')!==null,'Inline command expansion survives a page reload');
+    await page.getByRole('button',{name:'Session information',exact:true}).click();
+    check(await page.locator('.dialog').isVisible()&&await page.getByRole('button',{name:/raw session events/i}).count()===0&&await page.locator('[data-action="air-show-events"],[data-action="raw-events"],[data-action="chat-events"]').count()===0,'Session information has no link or control for raw events');await shot('session-information');await page.keyboard.press('Escape');
+    const tabsBeforeMigration=await page.evaluate(()=>{const ids=state.tabs.map(t=>t.id),saved=JSON.parse(localStorage.getItem(storageKey)),id='events:'+data.targetSession;localStorage.setItem(storageKey,JSON.stringify({...saved,tabs:[...state.tabs,{id,type:'events',session:data.targetSession}],active:id}));return ids});
+    await page.reload();await settings().waitFor();
+    check(await page.evaluate(ids=>!state.tabs.some(t=>t.type==='events')&&JSON.stringify(state.tabs.map(t=>t.id))===JSON.stringify(ids)&&!!activeTab()&&!!document.querySelector('.chat-scroll,.code-scroll,.jd-split,.jd-unified'),tabsBeforeMigration),'Saved raw-event tabs are removed while retaining the other tabs and a valid active view');
     await page.evaluate(()=>autoTour.setEnabled(true));
     await settings().click();check(await toggle().getAttribute('aria-checked')==='true','Top-right settings exposes the checked Automatic tour option');await shot('settings-enabled');
     await toggle().click();check(await page.evaluate(()=>!autoTour.enabled&&!autoTour.playing)&&await page.locator('#auto-tour-cursor').isHidden(),'Disabling the tour hides the cursor and cancels playback');
@@ -123,7 +129,7 @@ const code=String.raw`async page => {
     check(await settings().isVisible(),'The tour setting remains accessible on narrow windows');await startFast();await completed();await shot('narrow-complete');
     if(!await page.locator('.sessions-panel').isVisible())await page.locator('.sessions-rail').click();await page.locator('.session-item[data-session="acp:eccab739"]').click();await page.evaluate(()=>autoTour.setEnabled(false));await openDetails(page.locator('.air-work'));await openDetails(source.locator('xpath=ancestor::details[contains(@class,"air-tool-group")]'));await openDetails(source);if(await page.evaluate(()=>state.showDebugger))await page.locator('.debug-rail').click();await source.locator('.air-tool-output').scrollIntoViewIfNeeded();await shot('narrow-inline-output');
     check(await page.locator('body').evaluate(el=>el.scrollWidth===innerWidth),'Inline output wraps without horizontal page overflow on narrow windows');
-    const requests=[],url='http://127.0.0.1:4173/tour-static?workspace=tour-v22-offline-${runId}';
+    const requests=[],url='http://127.0.0.1:4173/tour-static?workspace=tour-v23-offline-${runId}';
     page.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url())});
     await page.route(url,r=>r.fulfill({path:${JSON.stringify(fileURLToPath(new URL('release/notify-hub-prototype.html',root)))},contentType:'text/html'}));
     await page.context().setOffline(true);await page.setViewportSize({width:1280,height:800});await page.goto(url);await settings().waitFor();

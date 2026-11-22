@@ -164,12 +164,6 @@ class AutomaticTour{
       const diff=()=>$$('.air-tool-entry').find(el=>el.querySelector('summary').title.startsWith('git diff --'));
       await this.expand(()=>diff().closest('.air-tool-group'),signal);await this.expand(diff,signal);await this.wait(5000,signal);
     });
-    await scene('session-log',async()=>{
-      await this.click('[data-action="session-info"]',signal);
-      await this.click('[data-action="air-show-events"]',signal,3000);await this.type('#event-search','ToolCall',signal);
-      await this.click('.event-row',signal,4000);await this.click(()=>$$('.event-row')[3],signal,4000);
-      await this.scroll('.event-detail',.5,signal,4000);await this.click('[data-action="events-session"]',signal);
-    });
     await scene('session-diff',async()=>{
       await this.scroll('.codex-scroll',1,signal);await this.click('.air-changes-card .change-row',signal,5500);
       await this.click('[data-action="jd-unified"]',signal,5000);

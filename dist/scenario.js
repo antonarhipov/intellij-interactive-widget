@@ -200,7 +200,6 @@ function scenarioAction(name,el,e){
     case 'air-edit-diff':{const a=airTool(el.dataset.tool),edit=a.content.find(c=>c.type==='diff'),path=Object.keys(project('main').files).find(p=>edit.path.endsWith('/'+p));openDiff(path,{session:activeTab().session,turn:session(activeTab().session).turns[0].id});return true}
     case 'air-source':closeOverlay();goToSource(el.dataset.path,1,'main');return true;
     case 'air-copy-answer':navigator.clipboard.writeText(session(activeTab().session).turns[0].answer).then(()=>toast('Response copied.'),()=>toast('Clipboard access is unavailable in this browser.'));return true;
-    case 'air-show-events':closeOverlay();openEvents(activeTab().session);return true;
     case 'air-review-menu':{const s=session(activeTab().session),sum=cs=>cs.reduce((v,c)=>({added:v.added+c.added,removed:v.removed+c.removed}),{added:0,removed:0});dialog('Review Code',`<div class="dialog-body air-review-options"><button data-action="air-review-turn">${icon('agent')}<span>This session<small>1 file changed · ${esc(s.id)}</small></span>${stats(sum(s.changes))}</button><button data-action="air-review-workspace">${icon('branch')}<span>Working tree<small>All changes in the project snapshot</small></span>${stats(sum(project('main').changes))}</button></div>`);return true}
     case 'air-review-turn':closeOverlay();{const s=session(activeTab().session);openDiff(s.changes[0].path,{session:s.id})}return true;
     case 'air-review-workspace':closeOverlay();openCommit();return true;
