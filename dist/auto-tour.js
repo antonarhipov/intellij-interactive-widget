@@ -13,6 +13,7 @@ class AutomaticTour{
     this.playing=false;this.hasStarted=false;this.completed=false;this.pace=1;this.position=null;
     this.cursor=document.createElement('div');this.cursor.id='auto-tour-cursor';this.cursor.setAttribute('aria-hidden','true');this.cursor.hidden=true;
     this.cursor.innerHTML='<span class="tour-cursor-core"></span><span class="tour-click-ring"></span><svg class="tour-cursor-pointer" viewBox="0 0 20 24"><path d="M2 2v17l4.6-4.4 3.8 7.4 3-1.6-3.8-7.2H16Z" fill="#16171a" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>';document.body.append(this.cursor);
+    this.annotation=document.createElement('div');this.annotation.id='auto-tour-annotation';this.annotation.setAttribute('role','status');this.annotation.setAttribute('aria-live','polite');this.annotation.setAttribute('aria-atomic','true');this.annotation.hidden=true;document.body.append(this.annotation);
     const activity=e=>{
       if(!e.isTrusted||e.type==='pointermove'&&!e.movementX&&!e.movementY)return;
       if(this.playing)this.stop('paused');
@@ -52,6 +53,7 @@ class AutomaticTour{
   stop(status='paused'){
     clearTimeout(this.timer);this.controller?.abort();this.controller=null;this.playing=false;
     this.cursor.hidden=true;this.cursor.classList.remove('clicking');this.position=null;
+    this.hideAnnotation();
     document.querySelectorAll('.auto-tour-hover').forEach(el=>el.classList.remove('auto-tour-hover'));
     this.status(this.enabled?(this.completed?'complete':status):'off');
   }
@@ -118,28 +120,53 @@ class AutomaticTour{
       await this.animate(900,p=>{sc.scrollLeft=left+x*p;sc.scrollTop=top+y*p},signal);
     }
   }
-  async click(selector,signal,hold=2400){
-    let el=this.target(selector);await this.reveal(el,signal);
+  visibleBounds(el){
     const r=el.getBoundingClientRect();let left=Math.max(8,r.left),right=Math.min(innerWidth-8,r.right),top=Math.max(8,r.top),bottom=Math.min(innerHeight-8,r.bottom);
     for(let p=el.parentElement;p&&p!==document.body;p=p.parentElement){
       const style=getComputedStyle(p),clip=p.getBoundingClientRect();
       if(/auto|scroll|hidden|clip/.test(style.overflowX)){left=Math.max(left,clip.left);right=Math.min(right,clip.right)}
       if(/auto|scroll|hidden|clip/.test(style.overflowY)){top=Math.max(top,clip.top);bottom=Math.min(bottom,clip.bottom)}
     }
-    if(right<=left||bottom<=top)throw Error('Control is outside the viewport: '+selector);
-    const x=(left+right)/2,y=(top+bottom)/2;
+    if(right<=left||bottom<=top)throw Error('Control is outside the viewport');
+    return {left,right,top,bottom,width:right-left,height:bottom-top};
+  }
+  hideAnnotation(){this.annotation.hidden=true;this.annotation.textContent=''}
+  async annotate(text,selector,signal,placement='above'){
+    const el=this.target(selector);await this.reveal(el,signal);this.check(signal);
+    const r=this.visibleBounds(el),bubble=this.annotation,gap=16,margin=12,minTop=46;
+    bubble.textContent=text;bubble.style.visibility='hidden';bubble.style.left='0px';bubble.style.top='0px';bubble.hidden=false;
+    const w=bubble.offsetWidth,h=bubble.offsetHeight,maxLeft=innerWidth-w-margin,maxTop=innerHeight-h-35;
+    const candidates={
+      above:{x:(r.left+r.right-w)/2,y:r.top-h-gap},
+      right:{x:r.right+gap,y:(r.top+r.bottom-h)/2},
+      left:{x:r.left-w-gap,y:(r.top+r.bottom-h)/2},
+      below:{x:(r.left+r.right-w)/2,y:r.bottom+gap},
+      inset:{x:r.right-w-gap,y:r.top+gap},
+    };
+    // Prefer a nearby free space; a transcript-wide scroll target uses its
+    // upper corner until scrolling begins. Callouts never intercept input.
+    const order=placement==='inset'?['inset']:placement==='right'?['right','above','below','left']:['above','right','left','below'];
+    const spot=order.map(side=>candidates[side]).find(p=>p.x>=margin&&p.x<=maxLeft&&p.y>=minTop&&p.y<=maxTop)||candidates.inset;
+    bubble.style.left=Math.max(margin,Math.min(maxLeft,spot.x))+'px';bubble.style.top=Math.max(minTop,Math.min(maxTop,spot.y))+'px';bubble.style.visibility='';
+    document.dispatchEvent(new CustomEvent('auto-tour-annotation',{detail:{text,step:document.documentElement.dataset.autoTourStep}}));
+    await this.wait(3000,signal);
+  }
+  async click(selector,signal,hold=2400){
+    let el=this.target(selector);await this.reveal(el,signal);
+    const r=this.visibleBounds(el),x=(r.left+r.right)/2,y=(r.top+r.bottom)/2;
     el.classList.add('auto-tour-hover');
     await this.move(x,y,signal);await this.wait(350,signal);this.check(signal);
     this.cursor.classList.add('clicking');await this.wait(120,signal);
     el=this.target(selector);
     if(el.disabled||!el.contains(document.elementFromPoint(x,y)))throw Error('Control is covered: '+selector);
-    el.click();el.classList.remove('auto-tour-hover');
+    this.hideAnnotation();el.click();el.classList.remove('auto-tour-hover');
     await this.wait(300,signal);this.cursor.classList.remove('clicking');await this.wait(hold,signal);
   }
   async scroll(selector,fraction,signal,hold=3500){
     const el=this.target(selector),r=el.getBoundingClientRect();
     await this.move(Math.min(innerWidth-20,r.right-24),Math.max(60,Math.min(innerHeight-40,r.top+r.height*.55)),signal);
     const from=el.scrollTop,to=Math.max(0,el.scrollHeight-el.clientHeight)*fraction;
+    this.hideAnnotation();
     await this.animate(2400,p=>{el.scrollTop=from+(to-from)*p},signal);await this.wait(hold,signal);
   }
   async expand(selector,signal){
@@ -151,42 +178,44 @@ class AutomaticTour{
     this.check(signal);document.documentElement.dataset.autoTourStep=name;
     document.dispatchEvent(new CustomEvent('auto-tour-step',{detail:name}));await run();
   }
-  async sessions(signal){if(!$('.sessions-panel').getClientRects().length)await this.click('.sessions-rail',signal)}
+  async sessions(signal){if(!$('.sessions-panel').getClientRects().length){await this.annotate('Browse your agent sessions','.sessions-rail',signal,'right');await this.click('.sessions-rail',signal)}}
   async walk(signal){
     const scene=(name,run)=>this.scene(name,run,signal);
     // Reset only the presentation details needed for this demonstration.
     state.sessionQuery='';state.agentFilter='all';$('#session-search').value='';$('#agent-filter').value='all';renderSessionList();
     for(const t of state.tabs.filter(t=>t.type==='session')){t.scroll=0;t.activityOpen=false;t.toolGroups={};t.toolEntries={};t.toolOutputExpanded={};t.terminalTools={}}
     await scene('agent-sessions',async()=>{await this.sessions(signal)});
-    await scene('claude-session',async()=>{await this.click('[data-session="claude-review"]',signal,4500)});
-    await scene('claude-review',async()=>{await this.scroll('.claude-scroll',.45,signal,5500);await this.scroll('.claude-scroll',1,signal,5500)});
-    await scene('codex-session',async()=>{if(state.showDebugger)await this.click('.debug-rail',signal);await this.sessions(signal);await this.click(()=>$$('.session-item').find(el=>el.dataset.session===data.targetSession),signal,4500);await this.scroll('.codex-scroll',0,signal,2500);await this.expand('.air-work',signal)});
+    await scene('claude-session',async()=>{await this.annotate('Read Claude’s code review','[data-session="claude-review"]',signal);await this.click('[data-session="claude-review"]',signal,4500)});
+    await scene('claude-review',async()=>{await this.annotate('Explore the review findings','.claude-scroll',signal,'inset');await this.scroll('.claude-scroll',.45,signal,5500);await this.scroll('.claude-scroll',1,signal,5500)});
+    await scene('codex-session',async()=>{if(state.showDebugger)await this.click('.debug-rail',signal);await this.sessions(signal);const target=()=>$$('.session-item').find(el=>el.dataset.session===data.targetSession);await this.annotate('See Codex secure the dashboard',target,signal);await this.click(target,signal,4500);await this.scroll('.codex-scroll',0,signal,2500);await this.expand('.air-work',signal)});
     await scene('codex-tools',async()=>{
       const source=()=>$('[data-tool-entry="exec-86124221-7782-4d3d-a353-6a29952fcd3e"]');
-      await this.expand(()=>source().closest('.air-tool-group'),signal);await this.expand(source,signal);
+      await this.expand(()=>source().closest('.air-tool-group'),signal);await this.annotate('Inspect Codex’s tool output',()=>source().querySelector('summary'),signal);await this.expand(source,signal);
       await this.reveal(source().querySelector('.air-tool-output'),signal);await this.wait(4500,signal);
       await this.click(()=>source().querySelector('summary'),signal,2500);
     });
     await scene('session-diff',async()=>{
-      await this.scroll('.codex-scroll',1,signal);await this.click('.air-changes-card .change-row[data-path$="/SecurityConfig.java"]',signal,5500);
+      await this.scroll('.codex-scroll',1,signal);const target='.air-changes-card .change-row[data-path$="/SecurityConfig.java"]';await this.annotate('Review the SecurityConfig changes',target,signal);await this.click(target,signal,5500);
     });
     await scene('notification-controller',async()=>{
+      await this.annotate('Inspect the paused request','.debug-rail',signal,'right');
       if(!state.showDebugger)await this.click('.debug-rail',signal);
       if(state.debugTab!=='debugger')await this.click('[data-action="debug-tab"][data-tab-name="debugger"]',signal);
       if(state.debugView!=='frames')await this.click('[data-action="debug-frame-view"][data-view="frames"]',signal);
       await this.click('.frame-row[data-index="0"]',signal,4000);
     });
     await scene('inline-variables',async()=>{
-      await this.click('.dispatcher-inline',signal,3500);await this.expand('.debug-inspector [data-key="inspector-0-5"]',signal);
+      await this.annotate('Explore the dispatcher’s dependencies','.dispatcher-inline',signal);await this.click('.dispatcher-inline',signal,3500);await this.expand('.debug-inspector [data-key="inspector-0-5"]',signal);
       await this.wait(4000,signal);await this.click('.debug-inspector [data-action="close-overlay"]',signal);
-      await this.click('.execution-line .inline-value[data-key="variables-2"]',signal,3500);await this.expand('.debug-inspector [data-key="inspector-0-5"]',signal);
+      const notification='.execution-line .inline-value[data-key="variables-2"]';await this.annotate('Inspect the notification payload',notification,signal);await this.click(notification,signal,3500);await this.expand('.debug-inspector [data-key="inspector-0-5"]',signal);
       await this.wait(4000,signal);await this.click('.debug-inspector [data-action="close-overlay"]',signal);
     });
     await scene('spring-navigation',async()=>{
       const sc=$('.code-scroll'),left=sc.scrollLeft;await this.animate(550,p=>{sc.scrollLeft=left*(1-p)},signal);
+      await this.annotate('Follow the injected Spring service','.spring-gutter[data-line="23"]',signal);
       await this.click('.spring-gutter[data-line="23"]',signal,5000);
     });
-    await scene('configuration-property',async()=>{await this.click('.property-link[data-line="23"]',signal,5000)});
+    await scene('configuration-property',async()=>{await this.annotate('Jump to the property’s configuration','.property-link[data-line="23"]',signal);await this.click('.property-link[data-line="23"]',signal,5000)});
     document.documentElement.dataset.autoTourStep='complete';document.dispatchEvent(new CustomEvent('auto-tour-step',{detail:'complete'}));
   }
 }
