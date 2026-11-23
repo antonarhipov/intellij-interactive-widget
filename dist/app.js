@@ -94,7 +94,7 @@ function bindShell(){
   document.addEventListener('click',e=>{
     const a=e.target.closest('[data-action]');if(a){e.stopPropagation();action(a.dataset.action,a,e);return}
     const close=e.target.closest('[data-close]');if(close){closeTab(close.dataset.close);return}
-    const tab=e.target.closest('[data-tab]');if(tab){state.active=tab.dataset.tab;renderTabs();renderContent();renderSidebar();persist();return}
+    const tab=e.target.closest('[data-tab]');if(tab){if(e.shiftKey){e.preventDefault();closeTab(tab.dataset.tab);return}state.active=tab.dataset.tab;renderTabs();renderContent();renderSidebar();persist();return}
     const sr=e.target.closest('[data-session]');if(sr){openSession(sr.dataset.session);return}
     const row=e.target.closest('.tree-row');if(row){projectRowClick(row);return}
     const fl=e.target.closest('[data-file-link]');if(fl){e.preventDefault();const raw=fl.dataset.fileLink,match=raw.match(/:(\d+)(?::\d+)?$/),clean=raw.replace(/:[0-9]+(?::[0-9]+)?$/,'');const path=Object.keys(project().files).find(p=>clean.endsWith(p)||base(p)===clean);if(path){const current=activeTab(),s=current?.type==='session'?session(current.session):null,changed=s?.changes.some(c=>c.path===path);if(changed)openDiff(path,{session:s.id,turn:s.turns.find(turn=>turn.changes.some(c=>c.path===path))?.id});else goToSource(path,match?+match[1]:1,fl.dataset.source||'main')}else toast('Linked file is outside this project snapshot.')}
