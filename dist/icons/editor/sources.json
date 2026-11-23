@@ -154,5 +154,29 @@
   "vcs-tag": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.vcs.dvcs.impl.shared.jar",
     "resource": "icons/new/branchLabel_dark.svg"
+  },
+  "tool-build": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/build@20x20_dark.svg"
+  },
+  "tool-run": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/run@20x20_dark.svg"
+  },
+  "tool-services": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/services@20x20_dark.svg"
+  },
+  "tool-problems": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/problems@20x20_dark.svg"
+  },
+  "tool-vcs": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/vcs@20x20_dark.svg"
+  },
+  "tool-terminal": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/terminal/lib/terminal.jar",
+    "resource": "icons/expui/toolwindow/terminal@20x20_dark.svg"
   }
 }

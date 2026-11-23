@@ -20,6 +20,11 @@ assets = {name: (platform, resource) for name, resource in {
     'settings-small': 'expui/general/settings_dark.svg',
     'refresh': 'expui/general/refresh_dark.svg',
     'notifications': 'expui/toolwindows/notifications@20x20_dark.svg',
+    'tool-build': 'expui/toolwindows/build@20x20_dark.svg',
+    'tool-run': 'expui/toolwindows/run@20x20_dark.svg',
+    'tool-services': 'expui/toolwindows/services@20x20_dark.svg',
+    'tool-problems': 'expui/toolwindows/problems@20x20_dark.svg',
+    'tool-vcs': 'expui/toolwindows/vcs@20x20_dark.svg',
     'chevron': 'expui/general/chevronDown_dark.svg',
     'doc-edit': 'expui/gutter/javadocEdit_dark.svg',
     'doc-read': 'expui/gutter/javadocRead_dark.svg',
@@ -35,6 +40,7 @@ assets = {name: (platform, resource) for name, resource in {
     'vcs-favorite': 'expui/nodes/star_dark.svg',
 }.items()}
 assets.update({
+    'tool-terminal': ('plugins/terminal/lib/terminal.jar', 'icons/expui/toolwindow/terminal@20x20_dark.svg'),
     'toolbar-home': ('plugins/vcs-github/lib/modules/intellij.vcs.github.ultimate.features.jar', 'icons/action/home.svg'),
     'vcs-worktree': ('plugins/vcs-git/lib/vcs-git.jar', 'icons/worktree_dark.svg'),
     'vcs-current': ('lib/intellij.platform.vcs.dvcs.impl.shared.jar', 'icons/new/currentBranchFavoriteLabel_dark.svg'),
