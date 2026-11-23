@@ -39,23 +39,23 @@ const code=String.raw`async page => {
     const activeEditor=await page.locator('.editor-tab.active').innerText();
     for(const [id,label] of [['junie','Junie'],['codex','Codex'],['claude','Claude'],['opencode','OpenCode'],['copilot','GitHub Copilot']]){
       await page.getByRole('menuitemradio',{name:label,exact:true}).click();
-      check(await page.locator('.new-session img').getAttribute('src')==='icons/editor/agent-'+id+'.svg'&&await page.locator('.native-toolbar-menu').count()===0,label+' updates the selector icon and dismisses the menu');
+      check(await page.locator('.main-toolbar .new-session img').getAttribute('src')==='icons/editor/agent-'+id+'.svg'&&await page.locator('.native-toolbar-menu').count()===0,label+' updates the selector icon and dismisses the menu');
       await page.getByRole('button',{name:'New Session options',exact:true}).click();
       check(await page.getByRole('menuitemradio',{name:label,exact:true}).getAttribute('aria-checked')==='true'&&await page.locator('.agent-menu-check').count()===1,label+' is the single checked selection when the menu reopens');
     }
     check(await page.getByRole('menuitemradio',{name:'GitHub Copilot',exact:true}).evaluate(e=>e.scrollWidth<=e.clientWidth),'Selected GitHub Copilot label and checkmark fit the native menu width');
     await screenshot('agent-selector-copilot');
     await page.reload();
-    check(await page.locator('.new-session img').getAttribute('src')==='icons/editor/agent-copilot.svg','Selected agent survives reload');
+    check(await page.locator('.main-toolbar .new-session img').getAttribute('src')==='icons/editor/agent-copilot.svg','Selected agent survives reload');
     for(const label of ['Cloud','Manage Agents…']){
       await page.getByRole('button',{name:'New Session options',exact:true}).click();
       await page.getByRole('menuitem',{name:label,exact:true}).click();
-      check(await page.locator('.new-session img').getAttribute('src')==='icons/editor/agent-copilot.svg'&&await page.locator('#overlay-root').innerText()==='',label+' dismisses the fake menu without opening anything or changing the agent');
+      check(await page.locator('.main-toolbar .new-session img').getAttribute('src')==='icons/editor/agent-copilot.svg'&&await page.locator('#overlay-root').innerText()==='',label+' dismisses the fake menu without opening anything or changing the agent');
     }
     check(await page.locator('.tab-scroll').innerText()===tabs&&await page.locator('.editor-tab.active').innerText()===activeEditor,'Agent choices create no sessions or tabs and preserve the active editor');
     await page.getByRole('button',{name:'New Session options',exact:true}).click();
     await page.keyboard.press('ArrowUp');await page.keyboard.press('Enter');
-    check(await page.locator('.new-session img').getAttribute('src')==='icons/editor/agent-opencode.svg','Keyboard navigation selects agents');
+    check(await page.locator('.main-toolbar .new-session img').getAttribute('src')==='icons/editor/agent-opencode.svg','Keyboard navigation selects agents');
     await page.getByRole('button',{name:'New Session options',exact:true}).click();
     await page.getByRole('menuitemradio',{name:'Codex',exact:true}).click();
     await page.getByRole('button',{name:'Search Everywhere',exact:true}).click();

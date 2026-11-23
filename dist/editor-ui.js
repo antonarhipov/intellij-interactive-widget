@@ -36,7 +36,6 @@ function editorUIAction(name,el){
   }
   if(name==='agent-menu-dismiss'){closeOverlay();return true}
   if(name==='toggle-doc'){toggleDocComment(+el.dataset.docStart);return true}
-  if(name==='doc-type-nav'){const path=Object.keys(project(activeTab().source).files).find(p=>p.endsWith('/'+el.dataset.type+'.java'));if(path)goToSource(path,1,activeTab().source);return true}
   return false;
 }
 function initEditorUI(){
@@ -63,9 +62,9 @@ function initEditorUI(){
 // scripts and arbitrary links from the snapshot never become active HTML.
 function safeDocHTML(text){
   const template=document.createElement('template');
-  template.innerHTML=text.replace(/\{@(code|literal)\s+([\s\S]*?)\}/g,(_,kind,value)=>kind==='code'?`<code>${esc(value)}</code>`:esc(value)).replace(/\{@link(?:plain)?\s+([^}\s]+)(?:\s+([^}]+))?\}/g,(_,ref,label)=>`<code><a>${esc(label||ref)}</a></code>`);
+  template.innerHTML=text.replace(/\{@(code|literal)\s+([\s\S]*?)\}/g,(_,kind,value)=>kind==='code'?`<code>${esc(value)}</code>`:esc(value)).replace(/\{@link(?:plain)?\s+([^}\s]+)(?:\s+([^}]+))?\}/g,(_,ref,label)=>`<code><a data-java-ref="${esc(ref)}">${esc(label||ref)}</a></code>`);
   const allowed=new Set(['P','PRE','CODE','B','STRONG','I','EM','UL','OL','LI','BR','BLOCKQUOTE','TABLE','TBODY','TR','TD','TH','DL','DT','DD','A']);
-  const render=n=>n.nodeType===Node.TEXT_NODE?esc(n.textContent):n.nodeType!==Node.ELEMENT_NODE?'':allowed.has(n.tagName)?`<${n.tagName.toLowerCase()}>${[...n.childNodes].map(render).join('')}${n.tagName==='BR'?'':`</${n.tagName.toLowerCase()}>`}`:esc(n.textContent);
+  const render=n=>n.nodeType===Node.TEXT_NODE?esc(n.textContent):n.nodeType!==Node.ELEMENT_NODE?'':allowed.has(n.tagName)?`<${n.tagName.toLowerCase()}${n.tagName==='A'&&n.dataset.javaRef?` data-java-ref="${esc(n.dataset.javaRef)}"`:''}>${[...n.childNodes].map(render).join('')}${n.tagName==='BR'?'':`</${n.tagName.toLowerCase()}>`}`:esc(n.textContent);
   return [...template.content.childNodes].map(render).join('');
 }
 function javadocContent(raw){

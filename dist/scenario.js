@@ -120,6 +120,63 @@ function goToSource(path,line=1,source=state.project,remember=true){
   const row=sourceLineElement(line);if(row){row.classList.add('navigation-line');const sc=$('.code-scroll');sc.scrollTop=Math.max(0,sourceLineTop(row,sc)-sc.clientHeight/2);activeTab().scroll=sc.scrollTop;persist()}
 }
 function navigateBack(){const prev=navigationHistory.pop();if(!prev)return;openTab(prev.tab);if($('.code-scroll')&&prev.scroll!==undefined)$('.code-scroll').scrollTop=prev.scroll;}
+const projectTypeIndexes=new WeakMap();
+function javaDeclarationText(text){
+  // Keep offsets and newlines while excluding examples and quoted text.
+  return text.replace(/\/\/[^\n]*|\/\*[\s\S]*?\*\/|"""[\s\S]*?"""|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g,s=>s.replace(/[^\n]/g,' '));
+}
+function projectTypeIndex(source){
+  const files=project(source).files;if(projectTypeIndexes.has(files))return projectTypeIndexes.get(files);
+  const index={files:new Map(),byName:new Map(),byQualifiedName:new Map()};
+  for(const [path,file] of Object.entries(files)){
+    if(!path.endsWith('.java'))continue;
+    const code=javaDeclarationText(file.text),packageName=code.match(/\bpackage\s+([\w.]+)\s*;/)?.[1]||'';
+    const meta={packageName,imports:[...code.matchAll(/\bimport\s+(?:static\s+)?([\w$.*]+)\s*;/g)].map(m=>m[1]),types:[]};
+    index.files.set(path,meta);
+    const owners=[];
+    for(const match of code.matchAll(/\b(class|interface|record|enum)\s+([A-Za-z_$][\w$]*)\b/g)){
+      while(owners.length&&owners.at(-1).end<match.index)owners.pop();
+      const name=match[2],offset=match.index+match[0].lastIndexOf(name),body=code.indexOf('{',offset+name.length);
+      let end=body,depth=0;if(body>=0){for(;end<code.length;end++){if(code[end]==='{')depth++;else if(code[end]==='}'&&!--depth)break}}
+      const relativeName=(owners.length?owners.at(-1).relativeName+'.':'')+name;
+      const type={name,path,kind:match[1],relativeName,qualifiedName:(packageName?packageName+'.':'')+relativeName,line:code.slice(0,offset).split('\n').length,column:offset-code.lastIndexOf('\n',offset-1)-1,end};
+      meta.types.push(type);owners.push(type);
+      for(const [map,key] of [[index.byName,name],[index.byQualifiedName,type.qualifiedName]]){if(!map.has(key))map.set(key,[]);map.get(key).push(type)}
+    }
+  }
+  projectTypeIndexes.set(files,index);return index;
+}
+function resolveProjectType(reference,t){
+  const index=projectTypeIndex(t.source),meta=index.files.get(t.path);if(!meta)return null;
+  const ref=reference.split('#')[0].replace(/^@/,'').replace(/\s/g,''),[head,...tail]=ref.split('.'),suffix=tail.length?'.'+tail.join('.'):'';
+  const unique=types=>types?.length===1?types[0]:null,qualified=name=>unique(index.byQualifiedName.get(name));
+  const direct=qualified(ref);if(direct)return direct;
+  const imported=meta.imports.filter(i=>i.endsWith('.'+head));
+  if(imported.length)return unique(imported.map(i=>qualified(i+suffix)).filter(Boolean));
+  const local=meta.types.filter(type=>type.name===head).map(type=>qualified(type.qualifiedName+suffix)).filter(Boolean);
+  if(local.length)return unique(local);
+  const samePackage=qualified((meta.packageName?meta.packageName+'.':'')+ref);if(samePackage)return samePackage;
+  return unique(meta.imports.filter(i=>i.endsWith('.*')).map(i=>qualified(i.slice(0,-1)+ref)).filter(Boolean));
+}
+function projectTypeLink(label,target,source){
+  const button=document.createElement('button');button.className='type-link';button.textContent=label;
+  button.title='Go to declaration of '+target.name;button.dataset.action='type-nav';button.dataset.path=target.path;button.dataset.line=target.line;button.dataset.source=source;
+  return button;
+}
+function decorateProjectTypeReferences(t){
+  if(!t.path.endsWith('.java'))return;
+  $$('.code-text .syn-type,.code-text .syn-annotation').forEach(span=>{
+    const row=span.closest('.code-line'),code=span.closest('.code-text'),range=document.createRange();range.selectNodeContents(code);range.setEndAfter(span);
+    const prefix=range.toString(),reference=prefix.match(/(?:[A-Za-z_$][\w$]*\s*\.\s*)*[A-Za-z_$][\w$]*$/)?.[0];
+    const target=reference&&resolveProjectType(reference,t);if(!target)return;
+    if(target.path===t.path&&target.line===+row.dataset.line&&target.column===prefix.length-span.textContent.length)return;
+    span.replaceChildren(projectTypeLink(span.textContent,target,t.source));
+  });
+  $$('.rendered-doc a[data-java-ref]').forEach(anchor=>{
+    const target=resolveProjectType(anchor.dataset.javaRef,t);if(!target)return;
+    const button=projectTypeLink(anchor.textContent,target,t.source);button.classList.add('doc-type-link');anchor.replaceWith(button);
+  });
+}
 function springNavigation(t=activeTab()){return (data.springByProject?.[t.source]||data.spring||{})[t.path]||{}}
 function goToSpringTarget(target,source){
   if(!target.library){goToSource(target.path,target.line,source);return}
@@ -141,12 +198,6 @@ function decorateSource(t){
       }
     }
     if(paused)row.classList.add('execution-line');
-    $$('.syn-type',row).forEach(span=>{
-      if(!['NotificationDispatcher','ChannelService','TemplateResolver','NotificationLogRepository','MessageTransformer','Notification'].includes(span.textContent))return;
-      if(row.textContent.includes('public class '+span.textContent)||row.textContent.includes('public interface '+span.textContent))return;
-      const target=Object.keys(project(t.source).files).find(p=>base(p)===span.textContent+'.java');if(!target)return;
-      const button=document.createElement('button');button.className='type-link';button.textContent=span.textContent;button.title='Go to declaration of '+span.textContent;button.dataset.action='type-nav';button.dataset.path=target;span.replaceChildren(button);
-    });
     if(t.path===data.debugger.file&&t.source==='main'){
       if(n===61||paused){
         const values=document.createElement('span');values.className='debug-inline-values';
@@ -161,6 +212,7 @@ function decorateSource(t){
       if(n===60&&!meta)gutter.innerHTML=`<button class="spring-gutter" data-action="debug-security-menu" aria-label="POST /api/notify endpoint">${icon('spring-endpoint')}</button>`;
     }
   });
+  decorateProjectTypeReferences(t);
   decorateSourceLogpoint(t);
 }
 function navigateSpring(el){
@@ -210,7 +262,7 @@ function scenarioAction(name,el,e){
     case 'execution-point':closeOverlay();state.debugFrame=0;state.showDebugger=true;renderDebugger();goToSource(data.debugger.file,65,'main');return true;
     case 'spring-nav':navigateSpring(el);return true;
     case 'spring-target':{const t=activeTab(),target=springNavigation(t)[el.dataset.originLine].targets[+el.dataset.index];closeOverlay();goToSpringTarget(target,t.source);return true}
-    case 'type-nav':{const target=el.dataset.path,t=activeTab(),text=project(t.source).files[target].text;const line=text.split('\n').findIndex(l=>/public (class|interface|record)/.test(l))+1;goToSource(target,line||1,t.source);return true}
+    case 'type-nav':{const source=el.dataset.source||activeTab().source,target=el.dataset.path;if(project(source).files[target])goToSource(target,+el.dataset.line||1,source);return true}
     case 'terminal-file':{const path=Object.keys(project('baseline').files).find(x=>base(x)===el.dataset.name);if(path)goToSource(path,1,'baseline');return true}
     case 'finding-file':{const f=session('claude-review').findings[+el.dataset.index];goToSource(f.path,f.line,'baseline');return true}
 

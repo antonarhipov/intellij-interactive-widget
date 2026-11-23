@@ -81,6 +81,8 @@ Clicking `SecurityConfig.java` in the session opens **SecurityConfig.java (Agent
 
 The toolbar supports previous/next difference, clickable overview markers, context expansion/folding, changed-file selection, and **Go to Session**. The pencil opens the read-only after version in the source editor. Settings toggle word highlighting, line numbers and whitespace guides. Neither viewer offers editing or change-application actions.
 
+Click any project Java type reference to open its declaration, including classes, interfaces, records, enums, nested types and test sources. Imports, package names and nested declarations resolve the target in the current source snapshot. Type links retain source syntax colors and underline on hover; rendered Javadoc type links work too. External types, strings and ordinary comments stay inactive. Use **Alt Left** to return to the previous file and scroll position. Run `npm run verify:source` for the declaration checks and browser walkthrough.
+
 The imported Codex turn changes only `SecurityConfig.java` (**+7 −2**): method-specific ADMIN checks cover POST and PUT channel mutations; dashboard reads remain public. No test file was added in this session, and the recorded response states that tests were not run.
 
 Both session and working-tree totals show **+7 −2** for `SecurityConfig.java`. The experimental `demo-test.sh` is excluded from project files, changes, file pickers and totals, including after snapshot refresh.

@@ -41,6 +41,8 @@ const code=String.raw`async page => {
     check(await page.locator('.debug-mappings img,.debug-tabs img').evaluateAll(imgs=>Promise.all(imgs.map(async img=>{await img.decode();return img.naturalWidth>0}))).then(loaded=>loaded.every(Boolean)),'Mappings toolbar and Spring Web icons are embedded and load offline');
     await page.getByRole('button',{name:'NotificationController#sendNotification',exact:true}).click();
     check((await page.locator('.navigation-line').innerText()).includes('sendNotification'),'Offline mapping navigation opens the controller method');
+    await page.locator('.code-line[data-line="60"]').getByRole('button',{name:'NotificationResult',exact:true}).click();
+    check((await page.locator('.navigation-line').innerText()).includes('public record NotificationResult'),'Project type navigation opens record declarations offline');
     await page.locator('#debugger').screenshot({path:${JSON.stringify(new URL('offline-mappings.png',evidence).pathname)}});
     await page.getByRole('tab',{name:/^Secure channel controls with ADMIN role Close/}).click();
     check((await page.getByLabel('Codex session transcript',{exact:true}).innerText()).includes('SecurityConfig.java'),'Codex transcript opens offline');
