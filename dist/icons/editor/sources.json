@@ -178,5 +178,17 @@
   "tool-terminal": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/terminal/lib/terminal.jar",
     "resource": "icons/expui/toolwindow/terminal@20x20_dark.svg"
+  },
+  "mapping-web": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/web_dark.svg"
+  },
+  "mapping-method": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/nodes/method_dark.svg"
+  },
+  "spring-web": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/springWeb_dark.svg"
   }
 }

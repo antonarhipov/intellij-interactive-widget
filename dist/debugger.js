@@ -28,7 +28,7 @@ function debugControl(id,title,cls=''){return `<button class="icon-button ${cls}
 function renderDebugger(){
   const el=$('#debugger');if(!el)return;el.hidden=!state.showDebugger;$('.debug-rail')?.classList.toggle('active',state.showDebugger);if(!state.showDebugger)return;
   el.style.height=Math.min(state.debugHeight||380,Math.max(180,innerHeight-230))+'px';
-  const tabs=[['debugger','Threads & Variables'],['console','Console'],['beans','Beans | Health'],['mappings',icon('spring-bean')+'Mappings'],['environment','<span class="environment-braces" aria-hidden="true">{}</span> Environment']];
+  const tabs=[['debugger','Threads & Variables'],['console','Console'],['beans','Beans | Health'],['mappings',editorIcon('spring-web')+'Mappings'],['environment','<span class="environment-braces" aria-hidden="true">{}</span> Environment']];
   el.innerHTML=`<div class="debug-resizer" role="separator" aria-label="Resize debugger" aria-orientation="horizontal" tabindex="0"></div><header class="debug-header"><strong>Debug</strong><span class="debug-config">${icon('spring-bean')}NotifyHubApplication ${ib('close','Hide debug session','toggle-debug')}</span><span class="grow"></span>${ib('more','Debugger options','debug-options')}${ib('minus','Hide Debug','toggle-debug')}</header><div class="debug-toolbar"><nav class="debug-actions" aria-label="Debugger controls">${debugControl('refresh','Rerun','debug-rerun')}${debugControl('stop-debug','Stop','debug-stop')}<span class="debug-action-divider"></span>${debugControl('play','Resume Program','debug-resume')}${debugControl('pause','Pause Program')}${debugControl('step-over-debug','Step Over')}${debugControl('step-into-debug','Step Into')}${debugControl('step-out-debug','Step Out')}<span class="debug-action-divider"></span>${debugControl('breakpoints-debug','View Breakpoints','debug-stop')}${debugControl('mute-breakpoints-debug','Mute Breakpoints','debug-stop')}${ib('more','More debugger actions','debug-options')}</nav><div class="debug-tabs" role="tablist" aria-label="Debugger views">${tabs.map(([id,label])=>`<button role="tab" aria-selected="${state.debugTab===id}" class="${state.debugTab===id?'active':''}" data-action="debug-tab" data-tab-name="${id}">${label}</button>`).join('')}</div><span class="grow"></span>${ib('split-view','Debugger layout','debug-options')}</div>${state.debugTab==='console'?renderDebugConsole():state.debugTab==='debugger'?renderDebugVariables():renderDebugSpring()}`;
   const grip=$('.debug-resizer');grip.addEventListener('pointerdown',e=>{e.preventDefault();grip.setPointerCapture(e.pointerId);const y=e.clientY,h=el.offsetHeight;const move=ev=>{state.debugHeight=Math.max(180,Math.min(innerHeight-230,h+y-ev.clientY));el.style.height=state.debugHeight+'px'};const end=()=>{grip.removeEventListener('pointermove',move);grip.removeEventListener('pointerup',end);persist()};grip.addEventListener('pointermove',move);grip.addEventListener('pointerup',end)});
   grip.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();state.debugHeight=Math.max(180,Math.min(innerHeight-230,state.debugHeight+(e.key==='ArrowUp'?20:-20)));el.style.height=state.debugHeight+'px';persist()}});
@@ -50,10 +50,32 @@ function renderDebugConsole(){
   }).join('');
   return `<div class="debug-console"><nav class="console-actions" aria-label="Console controls">${ib('arrow-up','Scroll console to top','debug-console-top')}${ib('arrow-down','Scroll console to bottom','debug-console-bottom')}${ib('wrap','Toggle console soft wraps','debug-console-wrap')}${ib('shelve','Scroll console to bottom','debug-console-bottom')}${debugControl('file','Print console')}${debugControl('delete-debug','Clear console')}</nav><div class="debug-console-output ${state.debugConsoleWrap?'soft-wrap':''}" tabindex="0" aria-label="Application console">${lines}<span class="console-cursor"></span></div></div>`;
 }
+function debugRequestMappings(){
+  // Application handlers come from the source snapshot; framework/resource rows
+  // reproduce the supplied running application's Mappings view.
+  const controllers=buildLogicalModel(project('main').files).beans.filter(b=>b.kind==='controllers');
+  const application=controllers.flatMap(c=>(c.endpoints||[]).map(ep=>({path:(c.endpointPrefix||'')+ep.label,verb:ep.verb,handler:c.name+'#'+ep.method,source:c.path,line:ep.line})));
+  const rows=[
+    {path:'/**'},
+    {path:'/actuator',verb:'GET',handler:'WebMvcLinksHandler#links',framework:true},
+    {path:'/actuator/health',verb:'GET',handler:'OperationHandler#handle',framework:true},
+    {path:'/actuator/health/**',verb:'GET',handler:'OperationHandler#handle',framework:true},
+    ...application,
+    {path:'/error',handler:'BasicErrorController#errorHtml',framework:true},
+    {path:'/error',handler:'BasicErrorController#error',framework:true},
+    {path:'/webjars/**'},
+  ];
+  rows.sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:(b.verb||'').localeCompare(a.verb||''));
+  return state.debugMappingsDescending?rows.reverse():rows;
+}
+function renderDebugMappings(){
+  const direction=state.debugMappingsDescending?'descending':'ascending';
+  return `<div class="debug-mappings"><nav class="mapping-actions" aria-label="Mappings controls"><button class="icon-button" data-action="debug-mappings-refresh" title="Refresh mappings" aria-label="Refresh mappings">${editorIcon('refresh')}</button><span class="mapping-action-divider"></span><button class="icon-button" disabled title="Open in browser" aria-label="Open mapping in browser">${editorIcon('mapping-web')}</button><button class="icon-button mapping-method-action" disabled title="HTTP method" aria-label="Filter by HTTP method">${editorIcon('mapping-method')}<span aria-hidden="true"></span></button><span class="mapping-action-divider"></span><button class="icon-button mapping-table-action" disabled aria-pressed="true" title="Table view" aria-label="Mappings table view">${editorIcon('mapping-table')}</button></nav><div class="mapping-grid-scroll" tabindex="0" aria-label="Request mappings"><table class="mapping-grid" aria-label="Request mappings"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><thead><tr><th scope="col" aria-sort="${direction}"><button class="mapping-sort" data-action="debug-mappings-sort" aria-label="Sort mappings by path ${state.debugMappingsDescending?'ascending':'descending'}">Path ${icon('chevron',state.debugMappingsDescending?'down':'mapping-sort-up')}</button></th><th scope="col">Method</th></tr></thead><tbody>${debugRequestMappings().map(m=>{const target=m.source?`data-action="debug-source" data-path="${esc(m.source)}" data-line="${m.line}"`:'disabled';return `<tr class="${m.framework?'mapping-framework':''}"><td>${m.handler?`<button class="mapping-path" ${target}>${esc(m.path)}</button>${m.verb?` <span class="mapping-verb">[${esc(m.verb)}]</span>`:''}`:`<span class="mapping-resource">${esc(m.path)}</span>`}</td><td>${m.handler?`<button class="mapping-handler" ${target}>${esc(m.handler)}</button>`:''}</td></tr>`}).join('')}</tbody></table></div></div>`;
+}
 function renderDebugSpring(){
   const files=project('main').files,classes=Object.values(files).filter(f=>/src\/main\/java/.test(f.path)&&/@(Service|Component|RestController|Configuration|Repository)/.test(f.text));
   if(state.debugTab==='beans')return `<div class="debug-spring-snapshot"><div class="debug-spring-title">notify-hub <span class="muted">Spring beans</span></div>${classes.map(f=>`<button class="debug-spring-row" data-action="debug-source" data-path="${esc(f.path)}">${icon('spring-bean')}<span>${esc(base(f.path).replace('.java','').replace(/^./,s=>s.toLowerCase()))}</span><span class="muted">${esc(base(f.path).replace('.java',''))}</span></button>`).join('')}</div>`;
-  if(state.debugTab==='mappings'){const controllers=logicalModel().beans.filter(b=>b.kind==='controllers');return `<div class="debug-spring-snapshot"><div class="debug-spring-title">Request mappings</div>${controllers.map(c=>(c.endpoints||[]).map(ep=>`<button class="debug-spring-row" data-action="debug-source" data-path="${esc(c.path)}" data-line="${ep.line}">${icon('spring-endpoint')}<span>${esc(ep.verb+' '+(c.endpointPrefix||'')+ep.label)}</span><span class="muted">${esc(c.name)}</span></button>`).join('')).join('')}</div>`}
+  if(state.debugTab==='mappings')return renderDebugMappings();
   return `<div class="debug-spring-snapshot"><div class="debug-spring-title">notify-hub <span class="muted">Environment</span></div>${[['spring.application.name','notify-hub'],['server.port','8080'],['notifyhub.default-channel','email'],['notifyhub.rate-limit','50'],['notifyhub.retry.max-attempts','3']].map(([k,v])=>`<div class="debug-spring-row"><span>${k}</span><span class="variable-value string">${v}</span></div>`).join('')}</div>`;
 }
 function openDebugInspector(key,anchor){
@@ -95,6 +117,8 @@ function toggleSourceLogpoint(){
 }
 function debugAction(name,el,e){
   switch(name){
+    case 'debug-mappings-refresh':renderDebugger();return true;
+    case 'debug-mappings-sort':state.debugMappingsDescending=!state.debugMappingsDescending;renderDebugger();$('.mapping-sort').focus({preventScroll:true});return true;
     case 'debug-logpoint-toggle':toggleSourceLogpoint();return true;
     case 'debug-tab':state.debugTab=el.dataset.tabName;renderDebugger();persist();return true;
     case 'debug-frame-view':state.debugView=el.dataset.view;renderDebugger();persist();return true;

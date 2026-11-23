@@ -9,9 +9,10 @@ const code=String.raw`async page => {
   const assert=(ok,message)=>{if(!ok)throw new Error(message);checks.push({check:message,result:'PASS'})};
   const contains=async(loc,value)=>(await loc.innerText()).replace(/\s/g,'').includes(value.replace(/\s/g,''));
   try {
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await page.setViewportSize({width:1920,height:1080});
   await page.goto('http://127.0.0.1:4173/?workspace=debugger-v6-verification-'+Date.now());
   await page.getByRole('tab',{name:'Threads & Variables',exact:true}).waitFor();
-  await page.setViewportSize({width:1920,height:1080});
   assert(await page.locator('.execution-line').getAttribute('data-line')==='65','Suspended at NotificationController line 65');
   assert((await page.locator('.debug-variables').innerText()).includes('TestUser [ROLE_ADMIN]'),'Captured ADMIN security context');
   assert(await page.getByRole('button',{name:'Resume Program',exact:true}).isDisabled(),'Execution controls are disabled');
@@ -90,7 +91,27 @@ const code=String.raw`async page => {
   await page.getByRole('menuitem',{name:'Navigate to Configuration',exact:true}).click();
   assert((await page.locator('.editor-tab.active').innerText()).includes('SecurityConfig.java'),'Security menu opens matching configuration source');
   await page.getByRole('tab',{name:'Mappings',exact:true}).click();
-  assert(await page.locator('.debug-spring-row').count()===9,'Mappings exposes all nine controller endpoints');
+  const mappings=page.getByRole('table',{name:'Request mappings',exact:true});
+  assert(await mappings.locator('tbody tr').count()===16,'Mappings grid includes controller, actuator, error and resource mappings');
+  assert(JSON.stringify(await mappings.getByRole('columnheader').allTextContents())===JSON.stringify(['Path ','Method']),'Mappings has the native Path and Method columns');
+  assert(await mappings.locator('.mapping-framework').count()===5,'Actuator and error handlers have the framework row shading');
+  assert(await mappings.locator('.mapping-path:not(:disabled)').count()===9,'All nine application endpoints navigate to captured source');
+  assert((await mappings.locator('tbody tr').first().innerText()).trim()==='/**'&&(await mappings.locator('tbody tr').last().innerText()).trim()==='/webjars/**','Resource mappings bookend the sorted table');
+  assert((await mappings.innerText()).includes('WebMvcLinksHandler#links')&&(await mappings.innerText()).includes('BasicErrorController#errorHtml'),'Framework handler names match the supplied Mappings screenshot');
+  await page.getByRole('separator',{name:'Resize debugger',exact:true}).focus();
+  for(let i=0;i<3;i++)await page.keyboard.press('ArrowUp');
+  await page.screenshot({path:'${new URL('mappings-desktop.png',evidence).pathname}'});
+  await page.locator('#debugger').screenshot({path:'${new URL('mappings-grid.png',evidence).pathname}'});
+  await page.getByRole('button',{name:'Sort mappings by path descending',exact:true}).click();
+  assert(await mappings.getByRole('columnheader').first().getAttribute('aria-sort')==='descending'&&(await mappings.locator('tbody tr').first().innerText()).trim()==='/webjars/**','Path sorting reverses the captured mappings');
+  await page.keyboard.press('Enter');
+  assert(await mappings.getByRole('columnheader').first().getAttribute('aria-sort')==='ascending','The Path sort control works from the keyboard');
+  await mappings.getByRole('button',{name:'DashboardController#addChannel',exact:true}).click();
+  assert((await page.locator('.editor-tab.active').innerText()).includes('DashboardController.java')&&(await page.locator('.navigation-line').innerText()).includes('addChannel'),'Mapping handlers open the matching controller method');
+  await mappings.getByRole('button',{name:'/api/notify',exact:true}).click();
+  assert((await page.locator('.editor-tab.active').innerText()).includes('NotificationController.java')&&(await page.locator('.navigation-line').innerText()).includes('sendNotification'),'Mapping paths open their matching controller method');
+  await page.getByRole('button',{name:'Refresh mappings',exact:true}).click();
+  assert(await mappings.locator('tbody tr').count()===16&&await page.getByRole('button',{name:'Open mapping in browser',exact:true}).isDisabled(),'Refresh retains the snapshot and live browser actions remain inactive');
   await page.getByRole('tab',{name:'Beans | Health',exact:true}).click();
   assert((await page.locator('.debug-spring-snapshot').innerText()).includes('notificationDispatcher'),'Beans view exposes captured application components');
   await page.getByRole('tab',{name:'Environment',exact:true}).click();
@@ -124,6 +145,15 @@ const code=String.raw`async page => {
   await page.getByRole('button',{name:'Project (⌘1)',exact:true}).click();
   await page.screenshot({path:'${new URL('debugger-narrow.png',evidence).pathname}'});
   assert(await page.locator('.debug-toolbar').evaluate(e=>e.scrollWidth>=e.clientWidth),'Debugger toolbar scrolls when space is limited');
+  await page.getByRole('button',{name:'Project (⌘1)',exact:true}).click();
+  await page.getByRole('tab',{name:'Mappings',exact:true}).click();
+  await page.getByRole('separator',{name:'Resize debugger',exact:true}).focus();
+  for(let i=0;i<8;i++)await page.keyboard.press('ArrowDown');
+  assert(await mappings.isVisible()&&await page.locator('.mapping-grid-scroll').evaluate(e=>e.scrollWidth>e.clientWidth&&e.scrollHeight>e.clientHeight),'Mappings grid scrolls independently in both directions on narrow windows');
+  await page.locator('.mapping-grid-scroll').evaluate(e=>{e.scrollTop=e.scrollHeight;e.scrollLeft=e.scrollWidth});
+  assert(await mappings.getByRole('columnheader').last().isVisible(),'Mapping column headers remain visible while scrolling');
+  await page.screenshot({path:'${new URL('mappings-narrow.png',evidence).pathname}'});
+  await page.getByRole('tab',{name:'Threads & Variables',exact:true}).click();
   await page.setViewportSize({width:1920,height:1080});
   assert(errors.length===0,'No browser runtime errors');
   } catch(error) { await page.screenshot({path:'${new URL('failure.png',evidence).pathname}'});return {result:'FAIL',checks,error:error.message}; }

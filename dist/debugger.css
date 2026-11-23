@@ -65,6 +65,30 @@
 .debug-security-menu{position:fixed;z-index:30;max-width:calc(100vw - 20px);padding:6px;background:#25262a;border:1px solid #494b51;border-radius:8px;box-shadow:0 5px 20px #0007;font-size:14px}
 .debug-security-menu>button{display:block;text-align:left;width:100%;border-radius:4px;padding:4px 9px}.debug-security-menu>button:disabled{color:#c4c7cf;opacity:.7}.debug-security-menu>button:not(:disabled):hover{background:#2c4774}
 .debug-spring-snapshot{flex:1;overflow:auto;padding:7px 12px;font-size:13px}.debug-spring-title{padding:4px 6px 9px;display:flex;gap:15px}.debug-spring-row{display:flex;gap:12px;align-items:center;min-height:26px;text-align:left;width:100%;padding:2px 6px}.debug-spring-row>.icon{width:16px;height:16px}.debug-spring-row>span:first-of-type{min-width:210px}
+/* Spring's Mappings table, including the framework rows in the captured app. */
+.debug-mappings{display:flex;flex:1;min-height:0;overflow:hidden;color:#c5c7ce;font-size:14px}
+.mapping-actions{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:34px;padding:2px 0;border-right:1px solid #2b2c2f}
+.mapping-actions>.icon-button{width:24px;height:24px;padding:4px;border-radius:4px;position:relative}
+.mapping-actions .icon{width:16px;height:16px}.mapping-actions button:disabled{opacity:1;cursor:default}
+.mapping-action-divider{height:1px;background:#393a3d;width:20px;margin:1px 0}
+.mapping-method-action>span{position:absolute;right:2px;bottom:2px;width:0;height:0;border-bottom:3px solid #bcbec4;border-left:3px solid transparent}
+.mapping-actions>.mapping-table-action{background:#393b3b}
+.mapping-grid-scroll{flex:1;min-width:0;overflow:auto;scrollbar-width:thin;outline:none;border-right:1px solid #2b2c2f}
+.mapping-grid-scroll:focus-visible{outline:1px solid #5378b4;outline-offset:-1px}
+.mapping-grid{width:100%;min-width:760px;border-collapse:separate;border-spacing:0;table-layout:fixed;font:inherit;line-height:17px}
+.mapping-grid th,.mapping-grid td{padding:0 6px;text-align:left;font-weight:400;border-right:1px solid #2b2c2f;border-bottom:1px solid #2b2c2f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mapping-grid th:last-child,.mapping-grid td:last-child{border-right:0}
+.mapping-grid thead{position:sticky;top:0;z-index:1;background:#191a1c}
+.mapping-grid th{height:26px}.mapping-grid td{height:18px}
+.mapping-grid button{padding:0;font:inherit;line-height:inherit;text-align:left;vertical-align:baseline;border-radius:0}
+.mapping-grid button:disabled{opacity:1;cursor:default}
+.mapping-grid button:hover{background:transparent}
+.mapping-grid .mapping-sort{display:inline-flex;align-items:center;gap:6px;min-height:25px}
+.mapping-sort .icon{width:10px;height:10px}.mapping-sort-up{transform:rotate(-90deg)}
+.mapping-grid .mapping-path{color:#6b9bfa}.mapping-verb{color:#777a80}
+.mapping-grid .mapping-handler{color:inherit}.mapping-grid .mapping-framework{background:#2b211d}
+.mapping-grid .mapping-path:not(:disabled):hover,.mapping-grid .mapping-handler:not(:disabled):hover{text-decoration:underline}
+.mapping-grid button:focus-visible{outline:1px solid #6b9bfa;outline-offset:-1px}
 @media(min-width:1800px){.code-lines{font-size:15px;line-height:26px}.inline-value{font-size:15px}.debug-sticky-class,.debug-sticky-bean{font-size:15px}}
 @media(max-width:1150px){.debug-tabs{font-size:13px}.debug-tabs>button{padding-inline:7px}.debug-toolbar{gap:7px}.debug-actions{gap:1px}.debug-actions>button{width:23px}.debug-actions .debug-action-divider{margin-inline:2px}.debug-frames{min-width:160px}.inline-value{display:inline-flex}}
 @media(max-width:760px){.debugger-window{max-height:55vh}.debug-frames{min-width:145px;width:160px!important}.debug-variables{min-width:160px}.debug-header{gap:8px}.debug-header strong{font-size:13px}.debug-config{max-width:none;font-size:12px}.debug-tabs{font-size:12px}.debug-toolbar{padding-left:4px}.debug-actions{gap:1px}.debug-frame-tabs,.debug-thread,.frame-row,.hidden-frames,.variable-tree{font-size:12px}.debug-evaluate{padding-inline:5px}.debug-evaluate>span:first-child{font-size:11px}.debug-language{display:none}.debug-inspector .variable-tree{font-size:12px}.debug-inspector footer{font-size:12px;gap:12px}.debug-sticky-bean{display:none}.debug-sticky-class{margin-left:12px;font-size:11px}.debug-source-toolbar{gap:6px}.sticky-line-number{width:39px}.debug-console-output{font-size:12px}.debug-inspector{max-height:55vh}}
