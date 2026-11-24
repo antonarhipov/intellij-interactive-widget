@@ -5,7 +5,7 @@ function toolWindowRail(){return `<nav class="activity-bar" aria-label="Tool win
 function toolWindowsShell(){return `<aside class="side-stack" aria-label="Tool windows sidebar">
   <section class="side-panel commit-panel" aria-label="Commit"><div class="side-header"><h2>Commit</h2><span class="grow"></span>${ib('more','Commit view options','commit-options')}${ib('minus','Hide Commit','toggle-commit')}</div><div id="commit-content" class="commit-content"></div></section>
   ${projectWindowShell()}
-  <section class="side-panel sessions-panel" aria-label="Agent Sessions"><div class="side-header"><h2>Agent Sessions</h2><span class="grow"></span>${ib('more','Agent Sessions view options','sessions-options')}${ib('minus','Hide Agent Sessions','toggle-sessions')}</div><div class="sessions-actions">${newSessionSelector()}<button class="add-folder-preview" disabled title="Read-only project snapshot">${icon('folder')}Add Folder</button><span class="grow"></span>${ib('sliders','Filter sessions','session-filter')}${ib('search','Search sessions','session-search-toggle')}</div><div class="side-tools sessions-search-tools" hidden><label class="input-shell">${icon('search')}<input id="session-search" class="filter-input" placeholder="Search sessions" aria-label="Search sessions" autocomplete="off"></label></div><div id="session-filters" hidden class="session-filter"><label><input id="archived-toggle" type="checkbox"> Archived</label><div class="select-wrap"><select id="agent-filter" aria-label="Filter by agent"><option value="all">All agents</option><option value="codex">Codex</option><option value="claude">Claude Code</option></select></div></div><div id="session-list" class="session-list" role="list" aria-label="Agent sessions"></div>${sessionUsageWidget()}</section>
+  ${sessionsWindowShell()}
   <div class="panel-grip" role="separator" aria-label="Resize sidebar tool windows" aria-orientation="horizontal" tabindex="0"></div>
   <section class="side-panel structure-panel" aria-label="Structure"><div class="side-header"><h2>Structure</h2><div class="structure-tabs" role="tablist" aria-label="Structure views"><button class="selected" role="tab" aria-selected="true">Logical</button></div><span class="grow"></span>${ib('eye','Structure view options','logical-options')}${ib('more','Structure actions','logical-options')}${ib('minus','Hide Structure','toggle-structure')}</div><div class="logical-search" hidden><label class="input-shell">${icon('search')}<input id="logical-search" placeholder="Search components" aria-label="Search logical structure"></label>${ib('close','Close structure search','logical-search-close')}</div><div id="logical-tree" class="logical-tree" role="tree" aria-label="Spring Boot logical structure"></div></section>
 </aside><div class="splitter" role="separator" aria-label="Resize sidebar" aria-orientation="vertical" tabindex="0"></div>`}
@@ -141,6 +141,7 @@ function logicalFind(id,nodes=logicalNodes()){for(const n of nodes){if(n.id===id
 function toggleLogical(id){state.focusedTool='structure';renderToolWindowVisibility();const n=logicalFind(id);if(!n?.children?.length)return;state.logicalExpanded[id]=!(state.logicalExpanded[id]??n.open??false);renderLogicalStructure();persist()}
 function toolWindowMenu(title,items,anchor){diffPopup(title,items.map(([label,action])=>`<button role="menuitem" data-action="${action}">${label}</button>`).join(''),anchor)}
 function toolWindowAction(name,el){
+  if(sessionsAction(name,el))return true;
   if(projectAction(name,el))return true;
   if(el?.closest?.('.jd-menu'))closeOverlay();
   switch(name){
@@ -164,10 +165,9 @@ function toolWindowAction(name,el){
     case 'commit-options':toolWindowMenu('Commit view options',[['Show Diff','commit-show-diff'],['Expand All','commit-expand'],['Collapse All','commit-collapse']],el);return true;
     case 'commit-message-history':dialog('Recent Commit Messages','<div class="dialog-body dialog-copy"><p>refine security rules for dashboard service endpoints</p></div>');return true;
     case 'project-options':toolWindowMenu('Project view options',[['Expand All','expand-all'],['Collapse All','collapse-all'],['Open Commit','project-changes']],el);return true;
-    case 'sessions-options':toolWindowMenu('Agent Sessions view options',[['Search Sessions','session-search-toggle'],['Filter Sessions','session-filter']],el);return true;
+    case 'sessions-options':toolWindowMenu('Agent Sessions view options',[['Search Sessions','session-search-toggle'],['Filter and View Options','session-filter']],el);return true;
     case 'sessions-settings':sessionInfo(session());return true;
     case 'sessions-usage':toggleSessionUsage();return true;
-    case 'session-search-toggle':{const row=$('.sessions-search-tools');row.hidden=!row.hidden;if(!row.hidden)$('#session-search').focus();return true}
     case 'logical-select':{const n=logicalFind(el.dataset.logicalId);if(!n)return true;state.logicalSelected=n.id;state.focusedTool='structure';renderToolWindowVisibility();if(n.path)goToSource(n.path,n.line,state.project);else if(n.library)openLibrarySource(n.library,n.line);else toggleLogical(n.id);renderLogicalStructure();persist();return true}
     case 'logical-toggle':toggleLogical(el.dataset.node);return true;
     case 'logical-options':toolWindowMenu('Structure view options',[['Expand All','logical-expand-all'],['Collapse All','logical-collapse-all'],['Search Components','logical-search-open']],el);return true;
@@ -178,6 +178,7 @@ function toolWindowAction(name,el){
   }
 }
 function initToolWindows(){
+  initSessionListUI();
   $('.session-usage-area').addEventListener('keydown',e=>{
     if(e.key==='Escape'&&!$('#ai-usage-card').hidden){e.preventDefault();e.stopPropagation();toggleSessionUsage(false);$('[data-action="sessions-usage"]').focus()}
   });

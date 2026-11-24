@@ -190,5 +190,17 @@
   "spring-web": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
     "resource": "icons/expui/springWeb_dark.svg"
+  },
+  "session-search": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/search_dark.svg"
+  },
+  "session-close": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/close_dark.svg"
+  },
+  "session-filters": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar",
+    "resource": "icons/sessionFiltersAndView_dark.svg"
   }
 }

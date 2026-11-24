@@ -54,6 +54,7 @@ class AutomaticTour{
     clearTimeout(this.timer);this.controller?.abort();this.controller=null;this.playing=false;
     this.cursor.hidden=true;this.cursor.classList.remove('clicking');this.position=null;
     this.hideAnnotation();
+    if(status==='complete')renderSessionList();
     document.querySelectorAll('.auto-tour-hover').forEach(el=>el.classList.remove('auto-tour-hover'));
     this.status(this.enabled?(this.completed?'complete':status):'off');
   }
@@ -182,7 +183,7 @@ class AutomaticTour{
   async walk(signal){
     const scene=(name,run)=>this.scene(name,run,signal);
     // Reset only the presentation details needed for this demonstration.
-    state.sessionQuery='';state.agentFilter='all';$('#session-search').value='';$('#agent-filter').value='all';renderSessionList();
+    state.sessionQuery='';$('#session-search').value='';$('.sessions-actions').hidden=false;$('.sessions-search-tools').hidden=true;renderSessionList();
     for(const t of state.tabs.filter(t=>t.type==='session')){t.scroll=0;t.activityOpen=false;t.toolGroups={};t.toolEntries={};t.toolOutputExpanded={};t.terminalTools={}}
     await scene('agent-sessions',async()=>{await this.sessions(signal)});
     await scene('claude-session',async()=>{await this.annotate('Read Claude’s code review','[data-session="claude-review"]',signal);await this.click('[data-session="claude-review"]',signal,4500)});

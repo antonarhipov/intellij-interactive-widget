@@ -19,6 +19,8 @@ assets = {name: (platform, resource) for name, resource in {
     'settings': 'expui/general/settings@20x20_dark.svg',
     'settings-small': 'expui/general/settings_dark.svg',
     'refresh': 'expui/general/refresh_dark.svg',
+    'session-search': 'expui/general/search_dark.svg',
+    'session-close': 'expui/general/close_dark.svg',
     'mapping-web': 'expui/toolwindows/web_dark.svg',
     'mapping-method': 'expui/nodes/method_dark.svg',
     'notifications': 'expui/toolwindows/notifications@20x20_dark.svg',
@@ -53,6 +55,7 @@ assets.update({
     'database': ('plugins/DatabaseTools/lib/modules/intellij.database.jar', 'icons/expui/dbms@20x20_dark.svg'),
     'maven': ('plugins/maven-plugin/lib/intellij.maven.jar', 'images/expui/toolwindow/maven@20x20_dark.svg'),
     'usage-details': ('plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar', 'icons/statisticsEventLogExternal_dark.svg'),
+    'session-filters': ('plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar', 'icons/sessionFiltersAndView_dark.svg'),
 })
 air = 'plugins/air-plugin/lib/modules/intellij.air.shared.core.jar'
 assets.update({

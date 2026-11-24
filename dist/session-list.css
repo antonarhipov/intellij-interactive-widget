@@ -1,0 +1,39 @@
+/* Air's compact session list, replacement search row and nested view menu. */
+.sessions-panel{container-name:agent-sessions;container-type:inline-size}.sessions-panel>.side-header{height:34px}
+.sessions-actions{min-height:34px;padding:0 13px 7px;gap:6px;flex-shrink:0}
+.sessions-actions>button:not(.icon-button){height:24px;padding:0 12px}
+.sessions-actions .add-folder-preview{display:flex}
+.sessions-actions .new-session-widget{height:24px}.sessions-actions .new-session{height:22px;padding-inline:12px;font-size:14px}
+.sessions-actions .new-session-widget .new-session-dropdown{height:22px;width:26px}.sessions-actions .new-session-dropdown:before{height:16px}
+.sessions-actions .icon-button{width:24px;height:24px;flex-shrink:0;padding:4px}
+.sessions-actions .icon-button .icon{width:16px;height:16px}
+.sessions-actions [aria-expanded="true"]{background:#2e3033}
+.sessions-search-tools{display:flex;align-items:center;gap:6px;min-height:34px;flex-shrink:0;padding:0 13px 7px}
+.sessions-search-field{display:flex;align-items:center;gap:7px;flex:1;min-width:0;height:25px;border:1px solid #6f737b;border-radius:3px;padding:0 6px;background:#191a1c}
+.sessions-search-field:focus-within{border-color:#3976f1;box-shadow:0 0 0 1px #3976f1}
+.sessions-search-field>.icon{width:16px;height:16px;flex-shrink:0}
+.sessions-search-field>input{width:100%;min-width:0;height:23px;border:0;border-radius:0;padding:0;outline:0;box-shadow:none;background:transparent;font:14px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ced0d6}
+.sessions-search-field>input:focus{border:0;box-shadow:none}
+.sessions-search-tools>.icon-button{width:24px;height:24px;padding:4px;flex-shrink:0}.sessions-search-tools .icon{width:16px;height:16px}
+.session-list{padding:0 13px 6px}.session-entry{position:relative}
+.session-item{height:28px;gap:8px;padding:2px 4px 2px 26px;border-radius:4px}
+.session-item>.icon{width:16px;height:16px;flex-shrink:0}.session-item .title{font-size:14px}
+.session-item .age,.session-item .session-cost{font-size:14px;color:#777a82;flex-shrink:0;white-space:nowrap;font-variant-numeric:tabular-nums}
+.session-item .claude-icon,.sessions-actions .session-agent-claude{filter:grayscale(1) brightness(1.45)}
+.session-expander{position:absolute;left:6px;top:3px;width:17px;height:22px;display:grid;place-items:center;opacity:0;border-radius:3px;z-index:1}
+.session-expander>.icon{width:10px;height:10px}.session-expander.expanded>.icon{transform:rotate(90deg)}
+.session-entry:hover>.session-expander,.session-entry:focus-within>.session-expander,.session-expander.expanded{opacity:1}
+.session-change{height:26px;width:100%;display:flex;align-items:center;gap:6px;padding:2px 5px 2px 48px;text-align:left;color:#6b9bfa;font-size:13px;border-radius:4px}
+.session-change>span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.session-change>.file-glyph{flex-shrink:0}
+.session-group-heading{display:flex;align-items:center;gap:6px;width:100%;height:28px;font-size:13px;color:#a3a6ad;text-align:left}.session-group-heading>.icon{width:10px;height:10px}.session-group-count{color:#737780}
+.sessions-menu{position:fixed;z-index:40;padding:7px;background:#27282b;border:1px solid #484a4e;border-radius:8px;box-shadow:0 7px 22px #0007;color:#ced0d6;font-size:14px;max-height:calc(100dvh - 16px);overflow-y:auto;scrollbar-width:thin}
+.sessions-menu hr{border:0;border-top:1px solid #393b3e;margin:4px 0}
+.session-menu-row{display:flex;align-items:center;gap:5px;width:100%;height:22px;border-radius:4px;padding:0 8px;white-space:nowrap;text-align:left;font:inherit}
+.session-menu-row>.icon{width:10px;height:10px;flex-shrink:0}.session-menu-value{margin-left:auto;color:#777a80;overflow:hidden;text-overflow:ellipsis}
+.session-filter-mode>.session-menu-value{color:inherit;margin-left:0}.session-filter-mode>.icon{margin-left:auto}
+.session-menu-row.selected,.sessions-menu button:hover,.sessions-menu button:focus-visible{background:#2e4773;outline:none}
+.session-menu-row.selected>.session-menu-value{color:inherit}
+.session-menu-choice{display:flex;align-items:center;gap:5px;width:100%;min-height:24px;padding:1px 5px;border-radius:4px;font:inherit;white-space:nowrap;text-align:left}
+.session-option-check{width:16px;height:18px;display:grid;place-items:center;flex-shrink:0}.session-option-check>.icon{width:14px;height:14px}
+@container agent-sessions (max-width:370px){.sessions-actions>button.add-folder-preview{display:none}}
+@container agent-sessions (max-width:270px){.sessions-actions .new-session span{display:none}.sessions-actions .new-session{padding-inline:7px}.sessions-actions .new-session-widget .new-session-dropdown{width:24px}}
