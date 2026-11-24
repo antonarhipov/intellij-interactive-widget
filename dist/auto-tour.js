@@ -45,6 +45,7 @@ class AutomaticTour{
   schedule(delay){
     clearTimeout(this.timer);
     if(!this.enabled){this.status('off');return}
+    if(document.body.classList.contains('survivors-open')){this.status('paused');return}
     if(this.hasStarted&&!(this.loop&&this.completed)){if(!this.playing)this.status(this.completed?'complete':'paused');return}
     if(document.hidden)return;
     this.status(this.playing?'playing':'waiting');
@@ -59,7 +60,7 @@ class AutomaticTour{
     this.status(this.enabled?(this.completed?'complete':status):'off');
   }
   async start(){
-    if(this.playing||this.hasStarted&&!(this.loop&&this.completed)||!this.enabled||document.hidden)return;
+    if(document.body.classList.contains('survivors-open')||this.playing||this.hasStarted&&!(this.loop&&this.completed)||!this.enabled||document.hidden)return;
     // Let visitors finish menus, dialogs, text selection and search first.
     if($('#overlay-root').childElementCount||$('.air-output-options[open]')||!getSelection()?.isCollapsed||document.activeElement?.matches('input,textarea,[contenteditable="true"]')){this.schedule(4000);return}
     clearTimeout(this.timer);this.controller=new AbortController();const signal=this.controller.signal;

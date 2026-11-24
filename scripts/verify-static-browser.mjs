@@ -95,6 +95,28 @@ const code=String.raw`async page => {
     await page.setViewportSize({width:1280,height:800});
     check(await page.getByLabel('Claude Code Air TUI transcript',{exact:true}).isVisible(),'Portable UI remains usable at laptop size');
     await page.screenshot({path:${JSON.stringify(new URL('offline-laptop.png',evidence).pathname)}});
+    await page.getByRole('button',{name:'IDE Survivors',exact:true}).click();
+    await page.getByRole('button',{name:'Start run',exact:true}).waitFor();
+    check(await page.locator('.sv-hero').evaluate(img=>img.src.startsWith('data:')),'Runzo artwork is embedded in the offline easter egg');
+    await page.getByRole('button',{name:'Start run',exact:true}).click();
+    const playerX=await page.evaluate(()=>survivorsGame.engine.player.x);
+    await page.keyboard.down('d');await page.waitForFunction(x=>survivorsGame.engine.player.x>x+25,playerX,{timeout:5000});await page.keyboard.up('d');
+    check(await page.evaluate(x=>survivorsGame.engine.player.x>x+20,playerX),'Offline WASD input moves Runzo');
+    await page.waitForFunction(()=>survivorsGame.engine.kills>0);
+    check(await page.evaluate(()=>survivorsGame.engine.kills>0),'Offline automatic attacks defeat enemies');
+    // The full served-game walkthrough collects ordinary drops through WASD.
+    // This bounded export fixture checks level-up packaging without replaying it.
+    await page.evaluate(()=>{const e=survivorsGame.engine;e.coins=[{id:999,x:e.player.x,y:e.player.y,value:e.needed,age:0}]});
+    await page.locator('.sv-upgrade').first().waitFor();
+    check(await page.locator('.sv-upgrade img').evaluateAll(async imgs=>{await Promise.all(imgs.map(img=>img.decode()));return imgs.every(img=>img.src.startsWith('data:')&&img.naturalWidth>0)}),'Offline level-up loads all three embedded upgrade illustrations');
+    await page.locator('.sv-upgrade').first().click();
+    check(await page.locator('.sv-loadout-item').count()===1,'Offline upgrade selection updates the loadout');
+    await page.keyboard.press('Escape');
+    const gameTime=await page.evaluate(()=>survivorsGame.engine.elapsed);await page.waitForTimeout(150);
+    check(await page.evaluate(t=>survivorsGame.engine.phase==='paused'&&survivorsGame.engine.elapsed===t,gameTime),'Offline Escape pauses the simulation');
+    await page.screenshot({path:${JSON.stringify(new URL('offline-survivors.png',evidence).pathname)}});
+    await page.getByRole('button',{name:'Back to IDE',exact:true}).click();
+    check(await page.evaluate(()=>survivorsGame===null&&!document.querySelector('#app').inert)&&await page.getByLabel('Claude Code Air TUI transcript',{exact:true}).isVisible(),'Offline game exit restores the original IDE session');
     check(requests.every(r=>r===url),'No network requests beyond the intercepted document');
     check(errors.length===0,'No runtime, asset or Content Security Policy errors');
     return {result:'PASS',checks,errors,requests,browser:page.context().browser().version(),fileNavigation:'Blocked by the automation browser; moved HTML loaded through a document intercept with networking disabled.'};

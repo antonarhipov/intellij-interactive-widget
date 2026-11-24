@@ -1,0 +1,63 @@
+{
+  "project": "https://github.com/glycin/intellij25",
+  "commit": "59df1971d9e70338b8d7d2d562f797b69843bf71",
+  "license": "MIT",
+  "assets": {
+    "runzo.svg": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/icon/runzo.svg",
+      "bytes": 5878
+    },
+    "runzo-idle.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/runzo/runzo_idle.png",
+      "bytes": 2171
+    },
+    "runzo-move.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/runzo/runzo_move.png",
+      "bytes": 2130
+    },
+    "runzo-hurt.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/runzo/runzo_hurt.png",
+      "bytes": 2150
+    },
+    "bug.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/enemies/Bug.png",
+      "bytes": 125967
+    },
+    "coin.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/coin.png",
+      "bytes": 165515
+    },
+    "coffee.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/coffee.png",
+      "bytes": 41417
+    },
+    "refactorings.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/refactorings.png",
+      "bytes": 49461
+    },
+    "performance.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/performance.png",
+      "bytes": 75166
+    },
+    "command-completion.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/command_completion.png",
+      "bytes": 497
+    },
+    "search.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/search_anywhere.png",
+      "bytes": 22642
+    },
+    "shield.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/shield.png",
+      "bytes": 29569
+    },
+    "freeze.png": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/src/main/resources/sprites/upgrades/freeze.png",
+      "bytes": 44997
+    },
+    "LICENSE.txt": {
+      "source": "https://raw.githubusercontent.com/glycin/intellij25/59df1971d9e70338b8d7d2d562f797b69843bf71/LICENSE",
+      "bytes": 1063
+    }
+  }
+}

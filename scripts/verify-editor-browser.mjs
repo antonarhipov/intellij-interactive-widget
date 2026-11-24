@@ -23,7 +23,7 @@ const code=String.raw`async page => {
     check(colors[0]==='rgb(44, 133, 82)'&&colors[1]==='rgb(198, 78, 92)','Restart Debug and Stop use the native green and red filled widgets');
     const tabs=await page.locator('.tab-scroll').innerText();
     for(const name of ['Notifications','Database','Maven'])await page.getByRole('button',{name,exact:true}).click();
-    check(await page.locator('.right-rail button').count()===3&&await page.locator('.tab-scroll').innerText()===tabs&&await page.locator('#overlay-root').innerText()==='','Right rail keeps Notifications, Database and Maven without opening content');
+    check(await page.locator('.right-rail button').count()===4&&await page.locator('.tab-scroll').innerText()===tabs&&await page.locator('#overlay-root').innerText()==='','Right rail keeps Notifications, Database and Maven without opening content');
     await config.click();
     const menu=page.getByRole('menu',{name:'Run / Debug Configurations',exact:true});
     check((await menu.innerText()).includes('NotifyHubApplication\nCurrent File\nEdit Configurations…'),'Configuration dropdown follows the native row order');
