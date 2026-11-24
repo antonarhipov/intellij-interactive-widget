@@ -11,17 +11,26 @@ function newSessionSelector(){return `<div class="new-session-widget"><button cl
 function sessionAgentMenu(){const selected=selectedSessionAgent().id;return sessionAgentChoices.map(a=>`<button role="menuitemradio" aria-checked="${selected===a.id}" class="agent-menu-option ${selected===a.id?'selected-agent':''}" data-action="select-session-agent" data-agent="${a.id}">${editorIcon('agent-'+a.id)}<span>${a.label}</span>${selected===a.id?icon('check','agent-menu-check'):''}</button>`).join('')+`<hr role="separator"><button role="menuitem" class="agent-menu-option" data-action="agent-menu-dismiss">${editorIcon('agent-cloud')}<span>Cloud</span></button><button role="menuitem" class="agent-menu-option manage-agents-option" data-action="agent-menu-dismiss"><span>Manage Agents…</span></button>`}
 function mainToolbarWidgets(){return `<div class="run-widget" role="group" aria-label="Running debug configuration"><button class="run-config" data-action="run-config-menu" aria-haspopup="menu" aria-expanded="false" title="Run / Debug Configurations" aria-label="NotifyHubApplication, Run / Debug Configurations">${runningConfigurationIcon()}<span>NotifyHubApplication</span>${editorIcon('chevron')}</button>${runControls()}<button class="icon-button run-more" data-action="run-more-menu" title="More Actions" aria-label="More run actions">${editorIcon('more')}</button></div>${newSessionSelector()}<button class="icon-button main-search" data-action="search-files" title="Search Everywhere" aria-label="Search Everywhere">${editorIcon('search')}</button><button class="icon-button main-settings has-update" data-action="ide-settings-menu" title="IDE and Project Settings" aria-label="IDE and Project Settings">${editorIcon('settings')}</button>`}
 function rightToolbar(){return `<aside class="right-rail" aria-label="Additional tools"><button class="icon-button has-notification" title="Notifications" aria-label="Notifications">${editorIcon('notifications')}</button><button class="icon-button" title="Database" aria-label="Database">${editorIcon('database')}</button><button class="icon-button" title="Maven" aria-label="Maven">${editorIcon('maven')}</button></aside>`}
+function editorTabsMenuContent(){
+  return [{label:'Recent Files',shortcut:'⌘E'},{label:'Recent Locations',shortcut:'⇧⌘E'},{label:'Go to File…',shortcut:'⇧⌘N'},null,{label:'Close All Tabs'},{label:'Close Unmodified Tabs'},{label:'Reopen Closed Tab'},null,{label:'Bookmark Open Tabs…'},null,{label:'Configure Editor Tabs…'}].map(item=>item?`<button role="menuitem" aria-disabled="true" tabindex="-1"><span>${item.label}</span>${item.shortcut?`<span class="editor-tab-menu-shortcut">${item.shortcut}</span>`:''}</button>`:'<hr role="separator">').join('');
+}
 function editorToolbarMenu(kind,anchor){
   if(anchor.getAttribute('aria-expanded')==='true'){closeOverlay();return}
   closeOverlay();overlayPreviousFocus=anchor;
-  const agents=kind==='new-session-menu',r=(agents?anchor.closest('.new-session-widget'):anchor).getBoundingClientRect(),config=kind==='run-config-menu';
-  const width=Math.min(config?322:agents?172:244,innerWidth-16),left=Math.max(8,Math.min(innerWidth-width-8,r.left-(agents?8:0)));
+  const agents=kind==='new-session-menu',tabs=kind==='editor-tabs-menu',r=(agents?anchor.closest('.new-session-widget'):anchor).getBoundingClientRect(),config=kind==='run-config-menu';
+  const width=Math.min(config?322:agents?172:tabs?203:244,innerWidth-16),left=Math.max(8,Math.min(innerWidth-width-8,r.left-(agents?8:0)));
   let content;
   if(config)content=`<div class="run-config-option" role="menuitem" tabindex="0" aria-current="true">${runningConfigurationIcon()}<span>NotifyHubApplication</span><span class="config-actions">${runControls(true)}<button class="icon-button" disabled aria-label="More configuration actions">${editorIcon('more')}</button></span></div><hr><button role="menuitem" disabled class="config-text-option">Current File</button><hr><button role="menuitem" disabled class="config-text-option">Edit Configurations…</button>`;
   else if(kind==='run-more-menu')content=`<button role="menuitem" data-action="execution-point">Show Execution Point</button><hr><button role="menuitem" disabled>Attach to Process…</button><button role="menuitem" disabled>Edit Configurations…</button>`;
   else if(agents)content=sessionAgentMenu();
+  else if(tabs)content=editorTabsMenuContent();
   else content=`<button role="menuitem" disabled>Settings…</button><button role="menuitem" disabled>Plugins…</button><hr>${automaticTourMenu()}<hr><button role="menuitem" data-action="about">About this prototype</button>`;
-  $('#overlay-root').innerHTML=`<div class="menu native-toolbar-menu ${config?'run-configuration-menu':agents?'agent-selector-menu':''}" role="menu" aria-label="${config?'Run / Debug Configurations':agents?'New Session':kind==='run-more-menu'?'Run actions':'IDE and Project Settings'}" style="left:${left}px;top:${r.bottom+4}px;width:${width}px">${content}</div>`;
+  $('#overlay-root').innerHTML=`<div class="menu native-toolbar-menu ${config?'run-configuration-menu':agents?'agent-selector-menu':tabs?'editor-tabs-menu':''}" role="menu" aria-label="${config?'Run / Debug Configurations':agents?'New Session':tabs?'Editor tab actions':kind==='run-more-menu'?'Run actions':'IDE and Project Settings'}" style="left:${left}px;top:${r.bottom+(tabs?1:4)}px;width:${width}px">${content}</div>`;
+  if(tabs){
+    const menu=$('.editor-tabs-menu'),select=row=>$$('[role="menuitem"]',menu).forEach(item=>item.classList.toggle('selected',item===row));
+    for(const event of ['pointermove','focusin'])menu.addEventListener(event,e=>{const row=e.target.closest('[role="menuitem"]');if(row)select(row)});
+    const top=Math.max(8,Math.min(r.bottom+1,innerHeight-menu.offsetHeight-8));menu.style.top=top+'px';
+  }
   $('#auto-tour-speed')?.addEventListener('change',e=>autoTour.setSpeed(Number(e.target.value)));
   anchor.setAttribute('aria-expanded','true');(agents?$('.selected-agent'):$('.native-toolbar-menu [tabindex="0"],.native-toolbar-menu button:not(:disabled)'))?.focus();
 }
@@ -39,7 +48,7 @@ function editorUIAction(name,el){
   return false;
 }
 function initEditorUI(){
-  document.addEventListener('click',e=>{if($('.native-toolbar-menu')&&!e.composedPath().some(n=>n instanceof Element&&n.matches('.native-toolbar-menu,.toolbar-project,.toolbar-branch,.run-config,.run-more,.new-session-dropdown,.main-settings')))closeOverlay()});
+  document.addEventListener('click',e=>{if($('.native-toolbar-menu')&&!e.composedPath().some(n=>n instanceof Element&&n.matches('.native-toolbar-menu,.toolbar-project,.toolbar-branch,.run-config,.run-more,.new-session-dropdown,.main-settings,[data-action="tab-menu"]')))closeOverlay()});
   document.addEventListener('keydown',e=>{
     if(e.ctrlKey&&e.altKey&&e.key.toLowerCase()==='q'){
       const focused=document.activeElement,doc=focused?.closest('.doc-comment');
