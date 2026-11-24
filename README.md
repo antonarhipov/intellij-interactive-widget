@@ -87,6 +87,8 @@ The imported Codex turn changes only `SecurityConfig.java` (**+7 −2**): method
 
 Both session and working-tree totals show **+7 −2** for `SecurityConfig.java`. The experimental `demo-test.sh` is excluded from project files, changes, file pickers and totals, including after snapshot refresh.
 
+**Search Everywhere**, opened from the top-right search icon or `⌘/Ctrl P`, follows the native tab strip, blue search field, compact file rows and selected-path footer. **All** lists the selected project snapshot's files and filters by filename or path, without regard to case. Arrow keys select results; Enter or a click opens the file and focuses the source editor. Escape dismisses the dialog. The other categories, non-project items and split controls are inactive in this browsing prototype.
+
 ## Tool windows
 
 **Agent Sessions** uses Air's compact toolbar and 28-pixel session rows. **Search Sessions** replaces the New Session/Add Folder row with a full-width, blue-focused search field and a separate **Close Search** button. Search filters the captured titles and prompts; Escape clears it and restores the toolbar. **Filter and View Options** opens a nested dropdown with **Filter Sessions**, **Show**, **Statuses**, **Sessions Visible**, and **Group By**. Options support pointer and keyboard browsing and survive reloads. Time labels such as **2d** use the recorded session timestamps; hovering shows the full date and time. **Show → Time** controls their visibility. Changed-file carets can expand the captured SecurityConfig change and open its session diff. Group headings can collapse and expand. The toolbar adapts to the pane's width.

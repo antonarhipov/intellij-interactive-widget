@@ -59,7 +59,7 @@ const code=String.raw`async page => {
     await page.getByRole('button',{name:'New Session options',exact:true}).click();
     await page.getByRole('menuitemradio',{name:'Codex',exact:true}).click();
     await page.getByRole('button',{name:'Search Everywhere',exact:true}).click();
-    await page.getByRole('textbox',{name:'Search all project files',exact:true}).fill('SecurityConfig.java');
+    await page.getByRole('combobox',{name:'Search all project files',exact:true}).fill('SecurityConfig.java');
     await page.locator('.search-result').first().click();
     check(await noStrip(),'SecurityConfig opens directly in the source editor');
     const doc=page.locator('.doc-comment[data-start-line="18"]');
