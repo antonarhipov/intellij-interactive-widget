@@ -113,9 +113,14 @@ const code=String.raw`async page => {
   await page.getByRole('button',{name:'Refresh mappings',exact:true}).click();
   assert(await mappings.locator('tbody tr').count()===16&&await page.getByRole('button',{name:'Open mapping in browser',exact:true}).isDisabled(),'Refresh retains the snapshot and live browser actions remain inactive');
   await page.getByRole('tab',{name:'Beans | Health',exact:true}).click();
-  assert((await page.locator('.debug-spring-snapshot').innerText()).includes('notificationDispatcher'),'Beans view exposes captured application components');
+  assert(await page.locator('.spring-browser').evaluate(e=>Math.abs(e.getBoundingClientRect().bottom-e.closest('#debugger').getBoundingClientRect().bottom)<2),'Spring view fills the debugger pane');
+  await page.getByRole('option',{name:'NotificationDispatcher',exact:true}).click();
+  assert((await page.getByRole('listbox',{name:'Spring bean instances',exact:true}).innerText()).includes('notificationDispatcher'),'Beans columns expose the selected application component');
+  await page.getByRole('tab',{name:'Health',exact:true}).click();
+  assert((await page.getByRole('tree',{name:'Application health',exact:true}).innerText()).includes('PostgreSQL'),'Health view exposes the captured database state');
   await page.getByRole('tab',{name:'Environment',exact:true}).click();
-  assert((await page.locator('.debug-spring-snapshot').innerText()).includes('notifyhub.rate-limit'),'Environment view exposes relevant application configuration');
+  await page.getByRole('treeitem',{name:'application.yml',exact:true}).click();
+  assert((await page.getByRole('tree',{name:'Environment property sources',exact:true}).innerText()).includes('notifyhub.rate-limit')&&await page.locator('.spring-masked-value').count()>10,'Environment groups browse configuration with masked values');
   await page.getByRole('tab',{name:'Threads & Variables',exact:true}).click();
   const grip=page.getByRole('separator',{name:'Resize debugger',exact:true}),oldHeight=await page.locator('#debugger').evaluate(e=>e.clientHeight);
   await grip.focus();await page.keyboard.press('ArrowUp');

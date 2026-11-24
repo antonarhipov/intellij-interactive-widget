@@ -14,20 +14,23 @@ function rightToolbar(){return `<aside class="right-rail" aria-label="Additional
 function editorTabsMenuContent(){
   return [{label:'Recent Files',shortcut:'⌘E'},{label:'Recent Locations',shortcut:'⇧⌘E'},{label:'Go to File…',shortcut:'⇧⌘N'},null,{label:'Close All Tabs'},{label:'Close Unmodified Tabs'},{label:'Reopen Closed Tab'},null,{label:'Bookmark Open Tabs…'},null,{label:'Configure Editor Tabs…'}].map(item=>item?`<button role="menuitem" aria-disabled="true" tabindex="-1"><span>${item.label}</span>${item.shortcut?`<span class="editor-tab-menu-shortcut">${item.shortcut}</span>`:''}</button>`:'<hr role="separator">').join('');
 }
+function runActionsMenuContent(){
+  return [['run-coverage',"Run 'NotifyHubApplication' with Coverage"],['run-profiler',"Profile 'NotifyHubApplication' with 'IntelliJ Profiler'"],['run-apply-diffs',"Run and Apply Diffs 'NotifyHubApplication'"]].map(([name,label])=>`<button role="menuitem" aria-disabled="true" tabindex="-1">${editorIcon(name)}<span>${esc(label)}</span></button>`).join('')+'<hr role="separator"><div class="run-menu-heading">Configuration</div><button role="menuitem" aria-disabled="true" tabindex="-1" class="run-menu-text">Edit…</button><button role="menuitem" aria-disabled="true" tabindex="-1" class="run-menu-text">Delete</button>';
+}
 function editorToolbarMenu(kind,anchor){
   if(anchor.getAttribute('aria-expanded')==='true'){closeOverlay();return}
   closeOverlay();overlayPreviousFocus=anchor;
-  const agents=kind==='new-session-menu',tabs=kind==='editor-tabs-menu',r=(agents?anchor.closest('.new-session-widget'):anchor).getBoundingClientRect(),config=kind==='run-config-menu';
-  const width=Math.min(config?322:agents?172:tabs?203:244,innerWidth-16),left=Math.max(8,Math.min(innerWidth-width-8,r.left-(agents?8:0)));
+  const agents=kind==='new-session-menu',tabs=kind==='editor-tabs-menu',run=kind==='run-more-menu',r=(agents?anchor.closest('.new-session-widget'):anchor).getBoundingClientRect(),config=kind==='run-config-menu';
+  const width=Math.min(config?322:agents?172:tabs?203:run?388:244,innerWidth-16),left=Math.max(8,Math.min(innerWidth-width-8,r.left-(agents?8:run?130:0)));
   let content;
   if(config)content=`<div class="run-config-option" role="menuitem" tabindex="0" aria-current="true">${runningConfigurationIcon()}<span>NotifyHubApplication</span><span class="config-actions">${runControls(true)}<button class="icon-button" disabled aria-label="More configuration actions">${editorIcon('more')}</button></span></div><hr><button role="menuitem" disabled class="config-text-option">Current File</button><hr><button role="menuitem" disabled class="config-text-option">Edit Configurations…</button>`;
-  else if(kind==='run-more-menu')content=`<button role="menuitem" data-action="execution-point">Show Execution Point</button><hr><button role="menuitem" disabled>Attach to Process…</button><button role="menuitem" disabled>Edit Configurations…</button>`;
+  else if(run)content=runActionsMenuContent();
   else if(agents)content=sessionAgentMenu();
   else if(tabs)content=editorTabsMenuContent();
-  else content=`<button role="menuitem" disabled>Settings…</button><button role="menuitem" disabled>Plugins…</button><hr>${automaticTourMenu()}<hr><button role="menuitem" data-action="about">About this prototype</button>`;
-  $('#overlay-root').innerHTML=`<div class="menu native-toolbar-menu ${config?'run-configuration-menu':agents?'agent-selector-menu':tabs?'editor-tabs-menu':''}" role="menu" aria-label="${config?'Run / Debug Configurations':agents?'New Session':tabs?'Editor tab actions':kind==='run-more-menu'?'Run actions':'IDE and Project Settings'}" style="left:${left}px;top:${r.bottom+(tabs?1:4)}px;width:${width}px">${content}</div>`;
-  if(tabs){
-    const menu=$('.editor-tabs-menu'),select=row=>$$('[role="menuitem"]',menu).forEach(item=>item.classList.toggle('selected',item===row));
+  else content=`<button role="menuitem" disabled>Settings…</button><button role="menuitem" disabled>Plugins…</button><hr>${automaticTourMenu()}<hr><button role="menuitem" data-action="about">About this widget</button>`;
+  $('#overlay-root').innerHTML=`<div class="menu native-toolbar-menu ${config?'run-configuration-menu':agents?'agent-selector-menu':tabs?'editor-tabs-menu':run?'run-actions-menu':''}" role="menu" aria-label="${config?'Run / Debug Configurations':agents?'New Session':tabs?'Editor tab actions':run?'Run actions':'IDE and Project Settings'}" style="left:${left}px;top:${r.bottom+(tabs?1:4)}px;width:${width}px">${content}</div>`;
+  if(tabs||run){
+    const menu=$('.native-toolbar-menu'),select=row=>$$('[role="menuitem"]',menu).forEach(item=>item.classList.toggle('selected',item===row));
     for(const event of ['pointermove','focusin'])menu.addEventListener(event,e=>{const row=e.target.closest('[role="menuitem"]');if(row)select(row)});
     const top=Math.max(8,Math.min(r.bottom+1,innerHeight-menu.offsetHeight-8));menu.style.top=top+'px';
   }

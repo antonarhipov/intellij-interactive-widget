@@ -42,6 +42,15 @@ assets = {name: (platform, resource) for name, resource in {
     'vcs-push': 'expui/vcs/push_dark.svg',
     'vcs-fetch': 'expui/vcs/fetch_dark.svg',
     'vcs-favorite': 'expui/nodes/star_dark.svg',
+    'step-over': 'expui/run/stepOver_dark.svg',
+    'run-coverage': 'expui/run/runWithCoverage_dark.svg',
+    'run-profiler': 'expui/run/profile_dark.svg',
+    'spring-success': 'expui/general/greenCheckmark_dark.svg',
+    'spring-object': 'expui/fileTypes/json_dark.svg',
+    'spring-context': 'expui/general/copy_dark.svg',
+    'spring-values': 'expui/general/show_dark.svg',
+    'spring-dependencies': 'expui/general/showAsTree_dark.svg',
+    'spring-inherited': 'expui/general/autoscrollFromSource_dark.svg',
 }.items()}
 assets.update({
     'tool-terminal': ('plugins/terminal/lib/terminal.jar', 'icons/expui/toolwindow/terminal@20x20_dark.svg'),
@@ -51,6 +60,9 @@ assets.update({
     'vcs-tag': ('lib/intellij.platform.vcs.dvcs.impl.shared.jar', 'icons/new/branchLabel_dark.svg'),
     'spring-property': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/gutter/springProperty@14x14_dark.svg'),
     'spring-web': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/springWeb_dark.svg'),
+    'spring-profile': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/springProfile_dark.svg'),
+    'spring-java-config': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/springJavaConfig_dark.svg'),
+    'spring-health': ('plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.run.jar', 'icons/expui/springBootHealth_dark.svg'),
     'spring-boot': ('plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.shared.jar', 'icons/expui/springBoot_dark.svg'),
     'database': ('plugins/DatabaseTools/lib/modules/intellij.database.jar', 'icons/expui/dbms@20x20_dark.svg'),
     'maven': ('plugins/maven-plugin/lib/intellij.maven.jar', 'images/expui/toolwindow/maven@20x20_dark.svg'),
@@ -65,7 +77,8 @@ assets.update({
         'copilot': 'icons/copilot_dark.svg', 'cloud': 'icons/cloud_dark.svg',
     }.items()
 })
-manifest = {}
+previous = json.loads((DEST / 'sources.json').read_text()) if (DEST / 'sources.json').exists() else {}
+manifest = {name: previous[name] for name in previous if name in assets}
 for name, (jar, resource) in assets.items():
     with zipfile.ZipFile(IDE / jar) as archive:
         (DEST / (name + '.svg')).write_bytes(archive.read(resource))

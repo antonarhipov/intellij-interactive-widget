@@ -202,5 +202,53 @@
   "session-filters": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar",
     "resource": "icons/sessionFiltersAndView_dark.svg"
+  },
+  "step-over": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/stepOver_dark.svg"
+  },
+  "run-coverage": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/runWithCoverage_dark.svg"
+  },
+  "run-profiler": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/run/profile_dark.svg"
+  },
+  "spring-success": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/greenCheckmark_dark.svg"
+  },
+  "spring-object": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/fileTypes/json_dark.svg"
+  },
+  "spring-context": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/copy_dark.svg"
+  },
+  "spring-values": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/show_dark.svg"
+  },
+  "spring-dependencies": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/showAsTree_dark.svg"
+  },
+  "spring-inherited": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/general/autoscrollFromSource_dark.svg"
+  },
+  "spring-profile": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/springProfile_dark.svg"
+  },
+  "spring-java-config": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/springJavaConfig_dark.svg"
+  },
+  "spring-health": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.run.jar",
+    "resource": "icons/expui/springBootHealth_dark.svg"
   }
 }

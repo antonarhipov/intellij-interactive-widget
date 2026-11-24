@@ -1,0 +1,27 @@
+/* Native Spring Boot column browser, Health, and masked Environment views. */
+.debug-spring-snapshot.spring-browser{display:flex;flex:1;min-width:0;flex-direction:column;min-height:0;padding:0;overflow:hidden;font:14px/22px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#ced0d6}
+.spring-subtabs{display:flex;align-items:center;gap:4px;height:28px;min-height:28px;padding:2px 6px;border-bottom:1px solid #2b2c2f}
+.spring-subtabs>button{display:flex;align-items:center;gap:6px;padding:0 10px;height:24px;border:1px solid transparent;border-radius:4px;font:inherit}
+.spring-subtabs>button.active{background:#273a5c;border-color:#3a5b96}.spring-subtabs .icon{width:16px;height:16px}
+.spring-snapshot-body{display:flex;flex:1;min-height:0;overflow:hidden}
+.spring-view-tools{display:flex;align-items:center;flex-direction:column;flex-shrink:0;gap:3px;width:34px;padding:3px 0;border-right:1px solid #2b2c2f;overflow-y:auto;scrollbar-width:none}
+.spring-view-tools>.icon-button{width:24px;height:23px;padding:3px;border-radius:4px;position:relative;min-height:23px}.spring-view-tools .icon{width:16px;height:16px}
+.spring-view-tools button:disabled{opacity:1}.spring-view-tools [aria-pressed="true"]{background:#393b3b}.spring-tool-divider{width:20px;min-height:1px;background:#393a3d;margin:1px 0}
+.spring-health-tools>button:first-child:after{content:'';position:absolute;width:4px;height:4px;border-radius:50%;background:#59bc53;right:3px;bottom:2px}
+.spring-bean-columns{flex:1;display:grid;grid-template-columns:minmax(135px,19.3fr) minmax(230px,35.4fr) minmax(160px,21.2fr) minmax(160px,24.1fr);overflow:auto;min-width:0}
+.spring-bean-column{min-height:0;overflow:auto;padding-top:4px;border-right:1px solid #2b2c2f;scrollbar-width:thin}
+.spring-bean-row{display:flex;align-items:center;gap:4px;width:100%;height:20px;padding:0 7px;text-align:left;white-space:nowrap;font:inherit;outline:none;border-radius:0}
+.spring-bean-row>.icon{width:16px;height:16px;flex-shrink:0}.spring-bean-row>span{overflow:hidden;text-overflow:ellipsis}
+.spring-bean-row.selected{background:#313438}.spring-bean-column.focused .spring-bean-row.selected{background:#2e4773}.spring-bean-next{margin-left:auto;flex-shrink:0;border-left:5px solid #ced0d6;border-block:4px solid transparent}.spring-bean-row[data-no-instances]>.spring-bean-next{visibility:hidden}
+.spring-bean-detail-pane{display:flex;align-items:center;justify-content:center;min-height:0;overflow:auto}.spring-nothing-selected{color:#777a80;white-space:nowrap}
+.spring-bean-details{align-self:flex-start;width:100%;padding:8px 12px;overflow-wrap:anywhere;line-height:20px}.spring-bean-detail-title{display:flex;align-items:center;gap:5px;margin-bottom:12px}.spring-bean-detail-title .icon{width:16px;height:16px}.spring-bean-details dl{margin:0 0 12px}.spring-bean-details dt{color:#777a80;margin-top:8px}.spring-bean-details dd{margin:0}
+.spring-tree-scroll{flex:1;min-width:0;overflow:auto;border:1px solid #2b2c2f;border-top:0;scrollbar-width:thin;outline:none}
+.spring-snapshot-tree{min-width:max-content;padding:3px 12px 8px}
+.spring-tree-row{display:flex;align-items:center;gap:5px;width:100%;height:22px;padding:0 8px 0 calc(2px + var(--spring-tree-depth)*18px);text-align:left;white-space:nowrap;font:inherit;outline:none;border-radius:4px}
+.spring-tree-row>.icon{width:16px;height:16px;flex-shrink:0}.spring-tree-row.selected{background:#2e4773}.spring-tree-caret{display:flex;align-items:center;justify-content:center;width:12px;height:16px;flex-shrink:0}.spring-tree-caret>.icon{width:12px;height:12px}
+.spring-property-name{color:#777a80}.spring-property-value{color:#ced0d6}.spring-masked-value{font-weight:600}.spring-tree-row:focus-visible{outline:1px solid #5378b4;outline-offset:-1px}
+.spring-health-tree>.spring-tree-row{margin-left:0}.spring-health-tree>div:first-child .spring-tree-caret,.spring-profile-row>.spring-tree-caret{display:none}
+.spring-health-tree .spring-tree-row:has(.spring-property-name){padding-left:calc(20px + var(--spring-tree-depth)*9px)}.spring-health-tree .spring-tree-row:has(.spring-property-name)>.spring-tree-caret{display:none}
+.spring-health-tree .spring-tree-row:has(.spring-property-name){gap:4px}.spring-profile-row{padding-left:18px}.spring-profile-row .spring-tree-label{margin-left:0}
+.spring-environment .spring-snapshot-tree{padding-top:2px}.spring-environment .spring-tree-row{gap:5px}.spring-environment .spring-tree-row:has(.spring-masked-value){padding-left:26px}.spring-environment .spring-tree-row:has(.spring-masked-value)>.spring-tree-caret{display:none}
+.commit-panel [data-action="commit-options"]:disabled{opacity:1;cursor:default}
