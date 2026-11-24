@@ -37,4 +37,6 @@
 .project-menu-check{display:flex;align-items:center;justify-content:center;width:16px;min-width:16px}
 .project-menu-check>.icon{width:15px;height:15px}
 .project-menu>.jd-menu-divider{height:1px;background:#44464b;margin:5px 2px}
+.project-tool-menu{padding-block:9px}.project-help-symbol{font-size:20px;line-height:20px;font-weight:300;color:#b5b8bf}
+.project-tool-menu [role="menuitemcheckbox"] .session-tool-icon{color:#a8abb2}
 @media(max-width:1300px){.project-panel .project-header{padding-left:13px}}

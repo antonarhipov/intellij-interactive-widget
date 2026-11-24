@@ -1,7 +1,7 @@
 import {spawnSync} from 'node:child_process';
 import {writeFileSync,mkdirSync} from 'node:fs';
 
-const root=new URL('../',import.meta.url),evidence=new URL('evidence/project-v7/',root);
+const root=new URL('../',import.meta.url),evidence=new URL('evidence/project-v7/'+new Date().toISOString().replaceAll(':','-')+'/',root);
 mkdirSync(evidence,{recursive:true});
 const code=String.raw`async page => {
   const checks=[],errors=[],failures=[];
@@ -55,13 +55,13 @@ const code=String.raw`async page => {
     await page.getByRole('button',{name:'Collapse All',exact:true}).click();
     check(await item('src').isVisible()&&await item('main').count()===0,'Collapse All keeps the project root and collapses descendants');
     await page.getByRole('button',{name:'Select Opened File (⌥F1, 1)',exact:true}).click();
-    await options();await page.getByRole('menuitemcheckbox',{name:'Show File Extensions',exact:true}).click();
+    await options();await page.getByRole('menuitem',{name:'Appearance',exact:true}).hover();await page.getByRole('menuitemcheckbox',{name:'Show File Extensions',exact:true}).click();
     check(await item('SecurityConfig.java').isVisible(),'File extension display can be changed through Project options');
-    await options();await page.getByRole('menuitemcheckbox',{name:'Show File Extensions',exact:true}).click();
-    await options();await page.getByRole('menuitem',{name:'Project Snapshot…',exact:true}).click();
+    await options();await page.getByRole('menuitem',{name:'Appearance',exact:true}).hover();await page.getByRole('menuitemcheckbox',{name:'Show File Extensions',exact:true}).click();
+    await page.getByRole('button',{name:'Project view selector',exact:true}).click();await page.getByRole('menuitem',{name:'Project Snapshot…',exact:true}).click();
     await page.getByRole('menuitemcheckbox',{name:'Before session',exact:true}).click();
     check(await item('SecurityConfig').locator('img').count()===1&&!await item('SecurityConfig').evaluate(el=>el.classList.contains('modified')),'Before-session browsing preserves the original file and clears its modified status');
-    await options();await page.getByRole('menuitem',{name:'Project Snapshot…',exact:true}).click();
+    await page.getByRole('button',{name:'Project view selector',exact:true}).click();await page.getByRole('menuitem',{name:'Project Snapshot…',exact:true}).click();
     await page.getByRole('menuitemcheckbox',{name:'Current version',exact:true}).click();
     check(await item('SecurityConfig').evaluate(el=>el.classList.contains('modified')),'Returning to Current version restores the recorded modified status');
     await page.getByRole('button',{name:'Project view selector',exact:true}).click();

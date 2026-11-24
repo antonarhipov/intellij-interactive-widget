@@ -14,6 +14,7 @@ function projectWindowShell(){return `<section class="side-panel project-panel" 
 function initProjectViewState(stored){
   state.projectView=stored?.projectView||'project';
   state.projectShowExtensions=!!stored?.projectShowExtensions;
+  state.projectGroupTabs=stored?.projectGroupTabs!==false;
   if(stored?.projectViewVersion!==7){
     if(!stored?.width||[300,360].includes(stored.width))state.width=396;
     state.expanded=new Set(['','src','src/main','src/main/java','src/main/java/com','src/main/java/com/example','src/main/java/com/example/notifyhub','src/main/java/com/example/notifyhub/config']);
@@ -125,11 +126,46 @@ function projectSearch(initial){
   if(initial!==undefined){input.value=initial;state.projectQuery=initial;renderTree()}
   input.focus();
 }
+function openProjectToolMenu(anchor){
+  if(anchor.getAttribute('aria-expanded')==='true'){closeOverlay();return}
+  closeOverlay();overlayPreviousFocus=anchor;
+  const r=anchor.getBoundingClientRect(),width=Math.min(303,innerWidth-16);
+  const row=(label,action,extra='',symbol='',hint='')=>`<button class="session-tool-row" role="menuitem" aria-label="${esc(label)}" data-action="${action}" ${extra}><span class="session-tool-icon">${symbol}</span><span>${label}</span>${hint?`<span class="session-tool-hint">${hint}</span>`:''}${action.endsWith('submenu')?icon('chevron'):''}</button>`;
+  const group=(label,key)=>row(label,'project-tool-submenu',`data-project-menu="${key}" aria-haspopup="menu" aria-expanded="false"`);
+  $('#overlay-root').innerHTML=`<div class="sessions-menu session-tool-menu project-tool-menu" role="menu" aria-label="Project view options" style="left:${Math.max(8,Math.min(innerWidth-width-8,r.left+9))}px;top:${Math.max(8,Math.min(innerHeight-320,r.top+10))}px;width:${width}px">${group('Behavior','behavior')}${group('Appearance','appearance')}${group('Sort By','sort')}${row('Edit Scopes…','project-native-dismiss')}<hr role="separator">${row('Speed Search','project-search-open','',editorIcon('session-search'),'⌘F or any symbol')}<hr role="separator">${row('Group Tabs','project-group-tabs',`aria-checked="${state.projectGroupTabs}"`,state.projectGroupTabs?icon('check'):'').replace('role="menuitem"','role="menuitemcheckbox"')}${['View Mode','Move to','Resize'].map((label,i)=>row(label,'session-tool-submenu',`data-tool-menu="${i}" aria-haspopup="menu" aria-expanded="false"`)).join('')}<hr role="separator">${row('Remove from Sidebar','project-native-dismiss')}<hr role="separator">${row('Help','about','','<span class="project-help-symbol" aria-hidden="true">?</span>')}</div>`;
+  anchor.setAttribute('aria-expanded','true');$('.project-tool-menu button').focus({preventScroll:true});
+  $$('.project-tool-menu>button').forEach(button=>button.addEventListener('pointerenter',()=>{
+    button.focus({preventScroll:true});
+    if(button.dataset.projectMenu)openProjectToolSubmenu(button);
+    else{closeProjectToolSubmenu();if(button.dataset.toolMenu!==undefined)openSessionToolSubmenu(button);else closeSessionToolSubmenu()}
+  }));
+}
+function closeProjectToolSubmenu(){
+  const anchor=$('.project-tool-menu [data-project-menu][aria-expanded="true"]');$('.project-tool-submenu')?.remove();anchor?.setAttribute('aria-expanded','false');return anchor;
+}
+function openProjectToolSubmenu(anchor,focus=false){
+  closeSessionToolSubmenu();closeProjectToolSubmenu();anchor.setAttribute('aria-expanded','true');
+  const key=anchor.dataset.projectMenu,items=key==='appearance'?[
+    {label:'Show File Extensions',action:'project-extensions',checked:state.projectShowExtensions},
+    {label:'Show Members',checked:false,disabled:true},{label:'Show Visibility Icons',checked:false,disabled:true},
+  ]:key==='behavior'?[
+    {label:'Open Files with Single Click',checked:true,disabled:true},
+    {label:'Open Directories with Single Click',checked:true,disabled:true},
+    {label:'Always Select Opened File',checked:false,disabled:true},
+  ]:[{label:'Name',checked:true,action:'project-native-dismiss'},{label:'Type',checked:false,disabled:true},{label:'Modification Time (Newest First)',checked:false,disabled:true},{label:'Modification Time (Oldest First)',checked:false,disabled:true},'-',{label:'Folders Always on Top',checked:true,disabled:true}];
+  const root=$('.project-tool-menu').getBoundingClientRect(),r=anchor.getBoundingClientRect(),width=key==='appearance'?225:274;
+  const content=items.map(item=>item==='-'?'<hr role="separator">':`<button class="session-menu-choice" role="menuitemcheckbox" aria-checked="${item.checked}" ${item.disabled?'disabled':`data-action="${item.action}"`}><span class="session-option-check">${item.checked?icon('check'):''}</span><span>${item.label}</span></button>`).join('');
+  $('#overlay-root').insertAdjacentHTML('beforeend',`<div class="sessions-menu session-tool-submenu project-tool-submenu" role="menu" aria-label="${esc(anchor.children[1].textContent)}" style="left:${root.right+width<innerWidth-8?root.right-3:Math.max(8,root.left-width+3)}px;top:${r.top-7}px;width:${width}px">${content}</div>`);
+  const sub=$('.project-tool-submenu');sub.style.top=Math.max(8,Math.min(innerHeight-sub.offsetHeight-8,r.top-7))+'px';if(focus)($('button:not(:disabled)',sub)||sub).focus({preventScroll:true});
+}
 function projectAction(name,el){
   switch(name){
-    case 'project-view-menu':projectMenu('Project views',[{label:'Project',action:'project-set-view',value:'project',checked:state.projectView==='project'},{label:'Project Files',action:'project-set-view',value:'files',checked:state.projectView==='files'}],el);return true;
+    case 'project-view-menu':projectMenu('Project views',[{label:'Project',action:'project-set-view',value:'project',checked:state.projectView==='project'},{label:'Project Files',action:'project-set-view',value:'files',checked:state.projectView==='files'},'-',{label:'Project Snapshot…',action:'choose-source'}],el);return true;
     case 'project-set-view':closeOverlay();state.projectView=el.dataset.value;renderTree();persist();return true;
-    case 'project-options':projectMenu('Project view options',[{label:'Show File Extensions',action:'project-extensions',checked:state.projectShowExtensions},'-',{label:'Select Opened File',action:'reveal-file',shortcut:'⌥F1, 1'},{label:'Expand All',action:'expand-all'},{label:'Collapse All',action:'collapse-all'},{label:'Speed Search',action:'project-search-open'},'-',{label:'Project Snapshot…',action:'choose-source'},{label:'Open Commit',action:'project-changes',shortcut:'⌘0'}],el);return true;
+    case 'project-options':openProjectToolMenu(el);return true;
+    case 'project-tool-submenu':openProjectToolSubmenu(el,true);return true;
+    case 'project-native-dismiss':closeOverlay();return true;
+    case 'project-group-tabs':closeOverlay();state.projectGroupTabs=!state.projectGroupTabs;persist();return true;
     case 'project-extensions':closeOverlay();state.projectShowExtensions=!state.projectShowExtensions;renderTree();persist();return true;
     case 'project-search-open':closeOverlay();projectSearch();return true;
     case 'project-search-close':$('.project-speed-search').hidden=true;$('#project-search').value='';state.projectQuery='';renderTree();projectFocus(state.selected);return true;
@@ -142,6 +178,7 @@ function projectAction(name,el){
   }
 }
 function initProjectView(){
+  const more=$('.project-panel [data-action="project-options"]');more.setAttribute('aria-haspopup','menu');more.setAttribute('aria-expanded','false');
   const tree=$('#project-tree');tree.addEventListener('keydown',projectTreeKey);
   tree.addEventListener('contextmenu',e=>{const row=e.target.closest('.tree-row');if(!row)return;e.preventDefault();projectFocus(row.dataset.path);const node=projectTreeNodes.get(row.dataset.path);projectMenu('Project file actions',[{label:node.file?'Open':'Expand / Collapse',action:'project-context-open',path:node.path},...(node.file&&!node.library?[{label:'Show Diff',action:'project-context-diff',path:node.path,disabled:!project().files[node.path]?.status,shortcut:'⌘D'}]:[])],row,{x:e.clientX,y:e.clientY})});
   $('#project-search').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();projectAction('project-search-close')}else if(e.key==='ArrowDown'){e.preventDefault();$('.tree-row',$('#project-tree'))?.focus()}});
