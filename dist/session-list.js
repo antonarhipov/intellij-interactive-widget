@@ -99,8 +99,37 @@ function openSessionSubmenu(anchor,focus=false){
   const sub=$('.sessions-submenu');sub.style.top=Math.max(8,Math.min(innerHeight-sub.offsetHeight-8,r.top-7))+'px';
   if(focus)($('[aria-checked="true"]',sub)||$('button',sub)).focus({preventScroll:true});
 }
+function openSessionsToolMenu(anchor){
+  if(anchor.getAttribute('aria-expanded')==='true'){closeOverlay();return}
+  closeOverlay();overlayPreviousFocus=anchor;
+  const r=anchor.getBoundingClientRect(),width=Math.min(303,innerWidth-16);
+  const row=(label,action,extra='',symbol='',hint='')=>`<button class="session-tool-row" role="menuitem" data-action="${action}" ${extra}><span class="session-tool-icon">${symbol}</span><span>${label}</span>${hint?`<span class="session-tool-hint">${hint}</span>`:''}${action==='session-tool-submenu'?icon('chevron'):''}</button>`;
+  $('#overlay-root').innerHTML=`<div class="sessions-menu session-tool-menu" role="menu" aria-label="Agent Sessions view options" style="left:${Math.max(8,Math.min(innerWidth-width-8,r.left+9))}px;top:${Math.max(8,Math.min(innerHeight-191,r.top+10))}px;width:${width}px">${row('Refresh','session-tool-refresh')}<hr role="separator">${row('Speed Search','session-speed-search','',editorIcon('session-search'),'⌘F or any symbol')}<hr role="separator">${['View Mode','Move to','Resize'].map((label,i)=>row(label,'session-tool-submenu',`data-tool-menu="${i}" aria-haspopup="menu" aria-expanded="false"`)).join('')}<hr role="separator">${row('Remove from Sidebar','session-tool-dismiss')}</div>`;
+  anchor.setAttribute('aria-expanded','true');$('.session-tool-menu button').focus({preventScroll:true});
+  $$('.session-tool-menu>button').forEach(button=>button.addEventListener('pointerenter',()=>{
+    button.focus({preventScroll:true});
+    if(button.dataset.toolMenu!==undefined)openSessionToolSubmenu(button);else closeSessionToolSubmenu();
+  }));
+}
+function closeSessionToolSubmenu(){
+  const anchor=$('.session-tool-menu [aria-expanded="true"]');$('.session-tool-submenu')?.remove();anchor?.setAttribute('aria-expanded','false');return anchor;
+}
+function openSessionToolSubmenu(anchor,focus=false){
+  closeSessionToolSubmenu();anchor.setAttribute('aria-expanded','true');
+  const key=anchor.dataset.toolMenu,choices=key==='0'?['Dock Pinned','Dock Unpinned','Undock','Float','Window']:key==='1'?['Left Top','Left Bottom','Bottom Left','Bottom Right','Right Top','Right Bottom']:['Stretch to Left','Stretch to Right','Stretch to Top','Stretch to Bottom','Maximize Tool Window'];
+  const root=$('.session-tool-menu').getBoundingClientRect(),r=anchor.getBoundingClientRect(),width=209;
+  const content=choices.map((label,i)=>{const checked=key!=='2'&&i===0,resize=key==='2'&&i<2;return `<button class="session-menu-choice" role="${key==='2'?'menuitem':'menuitemradio'}" ${key!=='2'?`aria-checked="${checked}"`:''} ${checked||resize?`data-action="${resize?'session-tool-resize':'session-tool-dismiss'}" data-direction="${i}"`:'disabled'}><span class="session-option-check">${checked?icon('check'):''}</span><span>${label}</span></button>`}).join('');
+  $('#overlay-root').insertAdjacentHTML('beforeend',`<div class="sessions-menu session-tool-submenu" role="menu" aria-label="${esc(anchor.children[1].textContent)}" style="left:${root.right+width<innerWidth-8?root.right-3:Math.max(8,root.left-width+3)}px;top:${r.top-7}px;width:${width}px">${content}</div>`);
+  const sub=$('.session-tool-submenu');sub.style.top=Math.max(8,Math.min(innerHeight-sub.offsetHeight-8,r.top-7))+'px';if(focus)$('button:not(:disabled)',sub).focus({preventScroll:true});
+}
 function sessionsAction(name,el){
   switch(name){
+    case 'sessions-options':openSessionsToolMenu(el);return true;
+    case 'session-tool-submenu':openSessionToolSubmenu(el,true);return true;
+    case 'session-tool-dismiss':closeOverlay();return true;
+    case 'session-tool-refresh':closeOverlay();renderSessionList();return true;
+    case 'session-speed-search':toggleSessionSearch(true);return true;
+    case 'session-tool-resize':state.width=Math.max(220,Math.min(600,state.width+(el.dataset.direction==='0'?-20:20)));document.documentElement.style.setProperty('--sidebar',state.width+'px');closeOverlay();persist();return true;
     case 'session-filter':{const button=$('.sessions-actions [data-action="session-filter"]');openSessionOptions(button.getClientRects().length?button:$('.sessions-panel [data-action="sessions-options"]'));return true}
     case 'session-search-toggle':toggleSessionSearch($('.sessions-search-tools').hidden);return true;
     case 'session-search-close':toggleSessionSearch(false);return true;
@@ -118,15 +147,21 @@ function sessionsAction(name,el){
   }
 }
 function initSessionListUI(){
+  const more=$('.sessions-panel [data-action="sessions-options"]');more.setAttribute('aria-haspopup','menu');more.setAttribute('aria-expanded','false');
   $('#session-search').addEventListener('input',e=>{state.sessionQuery=e.target.value;renderSessionList()});
   $('#session-search').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();toggleSessionSearch(false)}else if(e.key==='ArrowDown'){e.preventDefault();$('.session-item')?.focus()}});
-  document.addEventListener('click',e=>{if($('.sessions-menu')&&!e.target.closest('.sessions-menu,[data-action="session-filter"]'))closeOverlay()});
+  document.addEventListener('click',e=>{if($('.sessions-menu')&&!e.target.closest('.sessions-menu,[data-action="session-filter"],[data-action="sessions-options"]'))closeOverlay()});
   document.addEventListener('keydown',e=>{
+    const searchTarget=e.target.closest('.sessions-panel,.session-tool-menu'),typing=e.target.matches('input,textarea,select');
+    if(searchTarget&&!typing&&((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='f'||!e.metaKey&&!e.ctrlKey&&!e.altKey&&e.key.length===1&&e.key!==' '&&!e.target.closest('.sessions-menu'))){
+      e.preventDefault();e.stopPropagation();toggleSessionSearch(true);if(!e.metaKey&&!e.ctrlKey){$('#session-search').value=e.key;state.sessionQuery=e.key;renderSessionList()}return;
+    }
     const menu=e.target.closest('.sessions-menu');if(!menu)return;
-    const rows=$$('button',menu),i=rows.indexOf(document.activeElement);let target;
+    const rows=$$('button:not(:disabled)',menu),i=rows.indexOf(document.activeElement);let target;
     if(['ArrowDown','ArrowUp','Home','End'].includes(e.key))target=rows[e.key==='Home'?0:e.key==='End'?rows.length-1:(i+(e.key==='ArrowDown'?1:-1)+rows.length)%rows.length];
     else if(e.key==='ArrowRight'&&e.target.matches('[data-action="session-submenu"]'))openSessionSubmenu(e.target,true);
-    else if(e.key==='ArrowLeft'||e.key==='Escape'){if($('.sessions-submenu'))target=closeSessionSubmenu();else closeOverlay()}
+    else if(e.key==='ArrowRight'&&e.target.matches('[data-action="session-tool-submenu"]'))openSessionToolSubmenu(e.target,true);
+    else if(e.key==='ArrowLeft'||e.key==='Escape'){if($('.session-tool-submenu'))target=closeSessionToolSubmenu();else if($('.sessions-submenu'))target=closeSessionSubmenu();else closeOverlay()}
     else if(e.key==='Enter'||e.key===' ')e.target.click();
     else if(e.key==='Tab'){closeOverlay();return}else return;
     e.preventDefault();e.stopPropagation();target?.focus({preventScroll:true});

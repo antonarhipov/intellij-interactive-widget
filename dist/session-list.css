@@ -35,5 +35,11 @@
 .session-menu-row.selected>.session-menu-value{color:inherit}
 .session-menu-choice{display:flex;align-items:center;gap:5px;width:100%;min-height:24px;padding:1px 5px;border-radius:4px;font:inherit;white-space:nowrap;text-align:left}
 .session-option-check{width:16px;height:18px;display:grid;place-items:center;flex-shrink:0}.session-option-check>.icon{width:14px;height:14px}
+.session-tool-menu{padding:8px 10px;background:#27282b}.session-tool-menu hr{margin:3px 0}
+.session-tool-row{display:flex;align-items:center;gap:5px;width:100%;height:24px;padding:0 4px;border-radius:4px;text-align:left;white-space:nowrap;font:inherit}
+.session-tool-icon{display:grid;place-items:center;flex-shrink:0;width:16px;height:18px}.session-tool-icon>.icon{width:16px;height:16px}
+.session-tool-row>.icon{width:10px;height:10px;margin-left:auto;flex-shrink:0}
+.session-tool-hint{margin-left:auto;color:#777a80}
+.session-tool-submenu button:disabled{opacity:.5;cursor:default}.session-tool-submenu button:disabled:hover{background:none}
 @container agent-sessions (max-width:370px){.sessions-actions>button.add-folder-preview{display:none}}
 @container agent-sessions (max-width:270px){.sessions-actions .new-session span{display:none}.sessions-actions .new-session{padding-inline:7px}.sessions-actions .new-session-widget .new-session-dropdown{width:24px}}

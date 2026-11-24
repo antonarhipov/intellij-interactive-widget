@@ -165,7 +165,6 @@ function toolWindowAction(name,el){
     case 'commit-options':toolWindowMenu('Commit view options',[['Show Diff','commit-show-diff'],['Expand All','commit-expand'],['Collapse All','commit-collapse']],el);return true;
     case 'commit-message-history':dialog('Recent Commit Messages','<div class="dialog-body dialog-copy"><p>refine security rules for dashboard service endpoints</p></div>');return true;
     case 'project-options':toolWindowMenu('Project view options',[['Expand All','expand-all'],['Collapse All','collapse-all'],['Open Commit','project-changes']],el);return true;
-    case 'sessions-options':toolWindowMenu('Agent Sessions view options',[['Search Sessions','session-search-toggle'],['Filter and View Options','session-filter']],el);return true;
     case 'sessions-settings':sessionInfo(session());return true;
     case 'sessions-usage':toggleSessionUsage();return true;
     case 'logical-select':{const n=logicalFind(el.dataset.logicalId);if(!n)return true;state.logicalSelected=n.id;state.focusedTool='structure';renderToolWindowVisibility();if(n.path)goToSource(n.path,n.line,state.project);else if(n.library)openLibrarySource(n.library,n.line);else toggleLogical(n.id);renderLogicalStructure();persist();return true}
