@@ -33,7 +33,7 @@ const code=String.raw`async page => {
   check(await frame.locator('.execution-line').getAttribute('data-line')==='65','Embedded widget opens the original paused debugging scene');
   await shot('desktop-widget');
   await page.getByRole('button',{name:'Expand IDE widget',exact:true}).click();await page.waitForFunction(()=>!!document.fullscreenElement);
-  check(await page.evaluate(()=>document.fullscreenElement?.id==='idea-widget-shell'),'Widget expands to fullscreen for detailed exploration');
+  check(await page.evaluate(()=>document.fullscreenElement?.id==='idea-demo'),'Widget and exploration controls expand together to fullscreen');
   await frame.getByRole('button',{name:'Expand notification',exact:true}).click();
   check((await frame.getByRole('tree',{name:'Variables and watches',exact:true}).innerText()).includes('user@example.com'),'Embedded debugger variables remain browsable');
   await shot('fullscreen-debugger');
@@ -94,6 +94,7 @@ const code=String.raw`async page => {
   await page.locator('#idea-widget-shell').scrollIntoViewIfNeeded();await frame.locator('#app[aria-busy="false"]').waitFor();
   await frame.locator('html[data-auto-tour="playing"]').waitFor({timeout:1500});
   check(true,'Embedded enabled playback starts as soon as the widget becomes visible');
+  check(await frame.locator('#auto-tour-annotation').textContent()==='This demo is interactive. Click anywhere to take control.','The first playback callout explains that the demo is interactive');
   await page.mouse.move(640,450);await page.mouse.move(700,470);
   check(await frame.locator('html').getAttribute('data-auto-tour')==='playing','Hovering over the embedded widget does not interrupt playback');
   await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
@@ -103,6 +104,21 @@ const code=String.raw`async page => {
   await frame.locator('html[data-auto-tour="playing"]').waitFor({timeout:1500});
   check(true,'Returning the widget to view immediately resumes its interrupted scene');
   await shot('visible-playback');
+  check(await page.getByText('Interactive demo',{exact:true}).isVisible()&&await page.getByText('Click files, explore agent sessions, inspect debugger variables.',{exact:true}).isVisible(),'A persistent invitation above the IDE explains what can be clicked');
+  await page.getByRole('button',{name:'Explore yourself',exact:true}).click();
+  await frame.locator('html[data-auto-tour="exploring"]').waitFor();
+  check(await page.locator('#idea-demo-state').textContent()==='You’re exploring'&&await page.getByRole('button',{name:'Resume tour',exact:true}).isVisible(),'Explore yourself switches to a clearly labeled manual mode');
+  if(!await frame.locator('.sessions-panel').isVisible())await frame.getByRole('button',{name:'Agent Sessions (⌘2)',exact:true}).click();
+  await frame.locator('[data-session="claude-review"]').click();
+  await page.waitForTimeout(11000);
+  check(await frame.locator('html').getAttribute('data-auto-tour')==='exploring'&&await frame.getByLabel('Claude Code Air TUI transcript',{exact:true}).isVisible(),'Explicit exploration stays paused beyond ten seconds and the IDE remains interactive');
+  await page.getByRole('button',{name:'Expand IDE widget',exact:true}).click();await page.waitForFunction(()=>!!document.fullscreenElement);
+  check(await page.getByRole('button',{name:'Resume tour',exact:true}).isVisible(),'Resume tour remains accessible in fullscreen');
+  await page.getByRole('button',{name:'Resume tour',exact:true}).click();
+  await frame.locator('html[data-auto-tour="playing"]').waitFor({timeout:1500});
+  check(await page.locator('#idea-demo-state').textContent()==='Click to explore','Resume tour explicitly returns control to playback');
+  await page.getByRole('button',{name:'Exit IDE fullscreen',exact:true}).click();await page.waitForFunction(()=>!document.fullscreenElement);
+  await shot('exploration-controls');
   await page.locator('img').evaluateAll(imgs=>Promise.all(imgs.filter(i=>i.complete).map(i=>i.decode())));
   check(external.length>0&&external.every(url=>/^https:\/\/resources\.jetbrains\.com\/storage\/products\/intellij-idea\/video\/overview\/hero\.(mp4|webm)$/.test(url)),'Only the requested original mobile video uses remote media');
   check(writes.length===0,'Landing page and widget issue no write requests');

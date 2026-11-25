@@ -66,10 +66,16 @@ for source in mobile_video.xpath('.//source'):
     source.set('data-src', source.attrib.pop('src'))
 for child in list(content):
     content.remove(child)
-content.append(html.fromstring('''<div class="idea-widget" id="idea-widget-shell" aria-label="Interactive IntelliJ IDEA demo">
+content.append(html.fromstring('''<div class="idea-interactive-demo" id="idea-demo">
+  <div class="idea-demo-toolbar" aria-label="Interactive demo controls">
+    <div class="idea-demo-copy"><div class="idea-demo-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 3 14 9-7 1-3 7-4-17Z"/></svg><strong>Interactive demo</strong><span class="idea-demo-separator" aria-hidden="true">·</span><span id="idea-demo-state" role="status" aria-live="polite">Click to explore</span></div><p>Click files, explore agent sessions, inspect debugger variables.</p></div>
+    <button class="idea-demo-control" id="idea-demo-control" type="button" data-mode="explore" aria-controls="idea-widget">Explore yourself</button>
+  </div>
+  <div class="idea-widget" id="idea-widget-shell" aria-label="Interactive IntelliJ IDEA demo">
   <img class="idea-widget-placeholder" src="https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/hero.png" alt="" loading="lazy">
   <iframe id="idea-widget" title="Interactive IntelliJ IDEA — NotifyHub" data-src="./index.html?workspace=idea-lp" allowfullscreen></iframe>
   <button class="idea-widget-fullscreen" id="idea-widget-fullscreen" type="button" aria-label="Expand IDE widget" title="Expand IDE widget"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5"/></svg></button>
+  </div>
 </div>'''))
 content.append(mobile_player)
 

@@ -12,6 +12,7 @@ const scripts=[...html.matchAll(/<script\b[^>]*src="([^"]+)"/g)].map(m=>m[1]);
 check(scripts.length===1&&scripts[0]==='idea-lp.js'&&!/<script\b(?![^>]*src=)/.test(html),'Only the local landing-page behavior runs; original site and tracking scripts are absent');
 check(!/\s(?:src|poster)="https?:/.test(html)&&!/<link\b[^>]*href="https?:/.test(html),'All page imagery, fonts and styles are local assets');
 check(html.includes('name="robots" content="noindex, nofollow"'),'Landing-page study is excluded from search indexing');
+check(html.includes('id="idea-demo-control"')&&html.includes('Interactive demo</strong>')&&html.includes('Explore yourself'),'Desktop widget includes a persistent interactive invitation and exploration control');
 for(const m of html.matchAll(/(?:src|href|srcset)="(idea-lp-assets\/[^"]+)"/g)){
  const path=m[1].split(/[?#]/)[0];assert.ok(existsSync(new URL(path,root)),path);
 }

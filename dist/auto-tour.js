@@ -11,7 +11,7 @@ class AutomaticTour{
     this.loop=false;try{this.loop=JSON.parse(localStorage.getItem(this.preferenceKey+'-loop'))===true}catch{}
     this.speed=1.5;try{const saved=JSON.parse(localStorage.getItem(this.preferenceKey+'-speed'));if(automaticTourSpeeds.includes(saved))this.speed=saved}catch{}
     this.playing=false;this.hasStarted=false;this.completed=false;this.pace=1;this.position=null;
-    this.visible=false;this.takeoverUntil=0;this.loopUntil=0;this.checkpoint=null;
+    this.visible=false;this.takeoverUntil=0;this.loopUntil=0;this.checkpoint=null;this.exploring=false;this.introShown=false;
     this.cursor=document.createElement('div');this.cursor.id='auto-tour-cursor';this.cursor.setAttribute('aria-hidden','true');this.cursor.hidden=true;
     this.cursor.innerHTML='<span class="tour-cursor-core"></span><span class="tour-click-ring"></span><svg class="tour-cursor-pointer" viewBox="0 0 20 24"><path d="M2 2v17l4.6-4.4 3.8 7.4 3-1.6-3.8-7.2H16Z" fill="#16171a" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>';document.body.append(this.cursor);
     this.annotation=document.createElement('div');this.annotation.id='auto-tour-annotation';this.annotation.setAttribute('role','status');this.annotation.setAttribute('aria-live','polite');this.annotation.setAttribute('aria-atomic','true');this.annotation.hidden=true;document.body.append(this.annotation);
@@ -25,6 +25,12 @@ class AutomaticTour{
     document.addEventListener('visibilitychange',()=>{if(document.hidden)this.stop('paused');else this.schedule()});
     window.addEventListener('resize',()=>{this.stop('paused');this.schedule()});
     this.motion.addEventListener('change',()=>{this.stop('paused');this.schedule()});
+    window.addEventListener('message',e=>{
+      if(window.parent===window||e.source!==window.parent||e.origin!==location.origin||e.data?.type!=='idea-widget-tour-control')return;
+      if(e.data.action==='explore')this.explore();
+      if(e.data.action==='resume')this.resume();
+      if(e.data.action==='state')this.status(document.documentElement.dataset.autoTour);
+    });
     // The implicit viewport includes ancestor-frame clipping, so an embedded
     // tour also pauses while its landing-page section is offscreen.
     this.visibility=new IntersectionObserver(([entry])=>{
@@ -33,7 +39,17 @@ class AutomaticTour{
     },{threshold:.001});
     this.visibility.observe(document.documentElement);this.schedule();
   }
-  status(value){document.documentElement.dataset.autoTour=value}
+  status(value){
+    if(this.exploring)value='exploring';
+    document.documentElement.dataset.autoTour=value;
+    if(window.parent!==window)window.parent.postMessage({type:'idea-widget-tour-state',status:value,exploring:this.exploring,enabled:this.enabled,remaining:Math.max(0,this.takeoverUntil-performance.now())},location.origin);
+  }
+  explore(){this.introShown=true;this.exploring=true;this.stop('exploring')}
+  resume(){
+    this.exploring=false;this.takeoverUntil=0;this.loopUntil=0;
+    if(this.completed)this.reset();
+    if(!this.enabled)this.setEnabled(true);else this.schedule();
+  }
   setEnabled(enabled){
     this.enabled=enabled;try{localStorage.setItem(this.preferenceKey,JSON.stringify(enabled))}catch{}
     if(enabled){this.reset();this.takeoverUntil=0}
@@ -53,6 +69,7 @@ class AutomaticTour{
   reset(){this.hasStarted=false;this.completed=false;this.checkpoint=null;this.loopUntil=0}
   schedule(delay=0){
     clearTimeout(this.timer);
+    if(this.exploring){this.status('exploring');return}
     if(!this.enabled){this.status('off');return}
     if(document.body.classList.contains('survivors-open')){this.status('paused');return}
     if(this.playing)return;
@@ -70,7 +87,7 @@ class AutomaticTour{
     this.status(this.enabled?(this.completed?'complete':status):'off');
   }
   async start(){
-    if(document.body.classList.contains('survivors-open')||this.playing||this.completed&&!this.loop||!this.enabled||!this.visible||document.hidden)return;
+    if(this.exploring||document.body.classList.contains('survivors-open')||this.playing||this.completed&&!this.loop||!this.enabled||!this.visible||document.hidden)return;
     if(performance.now()<Math.max(this.takeoverUntil,this.loopUntil)){this.schedule();return}
     clearTimeout(this.timer);this.controller=new AbortController();const signal=this.controller.signal;
     if(this.completed)this.checkpoint=null;
@@ -80,6 +97,7 @@ class AutomaticTour{
       // dialogs or changed tool windows cannot leave the next target missing.
       closeOverlay();document.activeElement?.blur();getSelection()?.removeAllRanges();
       if(this.checkpoint){state=structuredClone(this.checkpoint.state);document.documentElement.style.setProperty('--sidebar',state.width+'px');renderSidebar();renderTabs();renderContent();renderShellVisibility()}
+      if(window.parent!==window&&!this.introShown){this.introShown=true;await this.annotate('This demo is interactive. Click anywhere to take control.','.editor-island',signal,'inset')}
       await this.walk(signal);
       if(!signal.aborted){this.completed=true;this.checkpoint=null;this.loopUntil=performance.now()+10000;this.stop('complete');if(this.loop)this.schedule()}
     }catch(error){

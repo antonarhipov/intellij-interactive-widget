@@ -1,19 +1,40 @@
 'use strict';
 // Landing-page behavior stays outside the unmodified IDE document.
-const widget=document.querySelector('#idea-widget'),shell=document.querySelector('#idea-widget-shell'),expand=document.querySelector('#idea-widget-fullscreen');
+const widget=document.querySelector('#idea-widget'),shell=document.querySelector('#idea-widget-shell'),expand=document.querySelector('#idea-widget-fullscreen'),demo=document.querySelector('#idea-demo'),demoControl=document.querySelector('#idea-demo-control'),demoState=document.querySelector('#idea-demo-state');
 const mobile=matchMedia('(max-width:760px)'),mobileVideo=document.querySelector('#idea-mobile-video');
+let tourReady=false,explicitExploration=false,pendingResume=false;
+const tourControl=action=>widget.contentWindow?.postMessage({type:'idea-widget-tour-control',action},location.origin);
+function showTourState(state){
+  const exploring=explicitExploration||state.exploring||state.status==='paused'&&state.remaining>0;
+  const label=exploring?'You’re exploring':'Click to explore';
+  if(demoState.textContent!==label)demoState.textContent=label;
+  demoControl.textContent=exploring?'Resume tour':'Explore yourself';demoControl.dataset.mode=exploring?'resume':'explore';
+  demo.dataset.exploring=String(exploring);
+}
+window.addEventListener('message',e=>{
+  if(e.source!==widget.contentWindow||e.origin!==location.origin||e.data?.type!=='idea-widget-tour-state')return;
+  tourReady=true;
+  if(explicitExploration&&!e.data.exploring){tourControl('explore');return}
+  if(pendingResume){pendingResume=false;tourControl('resume');return}
+  showTourState(e.data);
+});
+demoControl.addEventListener('click',()=>{
+  const resume=demoControl.dataset.mode==='resume';explicitExploration=!resume;pendingResume=resume&&!tourReady;
+  showTourState({exploring:!resume});loadWidget();
+  if(tourReady)tourControl(resume?'resume':'explore');
+});
 function sizeWidget(){
   const {width,height}=shell.getBoundingClientRect();if(!width||!height)return;
   const virtualWidth=Math.max(1280,width),scale=width/virtualWidth;
   widget.style.width=virtualWidth+'px';widget.style.height=height/scale+'px';widget.style.transform=`scale(${scale})`;
 }
 new ResizeObserver(sizeWidget).observe(shell);sizeWidget();
-const loadWidget=()=>{if(!mobile.matches&&!widget.hasAttribute('src'))widget.src=widget.dataset.src};
+const loadWidget=()=>{if(!mobile.matches&&!widget.hasAttribute('src')){tourReady=false;widget.src=widget.dataset.src}};
 const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting&&e.intersectionRatio>0))loadWidget()},{threshold:.001});observer.observe(shell);
 mobile.addEventListener('change',()=>{if(mobile.matches){widget.removeAttribute('src');delete shell.dataset.ready}else{mobileVideo.pause();sizeWidget();const r=shell.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)loadWidget()}});
-widget.addEventListener('load',()=>{if(!widget.hasAttribute('src'))return;shell.dataset.ready='true';sizeWidget()});
-expand.addEventListener('click',async()=>{loadWidget();if(document.fullscreenElement)await document.exitFullscreen();else if(shell.requestFullscreen)await shell.requestFullscreen();else window.open(widget.dataset.src,'_blank','noopener')});
-document.addEventListener('fullscreenchange',()=>{const full=document.fullscreenElement===shell;expand.setAttribute('aria-label',full?'Exit IDE fullscreen':'Expand IDE widget');expand.title=full?'Exit IDE fullscreen':'Expand IDE widget';requestAnimationFrame(sizeWidget)});
+widget.addEventListener('load',()=>{if(!widget.hasAttribute('src'))return;shell.dataset.ready='true';sizeWidget();tourControl('state')});
+expand.addEventListener('click',async()=>{loadWidget();if(document.fullscreenElement)await document.exitFullscreen();else if(demo.requestFullscreen)await demo.requestFullscreen();else window.open(widget.dataset.src,'_blank','noopener')});
+document.addEventListener('fullscreenchange',()=>{const full=document.fullscreenElement===demo;expand.setAttribute('aria-label',full?'Exit IDE fullscreen':'Expand IDE widget');expand.title=full?'Exit IDE fullscreen':'Expand IDE widget';requestAnimationFrame(sizeWidget)});
 
 // On phones retain the original overview video and its JetBrains controls.
 const player=document.querySelector('.idea-mobile-video'),play=player.querySelector('.vpwc-play-pause'),mute=player.querySelector('.vpwc-mute-toggle'),progress=player.querySelector('.vpwc-progress-area');

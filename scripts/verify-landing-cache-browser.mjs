@@ -68,9 +68,11 @@ try{
     const hoverStops=await frame.locator('html').evaluate(()=>window.hoverStops);if(hoverStops.length)throw Error('Hover interrupted the tour');
     await frame.getByRole('button',{name:'Project (⌘1)',exact:true}).click();
     if(await frame.locator('html').getAttribute('data-auto-tour')==='playing')throw Error('Click must take over');
+    await page.getByRole('button',{name:'Resume tour',exact:true}).waitFor();
     const click=await frame.locator('html').evaluate(()=>{autoTour.pace=.05;return autoTour.takeoverUntil-10000});
     await frame.locator('html[data-auto-tour="playing"]').waitFor({timeout:11500});
     const idle=await frame.locator('html').evaluate(()=>performance.now())-click;if(idle<9900||idle>11500)throw Error('Expected ten-second click takeover');
+    await page.getByRole('button',{name:'Explore yourself',exact:true}).waitFor();
     return {playingThroughSevenHovers:true,hoverStops,clickTakeover:true,resumeAfterMs:idle,errors,warnings,iframe:await page.locator('#idea-widget').getAttribute('src')};
   }`);
   assert.equal(widgetRequests.length,2,'Versioned iframe fetches the real new export');
