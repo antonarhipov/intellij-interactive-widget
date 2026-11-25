@@ -16,6 +16,7 @@
     "verify:database": "node scripts/verify-database.mjs && node scripts/verify-database-browser.mjs",
     "verify:sessions": "node scripts/verify-sessions-browser.mjs",
     "verify:survivors": "node scripts/verify-survivors.mjs && node scripts/verify-survivors-browser.mjs",
-    "verify:landing": "node scripts/verify-idea-lp.mjs && node scripts/verify-idea-lp-browser.mjs"
+    "verify:landing": "node scripts/verify-idea-lp.mjs && node scripts/verify-idea-lp-browser.mjs",
+    "verify:landing-cache": "npm run build:pages && node scripts/verify-landing-cache-browser.mjs"
   }
 }
