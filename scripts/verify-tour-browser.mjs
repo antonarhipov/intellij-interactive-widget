@@ -5,7 +5,7 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root=new URL('../',import.meta.url),runId=new Date().toISOString().replaceAll(':','-');
-const evidence=new URL('output/playwright/auto-tour-v25/'+runId+'/',root);mkdirSync(evidence,{recursive:true});
+const evidence=new URL('output/playwright/auto-tour-click-resume/'+runId+'/',root);mkdirSync(evidence,{recursive:true});
 const wrapper=resolve(homedir(),'.codex/skills/playwright/scripts/playwright_cli.sh');
 const cli=(...args)=>spawnSync('bash',[wrapper,'--session','tour-v24',...args],{encoding:'utf8',maxBuffer:4e6,env:{...process.env,npm_config_loglevel:'silent'}});
 const opened=cli('open','about:blank');if(opened.status||opened.stdout.includes('### Error'))throw Error(opened.stdout+opened.stderr);
@@ -29,7 +29,9 @@ const code=String.raw`async page => {
   try{
     await page.setViewportSize({width:1728,height:1117});await fresh('desktop');
     const saved=await page.evaluate(()=>localStorage.getItem(storageKey));
-    check(await page.evaluate(()=>autoTour.enabled&&!autoTour.playing),'Automatic tour is enabled initially and waits before starting');
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:1500});
+    check(await page.evaluate(()=>autoTour.enabled&&autoTour.playing),'Enabled playback starts immediately when the widget is visible');
+    await page.evaluate(()=>autoTour.stop());
     check(await page.evaluate(()=>autoTour.speed===1.5),'Playback defaults to 1.5 times the previous pace');
     // Remove the controller tab to prove the debugger frame can open it without search.
     await page.evaluate(()=>{state.tabs=state.tabs.filter(t=>t.path!==data.debugger.file);state.active='session:claude-review';renderTabs();renderContent()});
@@ -74,9 +76,10 @@ const code=String.raw`async page => {
         seen('springNavigation',document.documentElement.dataset.autoTourStep==='spring-navigation'&&activeTab()?.path?.endsWith('/NotificationDispatcher.java'));
       };
       window.proofObserver=new MutationObserver(inspect);proofObserver.observe(document.body,{subtree:true,childList:true,attributes:true});document.addEventListener('scroll',inspect,true);
+      autoTour.setEnabled(true);
     });
     await page.waitForFunction(()=>autoTour.playing,null,{timeout:10000});
-    check(await page.locator('#auto-tour-cursor').isVisible(),'Idle autoplay starts and displays its cursor');
+    check(await page.locator('#auto-tour-cursor').isVisible(),'Visible autoplay starts and displays its cursor');
     check(await page.locator('#auto-tour-cursor').evaluate(el=>getComputedStyle(el).pointerEvents==='none'&&el.getAttribute('aria-hidden')==='true'),'Cursor neither intercepts input nor enters the accessibility tree');
     await page.waitForFunction(()=>autoTour.annotation.textContent==='Read Claude’s code review',null,{timeout:15000});await shot('annotation-claude');
     check(await page.locator('#auto-tour-annotation').getAttribute('role')==='status'&&await page.locator('#auto-tour-annotation').getAttribute('aria-live')==='polite','Tour callouts announce concise guidance without taking focus');
@@ -150,12 +153,28 @@ const code=String.raw`async page => {
     await settings().click();check(await page.getByRole('menuitemcheckbox',{name:'Loop playback',exact:true}).count()===0&&await speed().count()===0,'Loop playback and speed are hidden when the automatic tour is disabled');await page.keyboard.press('Escape');
     await settings().click();await toggle().click();await page.waitForFunction(()=>autoTour.playing,null,{timeout:4000});
     check(await page.evaluate(()=>autoTour.enabled),'Enabling the option restarts the tour');
-    await page.locator('#auto-tour-annotation').waitFor({state:'visible'});await page.mouse.move(600,150);check(await page.evaluate(()=>!autoTour.playing)&&await page.locator('#auto-tour-cursor').isHidden()&&await page.locator('#auto-tour-annotation').isHidden(),'A real pointer movement removes the callout immediately and hands control to the visitor');
-    const paused=await page.evaluate(()=>state.active);await page.evaluate(()=>autoTour.schedule(30));await page.waitForTimeout(650);check(await page.evaluate(()=>state.active)===paused&&!await page.evaluate(()=>autoTour.playing),'Interrupted playback cannot restart or fire a delayed click');
-    await startFast();await page.mouse.wheel(0,100);await page.waitForFunction(()=>!autoTour.playing,null,{timeout:1000});check(await page.evaluate(()=>!autoTour.playing),'A real wheel event interrupts playback');
-    await startFast();await page.keyboard.press('Escape');check(await page.evaluate(()=>!autoTour.playing),'Keyboard input interrupts playback');
-    await settings().click();await page.evaluate(()=>{autoTour.setEnabled(true);autoTour.start()});check(await page.evaluate(()=>!autoTour.playing),'Autoplay waits while a visitor has a menu open');await page.keyboard.press('Escape');
-    await page.getByRole('button',{name:'Search Everywhere',exact:true}).click();await page.evaluate(()=>{autoTour.setEnabled(true);autoTour.start()});check(await page.evaluate(()=>!autoTour.playing),'Autoplay waits while the visitor is searching');await page.keyboard.press('Escape');
+    await page.locator('#auto-tour-annotation').waitFor({state:'visible'});await page.mouse.move(600,150);
+    check(await page.evaluate(()=>autoTour.playing)&&await page.locator('#auto-tour-annotation').isVisible(),'Moving and hovering the real pointer leaves playback and its callout running');
+    await page.mouse.wheel(0,100);await page.keyboard.press('Escape');
+    check(await page.evaluate(()=>autoTour.playing),'Scrolling and keyboard input do not trigger click takeover');
+    const interruptedScene=await page.evaluate(()=>autoTour.checkpoint.name);
+    await page.locator('.project-rail').click();
+    check(await page.evaluate(()=>!autoTour.playing)&&await page.locator('#auto-tour-cursor').isHidden()&&await page.locator('#auto-tour-annotation').isHidden(),'A real click immediately pauses playback, clears callouts and lets Project open');
+    const paused=await page.evaluate(()=>state.active);await shot('click-takeover');
+    await page.waitForTimeout(5000);
+    check(await page.evaluate(()=>!autoTour.playing&&state.active)===paused,'No delayed tour click fires during manual takeover');
+    await page.getByRole('button',{name:'Search Everywhere',exact:true}).click();
+    const lastClick=await page.evaluate(()=>autoTour.takeoverUntil-10000),savedDuringTakeover=await page.evaluate(()=>localStorage.getItem(storageKey));
+    await page.waitForTimeout(5500);
+    check(await page.evaluate(()=>!autoTour.playing)&&await page.getByRole('dialog',{name:'Search Everywhere',exact:true}).isVisible(),'Another widget click resets the countdown beyond the first click’s deadline');
+    await page.mouse.move(800,200);
+    check(await page.evaluate(()=>autoTour.takeoverUntil-10000)===lastClick,'Hovering does not extend the ten-second click countdown');
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:6000});
+    const resumed=await page.evaluate(()=>({at:performance.now(),scene:document.documentElement.dataset.autoTourStep}));
+    check(resumed.at-lastClick>=9900&&resumed.at-lastClick<11500&&resumed.scene===interruptedScene,'Playback resumes the interrupted scene ten seconds after the most recent click');
+    check(await page.getByRole('dialog',{name:'Search Everywhere',exact:true}).count()===0,'Resuming restores the tour view after manual navigation and searching');
+    await shot('resumed-scene');await page.evaluate(()=>autoTour.pace=.025);await completed();
+    check(await page.evaluate(()=>localStorage.getItem(storageKey))===savedDuringTakeover,'Resumed playback preserves the saved manual browsing layout');
     // Automation pages stay foregrounded. Exercise the hidden-page handler
     // explicitly, and label that boundary as simulated in the evidence.
     await startFast();await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'))});
@@ -164,11 +183,11 @@ const code=String.raw`async page => {
     await fresh('loop');await page.evaluate(()=>{autoTour.stop();autoTour.pace=.025;window.loopRuns=0;document.addEventListener('auto-tour-step',e=>{if(e.detail==='complete')loopRuns++})});
     await settings().click();const loopToggle=()=>page.getByRole('menuitemcheckbox',{name:'Loop playback',exact:true});
     check(await loopToggle().getAttribute('aria-checked')==='false','Loop playback defaults to off while Automatic tour is enabled');await loopToggle().click();
-    await page.waitForFunction(()=>autoTour.playing,null,{timeout:4000});await completed();await page.waitForFunction(()=>autoTour.playing,null,{timeout:15000});await completed();
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:12000});await completed();await page.waitForFunction(()=>autoTour.playing,null,{timeout:15000});await completed();
     check(await page.evaluate(()=>autoTour.loop&&loopRuns===2),'Loop playback automatically completes a second full pass after its pause');
     await page.reload();await settings().waitFor();check(await page.evaluate(()=>autoTour.loop),'The enabled loop preference survives reload');await page.evaluate(()=>{autoTour.pace=.025});
     await settings().click();check(await loopToggle().getAttribute('aria-checked')==='true','Settings shows the saved loop mode');await shot('settings-loop-enabled');await loopToggle().click();
-    await page.waitForFunction(()=>autoTour.playing,null,{timeout:4000});await completed();await page.evaluate(()=>autoTour.schedule(30));await page.waitForTimeout(100);
+    await page.waitForFunction(()=>autoTour.playing,null,{timeout:12000});await completed();await page.evaluate(()=>autoTour.schedule(30));await page.waitForTimeout(100);
     check(await page.evaluate(()=>!autoTour.loop&&autoTour.completed&&!autoTour.playing),'Turning loop playback off returns to a single pass');
     await page.emulateMedia({reducedMotion:'reduce'});await fresh('reduced');check(await page.evaluate(()=>!autoTour.enabled),'Reduced motion defaults the tour to off');
     await settings().click();check(await toggle().getAttribute('aria-checked')==='false','Reduced-motion visitors see the unchecked option');await page.keyboard.press('Escape');

@@ -9,7 +9,7 @@ function sizeWidget(){
 }
 new ResizeObserver(sizeWidget).observe(shell);sizeWidget();
 const loadWidget=()=>{if(!mobile.matches&&!widget.hasAttribute('src'))widget.src=widget.dataset.src};
-const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))loadWidget()},{threshold:.08});observer.observe(shell);
+const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting&&e.intersectionRatio>0))loadWidget()},{threshold:.001});observer.observe(shell);
 mobile.addEventListener('change',()=>{if(mobile.matches){widget.removeAttribute('src');delete shell.dataset.ready}else{mobileVideo.pause();sizeWidget();const r=shell.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)loadWidget()}});
 widget.addEventListener('load',()=>{if(!widget.hasAttribute('src'))return;shell.dataset.ready='true';sizeWidget()});
 expand.addEventListener('click',async()=>{loadWidget();if(document.fullscreenElement)await document.exitFullscreen();else if(shell.requestFullscreen)await shell.requestFullscreen();else window.open(widget.dataset.src,'_blank','noopener')});

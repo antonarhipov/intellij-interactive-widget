@@ -131,6 +131,6 @@ class SurvivorsGame{
   }
   close(){
     if(this.closed)return;this.closed=true;this.saveRecord();this.stopLoop();this.scope.abort();this.root.remove();this.canvas.width=this.canvas.height=0;this.ide.inert=this.wasInert;document.body.classList.remove('survivors-open');this.trigger?.setAttribute('aria-pressed','false');survivorsGame=null;
-    (this.trigger?.isConnected?this.trigger:this.previousFocus)?.focus?.({preventScroll:true});autoTour?.schedule(20000);
+    (this.trigger?.isConnected?this.trigger:this.previousFocus)?.focus?.({preventScroll:true});autoTour?.schedule();
   }
 }

@@ -15,6 +15,7 @@ const code=String.raw`async page=>{
   await page.getByRole('tab',{name:'Threads & Variables',exact:true}).waitFor();
   check(await page.locator('.survivors-overlay').count()===0&&await page.evaluate(()=>survivorsGame===null),'Game and animation remain absent until the tool button is used');
   await page.getByRole('button',{name:'IDE and Project Settings',exact:true}).click();await page.getByRole('menuitemcheckbox',{name:'Automatic tour',exact:true}).click();
+  await page.waitForFunction(()=>autoTour.playing,null,{timeout:1500});
   const original=await page.evaluate(()=>({tabs:JSON.stringify(state.tabs),active:state.active,debug:JSON.stringify(state.debugExpanded),scene:localStorage.getItem(storageKey)}));
   await page.getByRole('button',{name:'IDE Survivors',exact:true}).click();await page.getByRole('button',{name:'Start run',exact:true}).waitFor();
   check(await page.getByRole('dialog',{name:'IDE Survivors',exact:true}).isVisible(),'Right-side Runzo tool button opens the game');

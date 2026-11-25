@@ -1,5 +1,5 @@
 'use strict';
-// The tour operates the same read-only controls as a visitor. Trusted input
+// The tour operates the same read-only controls as a visitor. A visitor click
 // cancels the current animation before the application's click handler runs.
 let autoTour=null;
 const automaticTourSpeeds=[.5,1,1.5,2,3];
@@ -11,45 +11,55 @@ class AutomaticTour{
     this.loop=false;try{this.loop=JSON.parse(localStorage.getItem(this.preferenceKey+'-loop'))===true}catch{}
     this.speed=1.5;try{const saved=JSON.parse(localStorage.getItem(this.preferenceKey+'-speed'));if(automaticTourSpeeds.includes(saved))this.speed=saved}catch{}
     this.playing=false;this.hasStarted=false;this.completed=false;this.pace=1;this.position=null;
+    this.visible=false;this.takeoverUntil=0;this.loopUntil=0;this.checkpoint=null;
     this.cursor=document.createElement('div');this.cursor.id='auto-tour-cursor';this.cursor.setAttribute('aria-hidden','true');this.cursor.hidden=true;
     this.cursor.innerHTML='<span class="tour-cursor-core"></span><span class="tour-click-ring"></span><svg class="tour-cursor-pointer" viewBox="0 0 20 24"><path d="M2 2v17l4.6-4.4 3.8 7.4 3-1.6-3.8-7.2H16Z" fill="#16171a" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>';document.body.append(this.cursor);
     this.annotation=document.createElement('div');this.annotation.id='auto-tour-annotation';this.annotation.setAttribute('role','status');this.annotation.setAttribute('aria-live','polite');this.annotation.setAttribute('aria-atomic','true');this.annotation.hidden=true;document.body.append(this.annotation);
     const activity=e=>{
-      if(!e.isTrusted||e.type==='pointermove'&&!e.movementX&&!e.movementY)return;
+      if(!e.isTrusted)return;
+      this.takeoverUntil=performance.now()+10000;
       if(this.playing)this.stop('paused');
-      this.schedule(20000);
+      this.schedule();
     };
-    for(const type of ['pointerdown','pointermove','click','wheel','keydown','touchstart'])document.addEventListener(type,activity,{capture:true,passive:true});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)this.stop('paused');else this.schedule(6000)});
-    window.addEventListener('resize',()=>{this.stop('paused');this.schedule(6000)});
-    this.motion.addEventListener('change',()=>{this.stop('paused');this.schedule(6000)});
-    this.schedule(5000);
+    for(const type of ['pointerdown','click'])document.addEventListener(type,activity,{capture:true,passive:true});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)this.stop('paused');else this.schedule()});
+    window.addEventListener('resize',()=>{this.stop('paused');this.schedule()});
+    this.motion.addEventListener('change',()=>{this.stop('paused');this.schedule()});
+    // The implicit viewport includes ancestor-frame clipping, so an embedded
+    // tour also pauses while its landing-page section is offscreen.
+    this.visibility=new IntersectionObserver(([entry])=>{
+      this.visible=entry.isIntersecting&&entry.intersectionRatio>0;
+      if(this.visible)this.schedule();else this.stop('paused');
+    },{threshold:.001});
+    this.visibility.observe(document.documentElement);this.schedule();
   }
   status(value){document.documentElement.dataset.autoTour=value}
   setEnabled(enabled){
     this.enabled=enabled;try{localStorage.setItem(this.preferenceKey,JSON.stringify(enabled))}catch{}
-    if(enabled){this.hasStarted=false;this.completed=false}
-    this.stop(enabled?'waiting':'off');if(enabled)this.schedule(1200);
+    if(enabled){this.reset();this.takeoverUntil=0}
+    this.stop(enabled?'waiting':'off');if(enabled)this.schedule();
   }
   setLoop(loop){
     this.loop=loop;try{localStorage.setItem(this.preferenceKey+'-loop',JSON.stringify(loop))}catch{}
-    this.hasStarted=false;this.completed=false;this.stop(this.enabled?'waiting':'off');
-    if(this.enabled)this.schedule(1200);
+    this.reset();this.stop(this.enabled?'waiting':'off');
+    if(this.enabled)this.schedule();
   }
   setSpeed(speed){
     if(!automaticTourSpeeds.includes(speed))return;
     this.speed=speed;try{localStorage.setItem(this.preferenceKey+'-speed',JSON.stringify(speed))}catch{}
-    this.hasStarted=false;this.completed=false;this.stop(this.enabled?'waiting':'off');
-    if(this.enabled)this.schedule(1200);
+    this.reset();this.stop(this.enabled?'waiting':'off');
+    if(this.enabled)this.schedule();
   }
-  schedule(delay){
+  reset(){this.hasStarted=false;this.completed=false;this.checkpoint=null;this.loopUntil=0}
+  schedule(delay=0){
     clearTimeout(this.timer);
     if(!this.enabled){this.status('off');return}
     if(document.body.classList.contains('survivors-open')){this.status('paused');return}
-    if(this.hasStarted&&!(this.loop&&this.completed)){if(!this.playing)this.status(this.completed?'complete':'paused');return}
-    if(document.hidden)return;
-    this.status(this.playing?'playing':'waiting');
-    this.timer=setTimeout(()=>this.start(),delay);
+    if(this.playing)return;
+    if(this.completed&&!this.loop){this.status('complete');return}
+    if(!this.visible||document.hidden){this.status('paused');return}
+    this.status(this.hasStarted&&!this.completed?'paused':'waiting');
+    this.timer=setTimeout(()=>this.start(),Math.max(delay,this.takeoverUntil-performance.now(),this.loopUntil-performance.now()));
   }
   stop(status='paused'){
     clearTimeout(this.timer);this.controller?.abort();this.controller=null;this.playing=false;
@@ -60,14 +70,18 @@ class AutomaticTour{
     this.status(this.enabled?(this.completed?'complete':status):'off');
   }
   async start(){
-    if(document.body.classList.contains('survivors-open')||this.playing||this.hasStarted&&!(this.loop&&this.completed)||!this.enabled||document.hidden)return;
-    // Let visitors finish menus, dialogs, text selection and search first.
-    if($('#overlay-root').childElementCount||$('.air-output-options[open]')||!getSelection()?.isCollapsed||document.activeElement?.matches('input,textarea,[contenteditable="true"]')){this.schedule(4000);return}
+    if(document.body.classList.contains('survivors-open')||this.playing||this.completed&&!this.loop||!this.enabled||!this.visible||document.hidden)return;
+    if(performance.now()<Math.max(this.takeoverUntil,this.loopUntil)){this.schedule();return}
     clearTimeout(this.timer);this.controller=new AbortController();const signal=this.controller.signal;
+    if(this.completed)this.checkpoint=null;
     this.hasStarted=true;this.completed=false;this.playing=true;this.status('playing');this.cursor.hidden=false;
     try{
+      // Rebuild the interrupted scene after manual browsing, so closed tabs,
+      // dialogs or changed tool windows cannot leave the next target missing.
+      closeOverlay();document.activeElement?.blur();getSelection()?.removeAllRanges();
+      if(this.checkpoint){state=structuredClone(this.checkpoint.state);document.documentElement.style.setProperty('--sidebar',state.width+'px');renderSidebar();renderTabs();renderContent();renderShellVisibility()}
       await this.walk(signal);
-      if(!signal.aborted){this.completed=true;this.stop('complete');if(this.loop)this.schedule(10000)}
+      if(!signal.aborted){this.completed=true;this.checkpoint=null;this.loopUntil=performance.now()+10000;this.stop('complete');if(this.loop)this.schedule()}
     }catch(error){
       if(signal.aborted)return;
       this.stop('paused');document.documentElement.dataset.autoTourStep='unavailable';
@@ -178,15 +192,19 @@ class AutomaticTour{
   }
   async scene(name,run,signal){
     this.check(signal);document.documentElement.dataset.autoTourStep=name;
+    this.checkpoint={name,state:structuredClone(state)};
     document.dispatchEvent(new CustomEvent('auto-tour-step',{detail:name}));await run();
   }
   async sessions(signal){if(!$('.sessions-panel').getClientRects().length){await this.annotate('Browse your agent sessions','.sessions-rail',signal,'right');await this.click('.sessions-rail',signal)}}
   async walk(signal){
-    const scene=(name,run)=>this.scene(name,run,signal);
+    const resume=this.checkpoint?.name;let reached=!resume;
+    const scene=(name,run)=>{if(!reached&&name!==resume)return;reached=true;return this.scene(name,run,signal)};
     // Reset only the presentation details needed for this demonstration.
-    if(state.showDatabase){state.showDatabase=false;renderDatabaseVisibility()}
-    state.sessionQuery='';$('#session-search').value='';$('.sessions-actions').hidden=false;$('.sessions-search-tools').hidden=true;renderSessionList();
-    for(const t of state.tabs.filter(t=>t.type==='session')){t.scroll=0;t.activityOpen=false;t.toolGroups={};t.toolEntries={};t.toolOutputExpanded={};t.terminalTools={}}
+    if(!resume){
+      if(state.showDatabase){state.showDatabase=false;renderDatabaseVisibility()}
+      state.sessionQuery='';$('#session-search').value='';$('.sessions-actions').hidden=false;$('.sessions-search-tools').hidden=true;renderSessionList();
+      for(const t of state.tabs.filter(t=>t.type==='session')){t.scroll=0;t.activityOpen=false;t.toolGroups={};t.toolEntries={};t.toolOutputExpanded={};t.terminalTools={}}
+    }
     await scene('agent-sessions',async()=>{await this.sessions(signal)});
     await scene('claude-session',async()=>{await this.annotate('Read Claude’s code review','[data-session="claude-review"]',signal);await this.click('[data-session="claude-review"]',signal,4500)});
     await scene('claude-review',async()=>{await this.annotate('Explore the review findings','.claude-scroll',signal,'inset');await this.scroll('.claude-scroll',.45,signal,5500);await this.scroll('.claude-scroll',1,signal,5500)});
@@ -222,5 +240,5 @@ class AutomaticTour{
     document.documentElement.dataset.autoTourStep='complete';document.dispatchEvent(new CustomEvent('auto-tour-step',{detail:'complete'}));
   }
 }
-function automaticTourMenu(){return `<button class="automatic-tour-option" role="menuitemcheckbox" aria-checked="${!!autoTour?.enabled}" data-action="toggle-auto-tour"><span>Automatic tour</span><span class="grow"></span>${autoTour?.enabled?icon('check'):''}</button>${autoTour?.enabled?`<button class="automatic-tour-option automatic-tour-loop" role="menuitemcheckbox" aria-checked="${autoTour.loop}" data-action="toggle-auto-tour-loop"><span>Loop playback</span><span class="grow"></span>${autoTour.loop?icon('check'):''}</button><label class="automatic-tour-speed" for="auto-tour-speed"><span>Playback speed</span><select id="auto-tour-speed" aria-label="Playback speed">${automaticTourSpeeds.map(speed=>`<option value="${speed}" ${speed===autoTour.speed?'selected':''}>${speed}×</option>`).join('')}</select></label><p class="automatic-tour-hint">${autoTour.loop?'Repeats after a short pause.':'Plays once. Toggle off and on to replay.'} Interact to take over.</p>`:''}`}
+function automaticTourMenu(){return `<button class="automatic-tour-option" role="menuitemcheckbox" aria-checked="${!!autoTour?.enabled}" data-action="toggle-auto-tour"><span>Automatic tour</span><span class="grow"></span>${autoTour?.enabled?icon('check'):''}</button>${autoTour?.enabled?`<button class="automatic-tour-option automatic-tour-loop" role="menuitemcheckbox" aria-checked="${autoTour.loop}" data-action="toggle-auto-tour-loop"><span>Loop playback</span><span class="grow"></span>${autoTour.loop?icon('check'):''}</button><label class="automatic-tour-speed" for="auto-tour-speed"><span>Playback speed</span><select id="auto-tour-speed" aria-label="Playback speed">${automaticTourSpeeds.map(speed=>`<option value="${speed}" ${speed===autoTour.speed?'selected':''}>${speed}×</option>`).join('')}</select></label><p class="automatic-tour-hint">${autoTour.loop?'Repeats after a short pause.':'Plays once. Toggle off and on to replay.'} Click to take over. Resumes after 10 seconds without a click.</p>`:''}`}
 function initAutomaticTour(){autoTour=new AutomaticTour()}
