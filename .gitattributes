@@ -1,0 +1,3 @@
+# Preserve captured visual assets exactly, including their original line endings.
+dist/idea-lp-assets/** -text -diff
+dist/idea-lp-assets/*.json text diff

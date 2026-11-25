@@ -1,0 +1,1 @@
+@layer common{.slide{height:100%;position:relative}.slide img{object-fit:cover;object-position:top left;border-radius:8px 0 0 8px;width:100%;height:100%}.slide_panel-left img{border-radius:0 8px 8px 0}}

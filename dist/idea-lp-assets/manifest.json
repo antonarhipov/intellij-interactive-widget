@@ -1,0 +1,1326 @@
+{
+  "source_page": "https://www.jetbrains.com/idea/",
+  "captured_at": "2026-11-25T16:37:13.992703+00:00",
+  "purpose": "Separate IDEA landing-page prototype; JetBrains images/fonts preserved; CSS resource URLs localized. No original video files or scripts.",
+  "stylesheet_order": [
+    "https://www.jetbrains.com/_assets/rr/root-ErA1rNGF.css",
+    "https://www.jetbrains.com/_assets/rr/use-page-i18n-CzEIXjsK.css",
+    "https://www.jetbrains.com/_assets/rr/layout-MH8gnJFp.css",
+    "https://www.jetbrains.com/_assets/rr/default-layout-styles-mnZltmNi.css",
+    "https://www.jetbrains.com/_assets/rr/use-cart-info-C6PWm-n_.css",
+    "https://www.jetbrains.com/_assets/rr/CSSTransition-DR3alLQ8.css",
+    "https://www.jetbrains.com/_assets/rr/lib-BBExmZte.css",
+    "https://www.jetbrains.com/_assets/rr/lib-CFq-2vGE.css",
+    "https://www.jetbrains.com/_assets/rr/lib-DUxt8iol.css",
+    "https://www.jetbrains.com/_assets/rr/lib-DDpKbKD_.css",
+    "https://www.jetbrains.com/_assets/rr/overview-B5Mq4942.css",
+    "https://www.jetbrains.com/_assets/rr/secondary-menu-7tMfoj1R.css",
+    "https://www.jetbrains.com/_assets/rr/security-data-Cmjt0FUZ.css",
+    "https://www.jetbrains.com/_assets/rr/use-themed-value-C2d0BQtL.css",
+    "https://www.jetbrains.com/_assets/rr/rs-responsive-typography-DEZwlH5I.css",
+    "https://www.jetbrains.com/_assets/rr/lib-_BqJxVNU.css",
+    "https://www.jetbrains.com/_assets/rr/snap-carousel-BZ2EZdET.css",
+    "https://www.jetbrains.com/_assets/rr/carousel-controls-BwZMUvwI.css",
+    "https://www.jetbrains.com/_assets/rr/lib-Pe-8qIoG.css",
+    "https://www.jetbrains.com/_assets/rr/lib-Dp0e6lCT.css",
+    "https://www.jetbrains.com/_assets/rr/wechat-contact-widget-B2TqDIak.css",
+    "https://www.jetbrains.com/_assets/rr/text-alignment-CWC2kOnF.css",
+    "https://www.jetbrains.com/_assets/rr/rs-button-size-eAk7Hsm7.css",
+    "https://www.jetbrains.com/_assets/rr/button-stretch-DLbNT5QX.css",
+    "https://www.jetbrains.com/_assets/rr/theme-switcher-B-yknIyl.css",
+    "https://www.jetbrains.com/_assets/rr/download-section-CRCMASl3.css",
+    "https://www.jetbrains.com/_assets/rr/media-viewer-C27ULamS.css",
+    "https://www.jetbrains.com/_assets/rr/lib-iT_fGA0D.css",
+    "https://www.jetbrains.com/_assets/rr/agents-graphic-sm-light-CPQavnRj.css",
+    "https://www.jetbrains.com/_assets/rr/security-section-Dn8XsQqi.css",
+    "https://www.jetbrains.com/_assets/rr/hero-media-BDhNNQft.css",
+    "https://www.jetbrains.com/_assets/rr/lib-C0EhBTtg.css",
+    "https://www.jetbrains.com/_assets/rr/air-section-q_874kHz.css",
+    "https://www.jetbrains.com/_assets/rr/air-wordmark-DTTB9L1r.css",
+    "https://www.jetbrains.com/_assets/rr/features-showcase-section-DSUuxSms.css",
+    "https://www.jetbrains.com/_assets/rr/slideshow-DX4YJqOY.css",
+    "https://www.jetbrains.com/_assets/rr/lib-DsvU7vGt.css",
+    "https://www.jetbrains.com/_assets/rr/slideshow-Db6kMBWN.css",
+    "https://www.jetbrains.com/_assets/rr/slide-B-pAQLnR.css",
+    "https://www.jetbrains.com/_assets/rr/section-tag-otA1dmB_.css"
+  ],
+  "hydrated_stylesheet_order": [
+    "https://www.jetbrains.com/_assets/rr/root-ErA1rNGF.css",
+    "https://www.jetbrains.com/_assets/rr/use-page-i18n-CzEIXjsK.css",
+    "https://www.jetbrains.com/_assets/rr/layout-MH8gnJFp.css",
+    "https://www.jetbrains.com/_assets/rr/default-layout-styles-mnZltmNi.css",
+    "https://www.jetbrains.com/_assets/rr/use-cart-info-C6PWm-n_.css",
+    "https://www.jetbrains.com/_assets/rr/CSSTransition-DR3alLQ8.css",
+    "https://www.jetbrains.com/_assets/rr/lib-BBExmZte.css",
+    "https://www.jetbrains.com/_assets/rr/lib-CFq-2vGE.css",
+    "https://www.jetbrains.com/_assets/rr/lib-DUxt8iol.css",
+    "https://www.jetbrains.com/_assets/rr/lib-DDpKbKD_.css",
+    "https://www.jetbrains.com/_assets/rr/overview-B5Mq4942.css",
+    "https://www.jetbrains.com/_assets/rr/secondary-menu-7tMfoj1R.css",
+    "https://www.jetbrains.com/_assets/rr/security-data-Cmjt0FUZ.css",
+    "https://www.jetbrains.com/_assets/rr/use-themed-value-C2d0BQtL.css",
+    "https://www.jetbrains.com/_assets/rr/rs-responsive-typography-DEZwlH5I.css",
+    "https://www.jetbrains.com/_assets/rr/lib-_BqJxVNU.css",
+    "https://www.jetbrains.com/_assets/rr/snap-carousel-BZ2EZdET.css",
+    "https://www.jetbrains.com/_assets/rr/carousel-controls-BwZMUvwI.css",
+    "https://www.jetbrains.com/_assets/rr/lib-Pe-8qIoG.css",
+    "https://www.jetbrains.com/_assets/rr/lib-Dp0e6lCT.css",
+    "https://www.jetbrains.com/_assets/rr/wechat-contact-widget-B2TqDIak.css",
+    "https://www.jetbrains.com/_assets/rr/text-alignment-CWC2kOnF.css",
+    "https://www.jetbrains.com/_assets/rr/rs-button-size-eAk7Hsm7.css",
+    "https://www.jetbrains.com/_assets/rr/button-stretch-DLbNT5QX.css",
+    "https://www.jetbrains.com/_assets/rr/theme-switcher-B-yknIyl.css",
+    "https://www.jetbrains.com/_assets/rr/download-section-CRCMASl3.css",
+    "https://www.jetbrains.com/_assets/rr/media-viewer-C27ULamS.css",
+    "https://www.jetbrains.com/_assets/rr/lib-iT_fGA0D.css",
+    "https://www.jetbrains.com/_assets/rr/agents-graphic-sm-light-CPQavnRj.css",
+    "https://www.jetbrains.com/_assets/rr/security-section-Dn8XsQqi.css",
+    "https://www.jetbrains.com/_assets/rr/hero-media-BDhNNQft.css",
+    "https://www.jetbrains.com/_assets/rr/lib-C0EhBTtg.css",
+    "https://www.jetbrains.com/_assets/rr/air-section-q_874kHz.css",
+    "https://www.jetbrains.com/_assets/rr/air-wordmark-DTTB9L1r.css",
+    "https://www.jetbrains.com/_assets/rr/features-showcase-section-DSUuxSms.css",
+    "https://www.jetbrains.com/_assets/rr/slideshow-DX4YJqOY.css",
+    "https://www.jetbrains.com/_assets/rr/lib-DsvU7vGt.css",
+    "https://www.jetbrains.com/_assets/rr/slideshow-Db6kMBWN.css",
+    "https://www.jetbrains.com/_assets/rr/slide-B-pAQLnR.css",
+    "https://www.jetbrains.com/_assets/rr/section-tag-otA1dmB_.css",
+    "https://www.jetbrains.com/_assets/rr/use-page-i18n-CzEIXjsK.css",
+    "https://www.jetbrains.com/_assets/rr/use-cart-info-C6PWm-n_.css",
+    "https://resources.jetbrains.com/storage/products/cookie-banner/styles.css"
+  ],
+  "assets": {
+    "https://resources.jetbrains.com/storage/jetbrains-mono/v2.304/webfonts/JetBrainsMono-Bold.woff2": {
+      "path": "idea-lp-assets/a1981a2c29-JetBrainsMono-Bold.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "c503cc5ec5f8b2c7666b7ecda1adf44bd45f2e6579b2eba0fc292150416588a2",
+      "local_sha256": "c503cc5ec5f8b2c7666b7ecda1adf44bd45f2e6579b2eba0fc292150416588a2",
+      "bytes": 94588,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/air/air.svg": {
+      "path": "idea-lp-assets/b81f840340-air.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "5dc916bb3bb9b2ad0c80947329e9847daf3061fe96ec219abffa81d2353acfb0",
+      "local_sha256": "5dc916bb3bb9b2ad0c80947329e9847daf3061fe96ec219abffa81d2353acfb0",
+      "bytes": 3936,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/clion/clion.svg": {
+      "path": "idea-lp-assets/0a9bfc4ccc-clion.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "24cc46455f04f015d21400fbeb1ef899042c3d8cf4ebb9a0f58fa44153ccac72",
+      "local_sha256": "24cc46455f04f015d21400fbeb1ef899042c3d8cf4ebb9a0f58fa44153ccac72",
+      "bytes": 1645,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/compose-multiplatform/compose-multiplatform.svg": {
+      "path": "idea-lp-assets/6da2d91c24-compose-multiplatform.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "5fccaaf92ba1d51614db7c2253bbd2b8526f736646ab87c085a799401c9c98f0",
+      "local_sha256": "5fccaaf92ba1d51614db7c2253bbd2b8526f736646ab87c085a799401c9c98f0",
+      "bytes": 954,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/datagrip/datagrip.svg": {
+      "path": "idea-lp-assets/244677f206-datagrip.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "d940d13d43aaeb0555359ecfd92c9857eda8ccbbdbf307fed3923ad81425bbd6",
+      "local_sha256": "d940d13d43aaeb0555359ecfd92c9857eda8ccbbdbf307fed3923ad81425bbd6",
+      "bytes": 1889,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/datalore/datalore.svg": {
+      "path": "idea-lp-assets/1d8d121534-datalore.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "f499482909229931beaec6c42cb592fed4d3afba4c0bc5d810e62e248557c4d0",
+      "local_sha256": "f499482909229931beaec6c42cb592fed4d3afba4c0bc5d810e62e248557c4d0",
+      "bytes": 1784,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/dotcover/dotcover.svg": {
+      "path": "idea-lp-assets/6902d88f2b-dotcover.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "2d50abeb3bab57b2bd959a6b87462c95f3cb8fa164cb74fc0a6cd2a14b7050a6",
+      "local_sha256": "2d50abeb3bab57b2bd959a6b87462c95f3cb8fa164cb74fc0a6cd2a14b7050a6",
+      "bytes": 2263,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/dotmemory/dotmemory.svg": {
+      "path": "idea-lp-assets/e86d78d5e6-dotmemory.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "1a78bbb2b5969aae9d81f47251fb62f3cc5bf3f48b2bf1bce8f8814937df9b56",
+      "local_sha256": "1a78bbb2b5969aae9d81f47251fb62f3cc5bf3f48b2bf1bce8f8814937df9b56",
+      "bytes": 1861,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/dotpeek/dotpeek.svg": {
+      "path": "idea-lp-assets/a5585dedb0-dotpeek.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "93852d783f06d7b76b20be1755cd589286edab4d668d9297bfc04114a782d432",
+      "local_sha256": "93852d783f06d7b76b20be1755cd589286edab4d668d9297bfc04114a782d432",
+      "bytes": 2008,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/dottrace/dottrace.svg": {
+      "path": "idea-lp-assets/4cd319f232-dottrace.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "5317e6c96569fa3f5c2da2aa222dcb859523fc66acc208e95ca01d37f336fb5b",
+      "local_sha256": "5317e6c96569fa3f5c2da2aa222dcb859523fc66acc208e95ca01d37f336fb5b",
+      "bytes": 1746,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/exposed/exposed.svg": {
+      "path": "idea-lp-assets/8cc2c1d458-exposed.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "be559fe417b683e08818e2e19144c498c551814931412332bd30ef8d6ba8502f",
+      "local_sha256": "be559fe417b683e08818e2e19144c498c551814931412332bd30ef8d6ba8502f",
+      "bytes": 2033,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/goland/goland.svg": {
+      "path": "idea-lp-assets/f2f351c77c-goland.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "b44448bd9a0486c7f2a59b9ade0c7b8d907911dc1d5eec6ad040d76deb31eb9b",
+      "local_sha256": "b44448bd9a0486c7f2a59b9ade0c7b8d907911dc1d5eec6ad040d76deb31eb9b",
+      "bytes": 1998,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/intellij-idea/intellij-idea.svg": {
+      "path": "idea-lp-assets/6c206848e9-intellij-idea.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "666b5bcf7701b9637f23ac2ebcd161566bc53ea67cd381bb9685a302d837a3aa",
+      "local_sha256": "666b5bcf7701b9637f23ac2ebcd161566bc53ea67cd381bb9685a302d837a3aa",
+      "bytes": 970,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/jetbrains-academy/jetbrains-academy.svg": {
+      "path": "idea-lp-assets/c46c1a4d21-jetbrains-academy.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "551f50f223b2e4bcc355a04a9f6652e89220f65f3dcd72312529034210423766",
+      "local_sha256": "551f50f223b2e4bcc355a04a9f6652e89220f65f3dcd72312529034210423766",
+      "bytes": 641,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/junie/junie.svg": {
+      "path": "idea-lp-assets/3bb0890d5a-junie.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "7538303538b7323485817338b1f6929d29b5b98486b794f45506963851797de4",
+      "local_sha256": "7538303538b7323485817338b1f6929d29b5b98486b794f45506963851797de4",
+      "bytes": 261,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/kotlin/kotlin.svg": {
+      "path": "idea-lp-assets/418454069f-kotlin.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "e9ede479f405dab6e7d306d7ebdeb5b2dad37a5c395dbe2f91ef4f8dd855f908",
+      "local_sha256": "e9ede479f405dab6e7d306d7ebdeb5b2dad37a5c395dbe2f91ef4f8dd855f908",
+      "bytes": 433,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/ktor/ktor.svg": {
+      "path": "idea-lp-assets/7d8eb1d377-ktor.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "cd19b1596c2b84603d8c72b5aca84e70801b2b19276613e445687632e1ebc049",
+      "local_sha256": "cd19b1596c2b84603d8c72b5aca84e70801b2b19276613e445687632e1ebc049",
+      "bytes": 479,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/mps/mps.svg": {
+      "path": "idea-lp-assets/d8307289dd-mps.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "1d5a3ba26dfb5a16ac32c301fbb86ad8006f86e26c48ddf7fa83346e09fb4f26",
+      "local_sha256": "1d5a3ba26dfb5a16ac32c301fbb86ad8006f86e26c48ddf7fa83346e09fb4f26",
+      "bytes": 1320,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/phpstorm/phpstorm.svg": {
+      "path": "idea-lp-assets/7af7a98fd7-phpstorm.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "b50c317b81709ee76159df737b415852ca64bb86ec174547eacacd201253066b",
+      "local_sha256": "b50c317b81709ee76159df737b415852ca64bb86ec174547eacacd201253066b",
+      "bytes": 1961,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/pycharm/pycharm.svg": {
+      "path": "idea-lp-assets/c14af9764a-pycharm.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "6f002030bb979b9b5a37495d1b973e935c72871ff5a0994e781bf56b74d620d0",
+      "local_sha256": "6f002030bb979b9b5a37495d1b973e935c72871ff5a0994e781bf56b74d620d0",
+      "bytes": 1753,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/qodana/qodana.svg": {
+      "path": "idea-lp-assets/82b5e2164e-qodana.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "d0c814318ce5a2330ad1c225f5df8182dd60ac5184534e6605c569868617e441",
+      "local_sha256": "d0c814318ce5a2330ad1c225f5df8182dd60ac5184534e6605c569868617e441",
+      "bytes": 2397,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/resharper-cpp/resharper-cpp.svg": {
+      "path": "idea-lp-assets/e47ecd37df-resharper-cpp.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "e50d371cab60234a0b5d5b04cae8ad1e6580ef3068e792543cb6646a68455eed",
+      "local_sha256": "e50d371cab60234a0b5d5b04cae8ad1e6580ef3068e792543cb6646a68455eed",
+      "bytes": 1925,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/resharper/resharper.svg": {
+      "path": "idea-lp-assets/a1fe0b4397-resharper.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "9e6198a64f8edac0ea2a557f7b82ddab056935dfe20937e756fef7f60d59cb44",
+      "local_sha256": "9e6198a64f8edac0ea2a557f7b82ddab056935dfe20937e756fef7f60d59cb44",
+      "bytes": 1878,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/rider/rider.svg": {
+      "path": "idea-lp-assets/af31e7e191-rider.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "fecc5c5841efe9d89424efa46c45b313312222fa4e422bf13e967bfed9c840ea",
+      "local_sha256": "fecc5c5841efe9d89424efa46c45b313312222fa4e422bf13e967bfed9c840ea",
+      "bytes": 1628,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/rubymine/rubymine.svg": {
+      "path": "idea-lp-assets/632299c85e-rubymine.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "fa07fcdf2fb57496fb008b1f010e649c91b3d4f7ad1fb4904bbae1cc3aa4d3ac",
+      "local_sha256": "fa07fcdf2fb57496fb008b1f010e649c91b3d4f7ad1fb4904bbae1cc3aa4d3ac",
+      "bytes": 1387,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/rustrover/rustrover.svg": {
+      "path": "idea-lp-assets/96ddc74ee8-rustrover.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "4572a1519d92725be5f30b91d635cedabc90a23b9a661ad49140f472945fc61e",
+      "local_sha256": "4572a1519d92725be5f30b91d635cedabc90a23b9a661ad49140f472945fc61e",
+      "bytes": 1827,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/teamcity/teamcity.svg": {
+      "path": "idea-lp-assets/ffcc27e73c-teamcity.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "326e52970d71005b877e2bc6f5a42b91c406adbb3c8f8928cf40f06f8a14e872",
+      "local_sha256": "326e52970d71005b877e2bc6f5a42b91c406adbb3c8f8928cf40f06f8a14e872",
+      "bytes": 2018,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/toolbox/toolbox.svg": {
+      "path": "idea-lp-assets/74dccf55e0-toolbox.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "560fb0bd82d78f3755f6159350b84f020da61a0f751299756013146388cbcca7",
+      "local_sha256": "560fb0bd82d78f3755f6159350b84f020da61a0f751299756013146388cbcca7",
+      "bytes": 650,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/webstorm/webstorm.svg": {
+      "path": "idea-lp-assets/4727be8b23-webstorm.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "5f0328195a682aaccb1b8bb7e96f74b89aeea43b9b73760651fc5d0ad523e5db",
+      "local_sha256": "5f0328195a682aaccb1b8bb7e96f74b89aeea43b9b73760651fc5d0ad523e5db",
+      "bytes": 1797,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/logos/web/youtrack/youtrack.svg": {
+      "path": "idea-lp-assets/a2095b9eb5-youtrack.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "8d24afab8dc235cab5d67f6af4a7b0c59233e8b9ef668f9489ee50888a435e08",
+      "local_sha256": "8d24afab8dc235cab5d67f6af4a7b0c59233e8b9ef668f9489ee50888a435e08",
+      "bytes": 947,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/cookie-banner/styles.css": {
+      "path": "idea-lp-assets/310ff7de32-styles.css",
+      "content_type": "text/css",
+      "source_sha256": "b527877667b041a021d22f2e12eaecc66ca5e18aecf9fd4843170ba6d1ac108b",
+      "local_sha256": "6a0fc5afae3872a86db667ba5b60901cd242c096527406d0c5c4f20087745146",
+      "bytes": 10355,
+      "css_urls_rewritten": true
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/1-dark-develop-confidently-poster.png": {
+      "path": "idea-lp-assets/f0ce393ea3-1-dark-develop-confidently-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "169e892493f45edcf0e72698d887f0c4f111cdadccb76baed8001f0231f5dc2e",
+      "local_sha256": "169e892493f45edcf0e72698d887f0c4f111cdadccb76baed8001f0231f5dc2e",
+      "bytes": 886322,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/1-light-develop-confidently-poster.png": {
+      "path": "idea-lp-assets/6786700726-1-light-develop-confidently-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "31a6aa427220fbe962985e27eaa2a0dd0211b54166c41005eeda7ecf31ad011c",
+      "local_sha256": "31a6aa427220fbe962985e27eaa2a0dd0211b54166c41005eeda7ecf31ad011c",
+      "bytes": 709112,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/3-dark-professional-development-poster.png": {
+      "path": "idea-lp-assets/e61d3ede10-3-dark-professional-development-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "d1756caf7a7f799e5f01e52a86ee98891b368fb77aed02e95a55e31573d0f42a",
+      "local_sha256": "d1756caf7a7f799e5f01e52a86ee98891b368fb77aed02e95a55e31573d0f42a",
+      "bytes": 273078,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/3-light-professional-development-poster.png": {
+      "path": "idea-lp-assets/2b72b4bb2f-3-light-professional-development-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "3031c88c70c09433618cd0abff3fdbf893c19319e32187aa60849c17c0bdda39",
+      "local_sha256": "3031c88c70c09433618cd0abff3fdbf893c19319e32187aa60849c17c0bdda39",
+      "bytes": 225091,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/4-dark-code-understanding-poster.png": {
+      "path": "idea-lp-assets/39838f054e-4-dark-code-understanding-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "e3cce3ab51e4e02a463c3fc753088b8714f709263c93ffc65f2daf11cb319207",
+      "local_sha256": "e3cce3ab51e4e02a463c3fc753088b8714f709263c93ffc65f2daf11cb319207",
+      "bytes": 669199,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/4-light-code-understanding-poster.png": {
+      "path": "idea-lp-assets/51bb1fdd4d-4-light-code-understanding-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "95f288e0dd0e7c5f5efd2cba3202b22964f85ea1aaee799e84166d66e13fb618",
+      "local_sha256": "95f288e0dd0e7c5f5efd2cba3202b22964f85ea1aaee799e84166d66e13fb618",
+      "bytes": 467040,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/5-dark-built-in-tools-poster.png": {
+      "path": "idea-lp-assets/f7ca8ca350-5-dark-built-in-tools-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "dfa6df78017188b78d46230a7a2073a0833fbaa938e877ddecaaf1ad368740dd",
+      "local_sha256": "dfa6df78017188b78d46230a7a2073a0833fbaa938e877ddecaaf1ad368740dd",
+      "bytes": 706178,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/5-light-built-in-tools-poster.png": {
+      "path": "idea-lp-assets/021741c059-5-light-built-in-tools-poster.png",
+      "content_type": "image/png",
+      "source_sha256": "5d9c85d69e2e00f6d0fbf98140f5e3b74116f647ee71e6755a067e10e19358b1",
+      "local_sha256": "5d9c85d69e2e00f6d0fbf98140f5e3b74116f647ee71e6755a067e10e19358b1",
+      "bytes": 556541,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/intellij-idea/video/overview/hero.png": {
+      "path": "idea-lp-assets/7085eb86e7-hero.png",
+      "content_type": "image/png",
+      "source_sha256": "2799171ad9df240222d13d83b250b77dfb90913df9f862d40cabe56f52397996",
+      "local_sha256": "2799171ad9df240222d13d83b250b77dfb90913df9f862d40cabe56f52397996",
+      "bytes": 501210,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/bg-air-horizontal.png": {
+      "path": "idea-lp-assets/06700c4d49-bg-air-horizontal.png",
+      "content_type": "image/png",
+      "source_sha256": "e708166c75a8cfe8398b713bd0fb13b06efd49ff925913b115d147a3d3b892ac",
+      "local_sha256": "e708166c75a8cfe8398b713bd0fb13b06efd49ff925913b115d147a3d3b892ac",
+      "bytes": 415891,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/bg-air.png": {
+      "path": "idea-lp-assets/9c3476daa4-bg-air.png",
+      "content_type": "image/png",
+      "source_sha256": "4de5e6328ce4781dc455166731947ca40aeb522c6cc358dd5b42c2bc97b60ee2",
+      "local_sha256": "4de5e6328ce4781dc455166731947ca40aeb522c6cc358dd5b42c2bc97b60ee2",
+      "bytes": 654542,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/download.svg": {
+      "path": "idea-lp-assets/9b26aee490-download.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "cea695d63644b211002867bf9185fe09a17172a7c19ed71cbace1ad061765a1c",
+      "local_sha256": "cea695d63644b211002867bf9185fe09a17172a7c19ed71cbace1ad061765a1c",
+      "bytes": 543,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/jb-for-data-horizontal.svg": {
+      "path": "idea-lp-assets/43cbb5278a-jb-for-data-horizontal.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "79cf16a2e03f8b1290a9a7130fd8dadb1a51b776ba9358ce70c683ff49a57438",
+      "local_sha256": "79cf16a2e03f8b1290a9a7130fd8dadb1a51b776ba9358ce70c683ff49a57438",
+      "bytes": 9478,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/jb-for-data.svg": {
+      "path": "idea-lp-assets/0280e3ca82-jb-for-data.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "0d87d708614b1b7cf23457aaecb8675a9b8e2de13f94367347b9e030e2a5c055",
+      "local_sha256": "0d87d708614b1b7cf23457aaecb8675a9b8e2de13f94367347b9e030e2a5c055",
+      "bytes": 13928,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/jetbrains.svg": {
+      "path": "idea-lp-assets/3b22ec7e46-jetbrains.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "5f0e13e7cb832d340bc912d192c6967ca05f7690a0102b359c5b031982af6d13",
+      "local_sha256": "5f0e13e7cb832d340bc912d192c6967ca05f7690a0102b359c5b031982af6d13",
+      "bytes": 198,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/message.svg": {
+      "path": "idea-lp-assets/013407e5f8-message.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "e0c774b68f099236c90fc14a979eb812f5f66565cf2b5f690de6e1fbefbd86c6",
+      "local_sha256": "e0c774b68f099236c90fc14a979eb812f5f66565cf2b5f690de6e1fbefbd86c6",
+      "bytes": 870,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/products/navigation/banners-menu-main/sale.svg": {
+      "path": "idea-lp-assets/e7e45987a6-sale.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "ab5e56b74f1eb00b902b0618bc57f46917016375018e32c51895e2fffcc0511d",
+      "local_sha256": "ab5e56b74f1eb00b902b0618bc57f46917016375018e32c51895e2fffcc0511d",
+      "bytes": 541,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/wtui/logos/bmw_mono.svg": {
+      "path": "idea-lp-assets/52a76409fa-bmw_mono.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "30ecdffdc5ab9fb086cec21b4f68bffa426ad3fdad5fc867be50d0475320a38a",
+      "local_sha256": "30ecdffdc5ab9fb086cec21b4f68bffa426ad3fdad5fc867be50d0475320a38a",
+      "bytes": 2368,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/wtui/logos/expedia_mono.svg": {
+      "path": "idea-lp-assets/6d41bc383e-expedia_mono.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "5e3876e11fef26129fec2bb86f812bdfbc4a9c01ca8fe5cd295c638385d9087d",
+      "local_sha256": "5e3876e11fef26129fec2bb86f812bdfbc4a9c01ca8fe5cd295c638385d9087d",
+      "bytes": 3943,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/wtui/logos/samsung_mono.svg": {
+      "path": "idea-lp-assets/2cca455100-samsung_mono.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "8b449b13696bf0925932f41bb3ac712656069802ab0a2f715446516f413b7beb",
+      "local_sha256": "8b449b13696bf0925932f41bb3ac712656069802ab0a2f715446516f413b7beb",
+      "bytes": 2638,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/wtui/logos/visa_mono.svg": {
+      "path": "idea-lp-assets/cf0e93658f-visa_mono.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "d2d31dbbfa3f1f3ef8852a5b8e49380a889cf677c1bd8026934d6c427470427f",
+      "local_sha256": "d2d31dbbfa3f1f3ef8852a5b8e49380a889cf677c1bd8026934d6c427470427f",
+      "bytes": 1125,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/wtui/logos/volkswagen_mono.svg": {
+      "path": "idea-lp-assets/08338ed3d9-volkswagen_mono.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "31820ceff40c4b02dc98f68428c5e922aa5c241b6cb643d99ccbc629d74ea0c5",
+      "local_sha256": "31820ceff40c4b02dc98f68428c5e922aa5c241b6cb643d99ccbc629d74ea0c5",
+      "bytes": 2117,
+      "css_urls_rewritten": false
+    },
+    "https://resources.jetbrains.com/storage/wtui/logos/x_mono.svg": {
+      "path": "idea-lp-assets/54955fbacd-x_mono.svg",
+      "content_type": "image/svg+xml",
+      "source_sha256": "6a09f27476f65caa2fdc7a6e0c4aca7e89361f63a04d82b8e49126f1fa4d391e",
+      "local_sha256": "6a09f27476f65caa2fdc7a6e0c4aca7e89361f63a04d82b8e49126f1fa4d391e",
+      "bytes": 426,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/CSSTransition-DR3alLQ8.css": {
+      "path": "idea-lp-assets/4c72b7bae5-CSSTransition-DR3alLQ8.css",
+      "content_type": "text/css",
+      "source_sha256": "70966e7fedc618f3c6858b5fc14c0f86b1e03dc5de8e439d2f397a9aa1c44ca8",
+      "local_sha256": "70966e7fedc618f3c6858b5fc14c0f86b1e03dc5de8e439d2f397a9aa1c44ca8",
+      "bytes": 1499,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-Bold-D4WEaHbo.woff2": {
+      "path": "idea-lp-assets/19a7974c8b-JetBrainsMono-Bold-D4WEaHbo.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "c503cc5ec5f8b2c7666b7ecda1adf44bd45f2e6579b2eba0fc292150416588a2",
+      "local_sha256": "c503cc5ec5f8b2c7666b7ecda1adf44bd45f2e6579b2eba0fc292150416588a2",
+      "bytes": 94588,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-BoldItalic-1xQg2cDl.woff2": {
+      "path": "idea-lp-assets/7cbb06ed96-JetBrainsMono-BoldItalic-1xQg2cDl.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "3a013466c0eee979fb9d42c2d7a8887cd3645dc8b897cfc5b71781cf982efc5a",
+      "local_sha256": "3a013466c0eee979fb9d42c2d7a8887cd3645dc8b897cfc5b71781cf982efc5a",
+      "bytes": 98152,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-ExtraBold-D7I5JnSP.woff2": {
+      "path": "idea-lp-assets/b6d2c0888f-JetBrainsMono-ExtraBold-D7I5JnSP.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "88097a36a292c145a14394f1fd5133f76b9a3d6fdb133834b2c94a3db61dd39a",
+      "local_sha256": "88097a36a292c145a14394f1fd5133f76b9a3d6fdb133834b2c94a3db61dd39a",
+      "bytes": 93692,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-ExtraBoldItalic-C6RSiIdH.woff2": {
+      "path": "idea-lp-assets/d49f6932ec-JetBrainsMono-ExtraBoldItalic-C6RSiIdH.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "67718afd5e93925277efb878127107f0ff668059ef5fd799fb31ed12aaae7a96",
+      "local_sha256": "67718afd5e93925277efb878127107f0ff668059ef5fd799fb31ed12aaae7a96",
+      "bytes": 96864,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-ExtraLight-C7N-6bva.woff2": {
+      "path": "idea-lp-assets/424fbc37f6-JetBrainsMono-ExtraLight-C7N-6bva.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "e7964fc553a794d00167f168dc174fdd19b083c30ad213bfc2e6a95876912a44",
+      "local_sha256": "e7964fc553a794d00167f168dc174fdd19b083c30ad213bfc2e6a95876912a44",
+      "bytes": 92712,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-ExtraLightItalic-DddGSQ2K.woff2": {
+      "path": "idea-lp-assets/dbdad6fbcd-JetBrainsMono-ExtraLightItalic-DddGSQ2K.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "c43d0dd87523c65879334d43651d3fb1815ca1d18d27507356e6704322d63b79",
+      "local_sha256": "c43d0dd87523c65879334d43651d3fb1815ca1d18d27507356e6704322d63b79",
+      "bytes": 95816,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-Italic-CFFf43z2.woff2": {
+      "path": "idea-lp-assets/b680d824d8-JetBrainsMono-Italic-CFFf43z2.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "cb6a1b246318ed3885d7dffa14a2609297fe80e9b8e500bea33b52fa312a36a4",
+      "local_sha256": "cb6a1b246318ed3885d7dffa14a2609297fe80e9b8e500bea33b52fa312a36a4",
+      "bytes": 95864,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-Light-Bgq2Dg64.woff2": {
+      "path": "idea-lp-assets/3a3dfe9be0-JetBrainsMono-Light-Bgq2Dg64.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "43eb798d59b557c3d87c1402ce684b3fda1ad66bf7ec8021b0a43dc31ad9c572",
+      "local_sha256": "43eb798d59b557c3d87c1402ce684b3fda1ad66bf7ec8021b0a43dc31ad9c572",
+      "bytes": 93856,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-LightItalic-Pc6KfEyb.woff2": {
+      "path": "idea-lp-assets/654a849f7a-JetBrainsMono-LightItalic-Pc6KfEyb.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "49c50b344b458c1322d859f4f0d9db7f770533c1dbdab31defa0987c29925b9b",
+      "local_sha256": "49c50b344b458c1322d859f4f0d9db7f770533c1dbdab31defa0987c29925b9b",
+      "bytes": 97280,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-Medium-3S3k2nMz.woff2": {
+      "path": "idea-lp-assets/ce2a660afe-JetBrainsMono-Medium-3S3k2nMz.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "086c48dfbea9ddaff1320f7e09399b8e2924e88ce67453721255db3bdbb5a353",
+      "local_sha256": "086c48dfbea9ddaff1320f7e09399b8e2924e88ce67453721255db3bdbb5a353",
+      "bytes": 93824,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-MediumItalic-BKKs7F3t.woff2": {
+      "path": "idea-lp-assets/802be23a8d-JetBrainsMono-MediumItalic-BKKs7F3t.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "1c9b7a62ee6c3f77c82982a3d0ab7ead8805f5e67ccfc1942037fc65f398f22b",
+      "local_sha256": "1c9b7a62ee6c3f77c82982a3d0ab7ead8805f5e67ccfc1942037fc65f398f22b",
+      "bytes": 97808,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-Regular-BQaDgvhP.woff2": {
+      "path": "idea-lp-assets/237944c398-JetBrainsMono-Regular-BQaDgvhP.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "a9cb1cd82332b23a47e3a1239d25d13c86d16c4220695e34b243effa999f45f2",
+      "local_sha256": "a9cb1cd82332b23a47e3a1239d25d13c86d16c4220695e34b243effa999f45f2",
+      "bytes": 92164,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-SemiBold-BM8Dc2t-.woff2": {
+      "path": "idea-lp-assets/c3df55426a-JetBrainsMono-SemiBold-BM8Dc2t-.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "918edad542a1da608fd2ba8daebaff9ac802309103fe760eed465b8b4e47faf1",
+      "local_sha256": "918edad542a1da608fd2ba8daebaff9ac802309103fe760eed465b8b4e47faf1",
+      "bytes": 94472,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-SemiBoldItalic-CekZ8Kac.woff2": {
+      "path": "idea-lp-assets/e3231df2fa-JetBrainsMono-SemiBoldItalic-CekZ8Kac.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "07daacf7fc1956b5b68d902ab4763a062b196a3665d713e54bff066c667c0674",
+      "local_sha256": "07daacf7fc1956b5b68d902ab4763a062b196a3665d713e54bff066c667c0674",
+      "bytes": 98124,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-Thin-BhSco1Ve.woff2": {
+      "path": "idea-lp-assets/749a140433-JetBrainsMono-Thin-BhSco1Ve.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "01c7c4cd01380e75fb1b5ff9900508afcd89a83d0b0e6f70e96ede53183ab53a",
+      "local_sha256": "01c7c4cd01380e75fb1b5ff9900508afcd89a83d0b0e6f70e96ede53183ab53a",
+      "bytes": 90612,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsMono-ThinItalic-CYUYT2s8.woff2": {
+      "path": "idea-lp-assets/787217c63b-JetBrainsMono-ThinItalic-CYUYT2s8.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "c261d07880deb91518e190c19816ddc93a69bf4539b8486cad316b6ed59a065d",
+      "local_sha256": "c261d07880deb91518e190c19816ddc93a69bf4539b8486cad316b6ed59a065d",
+      "bytes": 94316,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans-Light-9BpX4EMp.woff2": {
+      "path": "idea-lp-assets/b765b9c16f-JetBrainsSans-Light-9BpX4EMp.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "09a27d097307572ec8d2cd8dee1e4b918a371246a8479a7b22085f8cf9a61b18",
+      "local_sha256": "09a27d097307572ec8d2cd8dee1e4b918a371246a8479a7b22085f8cf9a61b18",
+      "bytes": 38688,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans-Light-BOdYk5Ab.woff": {
+      "path": "idea-lp-assets/6b8b1b0b10-JetBrainsSans-Light-BOdYk5Ab.woff",
+      "content_type": "application/font-woff",
+      "source_sha256": "88795350f9ff33ba1287cdc1cd248691096e1241a2c81e850519630ed416040c",
+      "local_sha256": "88795350f9ff33ba1287cdc1cd248691096e1241a2c81e850519630ed416040c",
+      "bytes": 48928,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans-Regular-CEcbg9DU.woff2": {
+      "path": "idea-lp-assets/c156d605ce-JetBrainsSans-Regular-CEcbg9DU.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "09cb3718992780e0bec7d3e0e1ed5c8ff2e47408af44de7bc033dcf86c87ab77",
+      "local_sha256": "09cb3718992780e0bec7d3e0e1ed5c8ff2e47408af44de7bc033dcf86c87ab77",
+      "bytes": 38472,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans-Regular-D28jpubJ.woff": {
+      "path": "idea-lp-assets/63d0a4d443-JetBrainsSans-Regular-D28jpubJ.woff",
+      "content_type": "application/font-woff",
+      "source_sha256": "dea926fa9f86065f244a69cb8f6f8f4fdbf6e40d0064cfd5ad10a155b2ec7a19",
+      "local_sha256": "dea926fa9f86065f244a69cb8f6f8f4fdbf6e40d0064cfd5ad10a155b2ec7a19",
+      "bytes": 48648,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans-SemiBold-CYs52N-C.woff": {
+      "path": "idea-lp-assets/dedb8563da-JetBrainsSans-SemiBold-CYs52N-C.woff",
+      "content_type": "application/font-woff",
+      "source_sha256": "b8b7f6fa6a46d872ea8b75dcc6a5effcd2c58aa10ef2cd1e19f459cb49e49387",
+      "local_sha256": "b8b7f6fa6a46d872ea8b75dcc6a5effcd2c58aa10ef2cd1e19f459cb49e49387",
+      "bytes": 50060,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans-SemiBold-acbBm6M9.woff2": {
+      "path": "idea-lp-assets/f01deb9ce2-JetBrainsSans-SemiBold-acbBm6M9.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "21f301bf5c4a918ed6650b707b327a5b4f79b6f5c9e4b678b152c26689afcdc5",
+      "local_sha256": "21f301bf5c4a918ed6650b707b327a5b4f79b6f5c9e4b678b152c26689afcdc5",
+      "bytes": 39592,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans_wght_-BLoF0-HJ.woff2": {
+      "path": "idea-lp-assets/16d36b0409-JetBrainsSans_wght_-BLoF0-HJ.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "8f18ac46263135443e5407336a30ac6435b65fa82245a1bb86dea8e8d66f99d7",
+      "local_sha256": "8f18ac46263135443e5407336a30ac6435b65fa82245a1bb86dea8e8d66f99d7",
+      "bytes": 60092,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrainsSans_wght_-BrB9S76b.ttf": {
+      "path": "idea-lp-assets/1679355a47-JetBrainsSans_wght_-BrB9S76b.ttf",
+      "content_type": "application/font-sfnt",
+      "source_sha256": "3ce0c2e6a3bc41f7ea79c17d5dc33b2cf9252ab89a0e0fd7f7bc90adb8231ab2",
+      "local_sha256": "3ce0c2e6a3bc41f7ea79c17d5dc33b2cf9252ab89a0e0fd7f7bc90adb8231ab2",
+      "bytes": 129768,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/JetBrains_Modul-C6AYqW67.woff2": {
+      "path": "idea-lp-assets/22f8048ca9-JetBrains_Modul-C6AYqW67.woff2",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "8603a07352672e9ce722f8da40f98fc7ea393b107e02431fe84e7ff30f693e6f",
+      "local_sha256": "8603a07352672e9ce722f8da40f98fc7ea393b107e02431fe84e7ff30f693e6f",
+      "bytes": 5856,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/agents-graphic-sm-light-CPQavnRj.css": {
+      "path": "idea-lp-assets/241a48024e-agents-graphic-sm-light-CPQavnRj.css",
+      "content_type": "text/css",
+      "source_sha256": "f976e80ffe8695aba128b61b03ccf9314f0fa0555d64e9df5a48d3512dcebf07",
+      "local_sha256": "f976e80ffe8695aba128b61b03ccf9314f0fa0555d64e9df5a48d3512dcebf07",
+      "bytes": 10429,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-cli-small-BLxpEUSN.webp": {
+      "path": "idea-lp-assets/aa369c1ed0-air-cli-small-BLxpEUSN.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "c03b77fd9bf077b7cafde6f4c86acf1a9438bc70ababb1861f228e45c999c320",
+      "local_sha256": "c03b77fd9bf077b7cafde6f4c86acf1a9438bc70ababb1861f228e45c999c320",
+      "bytes": 21022,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-cli-small-DkKty5XR.png": {
+      "path": "idea-lp-assets/aca9dd67fb-air-cli-small-DkKty5XR.png",
+      "content_type": "image/png",
+      "source_sha256": "0545bb44c34251817aac4ba70452cd92be8f215c6f42f7c28d233c2abf9113dc",
+      "local_sha256": "0545bb44c34251817aac4ba70452cd92be8f215c6f42f7c28d233c2abf9113dc",
+      "bytes": 144440,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-configure-DHl43cDn.png": {
+      "path": "idea-lp-assets/d825a13a5f-air-configure-DHl43cDn.png",
+      "content_type": "image/png",
+      "source_sha256": "a83f7d41d562cdb9647a3c2c218fda8948f608f312541c00bfd1617ca67a81af",
+      "local_sha256": "a83f7d41d562cdb9647a3c2c218fda8948f608f312541c00bfd1617ca67a81af",
+      "bytes": 28889,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-configure-DQ7vHwLP.webp": {
+      "path": "idea-lp-assets/eeff7531f3-air-configure-DQ7vHwLP.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "3c69dc62f91cd0e8a81b04cb2816d6c27cc379ba49f777e0e904c4e8492fc7d4",
+      "local_sha256": "3c69dc62f91cd0e8a81b04cb2816d6c27cc379ba49f777e0e904c4e8492fc7d4",
+      "bytes": 13434,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-context-CN8ZeL-o.webp": {
+      "path": "idea-lp-assets/6e4ae15324-air-context-CN8ZeL-o.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "898e99bec1da3a4174d88b786e9e71622383134624658f95beeafc2e16ef8429",
+      "local_sha256": "898e99bec1da3a4174d88b786e9e71622383134624658f95beeafc2e16ef8429",
+      "bytes": 14932,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-context-CSuiw5KZ.png": {
+      "path": "idea-lp-assets/002edf9e52-air-context-CSuiw5KZ.png",
+      "content_type": "image/png",
+      "source_sha256": "f6360be4b3939f19e78ebaa15fce0755365cb298a81c8d1ffc629eda0814a925",
+      "local_sha256": "f6360be4b3939f19e78ebaa15fce0755365cb298a81c8d1ffc629eda0814a925",
+      "bytes": 77365,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-section-q_874kHz.css": {
+      "path": "idea-lp-assets/f994d6886c-air-section-q_874kHz.css",
+      "content_type": "text/css",
+      "source_sha256": "bed6657026be6ddbfa965bab0ab7707adbd7c5a445605de33c0845c6c526e916",
+      "local_sha256": "bed6657026be6ddbfa965bab0ab7707adbd7c5a445605de33c0845c6c526e916",
+      "bytes": 1421,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-session-BYOwWy9v.png": {
+      "path": "idea-lp-assets/4944520452-air-session-BYOwWy9v.png",
+      "content_type": "image/png",
+      "source_sha256": "e25a06c3406107bb112b3173c0d40d021ce01c592e389522cdad59048be0ed3d",
+      "local_sha256": "e25a06c3406107bb112b3173c0d40d021ce01c592e389522cdad59048be0ed3d",
+      "bytes": 45279,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-session-C5i6AsZ1.webp": {
+      "path": "idea-lp-assets/dd4e16bfaf-air-session-C5i6AsZ1.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "09f20a9e7cfc062aedd19781d841d4433ec8caea1ea409387246024ade9dcfa1",
+      "local_sha256": "09f20a9e7cfc062aedd19781d841d4433ec8caea1ea409387246024ade9dcfa1",
+      "bytes": 11278,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/air-wordmark-DTTB9L1r.css": {
+      "path": "idea-lp-assets/d74e80f14c-air-wordmark-DTTB9L1r.css",
+      "content_type": "text/css",
+      "source_sha256": "f0943a59297262b70a1ec41a898a86624c387a077cf4ada752953b21135ba641",
+      "local_sha256": "1adaaf219a888c3f346055ea2f677ac809cf6baf85b311bdd1c9cc30bf394bb7",
+      "bytes": 400,
+      "css_urls_rewritten": true
+    },
+    "https://www.jetbrains.com/_assets/rr/button-stretch-DLbNT5QX.css": {
+      "path": "idea-lp-assets/0b87126355-button-stretch-DLbNT5QX.css",
+      "content_type": "text/css",
+      "source_sha256": "2ea14e2fc30d2ef72ca3a06c2186199de89ddcc760a1e4f2deb6e09a641cf3b7",
+      "local_sha256": "2ea14e2fc30d2ef72ca3a06c2186199de89ddcc760a1e4f2deb6e09a641cf3b7",
+      "bytes": 299,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/carousel-controls-BwZMUvwI.css": {
+      "path": "idea-lp-assets/7b80d41800-carousel-controls-BwZMUvwI.css",
+      "content_type": "text/css",
+      "source_sha256": "74544e4d79b88b86a5334428a6ca21f7a43a5cb69bdf92980125b9e4502ddee4",
+      "local_sha256": "74544e4d79b88b86a5334428a6ca21f7a43a5cb69bdf92980125b9e4502ddee4",
+      "bytes": 198,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/configure-bg-BlvI5vIc.webp": {
+      "path": "idea-lp-assets/67e7b117f9-configure-bg-BlvI5vIc.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "d9a9ec832591cb9e7a4dc31b6cca1af0013121d247369d3df7a1005c322f821b",
+      "local_sha256": "d9a9ec832591cb9e7a4dc31b6cca1af0013121d247369d3df7a1005c322f821b",
+      "bytes": 207198,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/configure-bg-DEgmAOLZ.png": {
+      "path": "idea-lp-assets/6e238d7cbb-configure-bg-DEgmAOLZ.png",
+      "content_type": "image/png",
+      "source_sha256": "2a0cf6a5a8eebcb19d0df49a9b1e804bb75071cae69b5a94b2dc74bdbebeedb6",
+      "local_sha256": "2a0cf6a5a8eebcb19d0df49a9b1e804bb75071cae69b5a94b2dc74bdbebeedb6",
+      "bytes": 423206,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/context-bg-Dmci45GX.webp": {
+      "path": "idea-lp-assets/417c882795-context-bg-Dmci45GX.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "74427dd9baa400688abb0de68d844d9b82f3b69c3cdbf671d6f889fcc9f73c46",
+      "local_sha256": "74427dd9baa400688abb0de68d844d9b82f3b69c3cdbf671d6f889fcc9f73c46",
+      "bytes": 212582,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/context-bg-l2C_7KIz.png": {
+      "path": "idea-lp-assets/aff7bd8715-context-bg-l2C_7KIz.png",
+      "content_type": "image/png",
+      "source_sha256": "90469b1b468c013c77bb5bbc3b365bcac9c667f5493e67a56631681c289d740a",
+      "local_sha256": "90469b1b468c013c77bb5bbc3b365bcac9c667f5493e67a56631681c289d740a",
+      "bytes": 423867,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/default-layout-styles-mnZltmNi.css": {
+      "path": "idea-lp-assets/5b028a6a1c-default-layout-styles-mnZltmNi.css",
+      "content_type": "text/css",
+      "source_sha256": "aed3fd2ae6eb085c40c73e583f6c44e8a1b467a7205a3eef75503229f1222d26",
+      "local_sha256": "b8da75c485d54d0aa8c0953b852aa1ecfe6fc1d3202eaf7abcf8410621245adb",
+      "bytes": 288360,
+      "css_urls_rewritten": true
+    },
+    "https://www.jetbrains.com/_assets/rr/devs-BjBuIbjv.png": {
+      "path": "idea-lp-assets/5557816824-devs-BjBuIbjv.png",
+      "content_type": "image/png",
+      "source_sha256": "1baff4e8cbc7894d7b29f95e3ebed514c9e5c9b637084e3c30c6269f80539006",
+      "local_sha256": "1baff4e8cbc7894d7b29f95e3ebed514c9e5c9b637084e3c30c6269f80539006",
+      "bytes": 21188,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/devs-DbJ89ZR2.webp": {
+      "path": "idea-lp-assets/150617283b-devs-DbJ89ZR2.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "e2e8eefc04623ce289c36f2cf8cf83a8c6e3eb60eccea0f097ac0cafbb0d4ab1",
+      "local_sha256": "e2e8eefc04623ce289c36f2cf8cf83a8c6e3eb60eccea0f097ac0cafbb0d4ab1",
+      "bytes": 2890,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/download-img-Bg3QhUCl.png": {
+      "path": "idea-lp-assets/d4cce4427a-download-img-Bg3QhUCl.png",
+      "content_type": "image/png",
+      "source_sha256": "a2e404e2a9a8153308be8d7229863682ba0a7fe298b04443cf5f6647f0ce1a48",
+      "local_sha256": "a2e404e2a9a8153308be8d7229863682ba0a7fe298b04443cf5f6647f0ce1a48",
+      "bytes": 431198,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/download-img-CNJ7txH7.webp": {
+      "path": "idea-lp-assets/0da6b0bb62-download-img-CNJ7txH7.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "a19bb7053ab67fad51d7f4e226e569a766b6ef6f7e214636c6f07f2d3ddcad1c",
+      "local_sha256": "a19bb7053ab67fad51d7f4e226e569a766b6ef6f7e214636c6f07f2d3ddcad1c",
+      "bytes": 163042,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/download-section-CRCMASl3.css": {
+      "path": "idea-lp-assets/f03387ac15-download-section-CRCMASl3.css",
+      "content_type": "text/css",
+      "source_sha256": "0b65d10223310801e533734df1f4fd54f1dc21c06fa8d7e50ae4f9e893143346",
+      "local_sha256": "0b65d10223310801e533734df1f4fd54f1dc21c06fa8d7e50ae4f9e893143346",
+      "bytes": 1595,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/feature-bg-BI89WozA.png": {
+      "path": "idea-lp-assets/8929907219-feature-bg-BI89WozA.png",
+      "content_type": "image/png",
+      "source_sha256": "4ff5a2a8bdb2fafe0ee673518ed967c6d40ee232305e0dae15f0b23b99e26a97",
+      "local_sha256": "4ff5a2a8bdb2fafe0ee673518ed967c6d40ee232305e0dae15f0b23b99e26a97",
+      "bytes": 927728,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/feature-bg-DzWg8WRj.png": {
+      "path": "idea-lp-assets/5f4422f894-feature-bg-DzWg8WRj.png",
+      "content_type": "image/png",
+      "source_sha256": "58ca07a19b001f27422e64b4ae559f327120c962a9b8b4cb6360a7c414cddd75",
+      "local_sha256": "58ca07a19b001f27422e64b4ae559f327120c962a9b8b4cb6360a7c414cddd75",
+      "bytes": 434658,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/features-showcase-section-DSUuxSms.css": {
+      "path": "idea-lp-assets/7df9817cc6-features-showcase-section-DSUuxSms.css",
+      "content_type": "text/css",
+      "source_sha256": "e5c9a73035de749b823d5f569eaf3a3804d327e71c275bfdc91fb6f7416f7663",
+      "local_sha256": "acbde87d00d67d852e691bad130508daaab31776bdfb31dee1a88e37ab21b2a2",
+      "bytes": 17713,
+      "css_urls_rewritten": true
+    },
+    "https://www.jetbrains.com/_assets/rr/header-img-BTf-BwUu.png": {
+      "path": "idea-lp-assets/860de90de2-header-img-BTf-BwUu.png",
+      "content_type": "image/png",
+      "source_sha256": "7ade248a443219e95e25a1dfbebc3374327950e90f733cd46ed01046de432bf9",
+      "local_sha256": "7ade248a443219e95e25a1dfbebc3374327950e90f733cd46ed01046de432bf9",
+      "bytes": 314992,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/header-img-P85aojxf.webp": {
+      "path": "idea-lp-assets/bce48db5a9-header-img-P85aojxf.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "d3e40fe8630991a77c18290c635571ba354210e56a60792fc87b461f55bbe01d",
+      "local_sha256": "d3e40fe8630991a77c18290c635571ba354210e56a60792fc87b461f55bbe01d",
+      "bytes": 121362,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/hero-media-BDhNNQft.css": {
+      "path": "idea-lp-assets/be63613e05-hero-media-BDhNNQft.css",
+      "content_type": "text/css",
+      "source_sha256": "59acd4ac87d3ad4c7c98a12a60f0753030ccf1360b6a8696709b31ea3c003133",
+      "local_sha256": "59acd4ac87d3ad4c7c98a12a60f0753030ccf1360b6a8696709b31ea3c003133",
+      "bytes": 1714,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/hung-phan-C0Iw2yrb.webp": {
+      "path": "idea-lp-assets/ed5c5a25f3-hung-phan-C0Iw2yrb.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "f1d666e647c30e8f988a20702ba895ba1d65bd5da9206298974cd3926344a0f8",
+      "local_sha256": "f1d666e647c30e8f988a20702ba895ba1d65bd5da9206298974cd3926344a0f8",
+      "bytes": 95152,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/hung-phan-FHbOfnDg.jpg": {
+      "path": "idea-lp-assets/6777a791f1-hung-phan-FHbOfnDg.jpg",
+      "content_type": "image/jpeg",
+      "source_sha256": "3883c98c1eb55d51c53ab784177e09f89e7944105c1fc236a8fdad61f9db15e9",
+      "local_sha256": "3883c98c1eb55d51c53ab784177e09f89e7944105c1fc236a8fdad61f9db15e9",
+      "bytes": 404883,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/jay-BdfX8NWk.jpg": {
+      "path": "idea-lp-assets/094e8d3403-jay-BdfX8NWk.jpg",
+      "content_type": "image/jpeg",
+      "source_sha256": "a2cccaa57d01713ca704c0aba472190c2abd0f18e2dcaf319b60e451a94fa4d5",
+      "local_sha256": "a2cccaa57d01713ca704c0aba472190c2abd0f18e2dcaf319b60e451a94fa4d5",
+      "bytes": 26508,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/jay-DKWMLAbY.webp": {
+      "path": "idea-lp-assets/930b216f33-jay-DKWMLAbY.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "7056090072f12832d4667af7c85eaa2962e8d93dadad41c1e702651d67ed96b7",
+      "local_sha256": "7056090072f12832d4667af7c85eaa2962e8d93dadad41c1e702651d67ed96b7",
+      "bytes": 13254,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/layout-MH8gnJFp.css": {
+      "path": "idea-lp-assets/57f7c7ebb4-layout-MH8gnJFp.css",
+      "content_type": "text/css",
+      "source_sha256": "9e36f75b17e1f6edc43902583a64cff609c609009df0ffc940f52c83bd95c9ef",
+      "local_sha256": "9e36f75b17e1f6edc43902583a64cff609c609009df0ffc940f52c83bd95c9ef",
+      "bytes": 83689,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-BBExmZte.css": {
+      "path": "idea-lp-assets/de5ce5c274-lib-BBExmZte.css",
+      "content_type": "text/css",
+      "source_sha256": "1f695fe4786417e93369ee78b1e1653827ccd29c6d37ff37964e59f22dcf6261",
+      "local_sha256": "1f695fe4786417e93369ee78b1e1653827ccd29c6d37ff37964e59f22dcf6261",
+      "bytes": 42113,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-C0EhBTtg.css": {
+      "path": "idea-lp-assets/9e94bc4df1-lib-C0EhBTtg.css",
+      "content_type": "text/css",
+      "source_sha256": "43e0c735122f3496c51b8234c7f06babf698dc27ad2fa3e1bf3d272eefcf3f95",
+      "local_sha256": "43e0c735122f3496c51b8234c7f06babf698dc27ad2fa3e1bf3d272eefcf3f95",
+      "bytes": 1223,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-CFq-2vGE.css": {
+      "path": "idea-lp-assets/b33c158745-lib-CFq-2vGE.css",
+      "content_type": "text/css",
+      "source_sha256": "dfd5510fec1ee248713e7463e043a7dd199eab0faf196f4fad8a5189838d52ae",
+      "local_sha256": "dfd5510fec1ee248713e7463e043a7dd199eab0faf196f4fad8a5189838d52ae",
+      "bytes": 30444,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-DDpKbKD_.css": {
+      "path": "idea-lp-assets/2228391651-lib-DDpKbKD_.css",
+      "content_type": "text/css",
+      "source_sha256": "e645d5170aa4900da65a46752e77618f95c02db0be1cd4d7c12177992baa2003",
+      "local_sha256": "e645d5170aa4900da65a46752e77618f95c02db0be1cd4d7c12177992baa2003",
+      "bytes": 27120,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-DUxt8iol.css": {
+      "path": "idea-lp-assets/d81649dae2-lib-DUxt8iol.css",
+      "content_type": "text/css",
+      "source_sha256": "e9a065b580ac3a0ae55a2d9ccf616ff459efb82b97330903d570467f8afdc299",
+      "local_sha256": "e9a065b580ac3a0ae55a2d9ccf616ff459efb82b97330903d570467f8afdc299",
+      "bytes": 7236,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-Dp0e6lCT.css": {
+      "path": "idea-lp-assets/f2024b349f-lib-Dp0e6lCT.css",
+      "content_type": "text/css",
+      "source_sha256": "f72e3151d3199e4a9010d3a78eeefcad5e19f9d0514ffb833ebd507ce9778e8b",
+      "local_sha256": "f72e3151d3199e4a9010d3a78eeefcad5e19f9d0514ffb833ebd507ce9778e8b",
+      "bytes": 1057,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-DsvU7vGt.css": {
+      "path": "idea-lp-assets/08355596e5-lib-DsvU7vGt.css",
+      "content_type": "text/css",
+      "source_sha256": "ed80671d77cf3721f7f3bd3f0a75c4ad8214c56257b9259c0bcf5ca5906ecafe",
+      "local_sha256": "ed80671d77cf3721f7f3bd3f0a75c4ad8214c56257b9259c0bcf5ca5906ecafe",
+      "bytes": 19067,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-Pe-8qIoG.css": {
+      "path": "idea-lp-assets/3cbe641e5a-lib-Pe-8qIoG.css",
+      "content_type": "text/css",
+      "source_sha256": "602c796b5f6accdc454d07feedf83314bd7f34f2829f8554a4b360aaacb4c2c4",
+      "local_sha256": "602c796b5f6accdc454d07feedf83314bd7f34f2829f8554a4b360aaacb4c2c4",
+      "bytes": 279,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-_BqJxVNU.css": {
+      "path": "idea-lp-assets/19240a4a40-lib-_BqJxVNU.css",
+      "content_type": "text/css",
+      "source_sha256": "293127c61dc40937f6ff9e0d44debad8025c7bafb2a81730054d558cca5081cd",
+      "local_sha256": "293127c61dc40937f6ff9e0d44debad8025c7bafb2a81730054d558cca5081cd",
+      "bytes": 12797,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/lib-iT_fGA0D.css": {
+      "path": "idea-lp-assets/efb9e39cfb-lib-iT_fGA0D.css",
+      "content_type": "text/css",
+      "source_sha256": "d20e4fe9b481fb95ff4ad51acf7630ea62b47b04ab0f713e723af1be53fb57a3",
+      "local_sha256": "d20e4fe9b481fb95ff4ad51acf7630ea62b47b04ab0f713e723af1be53fb57a3",
+      "bytes": 12529,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/media-viewer-C27ULamS.css": {
+      "path": "idea-lp-assets/2e9ae4078e-media-viewer-C27ULamS.css",
+      "content_type": "text/css",
+      "source_sha256": "639bc28b9f90af07cfaa36f56f7d56a848c34304ec16715aa8b7d9f5d1fc9361",
+      "local_sha256": "639bc28b9f90af07cfaa36f56f7d56a848c34304ec16715aa8b7d9f5d1fc9361",
+      "bytes": 8361,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/overview-B5Mq4942.css": {
+      "path": "idea-lp-assets/11cc82f594-overview-B5Mq4942.css",
+      "content_type": "text/css",
+      "source_sha256": "d1b5165a7e4ceb3edf50f4fd1e522ac0520d9d7c2c07e96826b0d16301758e1e",
+      "local_sha256": "e3cb4af946b0862c9dbf1d4f14b97235e0f10180bffd2c8574c6bee0985e4da7",
+      "bytes": 11610,
+      "css_urls_rewritten": true
+    },
+    "https://www.jetbrains.com/_assets/rr/review-bg-CGjd6uqh.png": {
+      "path": "idea-lp-assets/7365d0615b-review-bg-CGjd6uqh.png",
+      "content_type": "image/png",
+      "source_sha256": "9f20a9e16d23247537e21f4d185253510b550c1a39004a2a47bd82223b4b9832",
+      "local_sha256": "9f20a9e16d23247537e21f4d185253510b550c1a39004a2a47bd82223b4b9832",
+      "bytes": 447078,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/review-bg-DXHcCJO-.webp": {
+      "path": "idea-lp-assets/656dbb8bbc-review-bg-DXHcCJO-.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "3a1ec089238e7e3915dbef536add8d878aa847bd0b8d3b4153bb8e362252fb6c",
+      "local_sha256": "3a1ec089238e7e3915dbef536add8d878aa847bd0b8d3b4153bb8e362252fb6c",
+      "bytes": 138976,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/root-ErA1rNGF.css": {
+      "path": "idea-lp-assets/3959454a55-root-ErA1rNGF.css",
+      "content_type": "text/css",
+      "source_sha256": "0f22a7a772641b7bbb4f1d7fa9d3625690e8724d5b553b55fcb11ce6b6f81bd4",
+      "local_sha256": "0f22a7a772641b7bbb4f1d7fa9d3625690e8724d5b553b55fcb11ce6b6f81bd4",
+      "bytes": 787,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/rs-button-size-eAk7Hsm7.css": {
+      "path": "idea-lp-assets/5082364c7a-rs-button-size-eAk7Hsm7.css",
+      "content_type": "text/css",
+      "source_sha256": "6eae4b25d8207361ed560be35cd1046d44c1e0d107cca054b39bcda505870e35",
+      "local_sha256": "6eae4b25d8207361ed560be35cd1046d44c1e0d107cca054b39bcda505870e35",
+      "bytes": 17121,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/rs-responsive-typography-DEZwlH5I.css": {
+      "path": "idea-lp-assets/c4b57e5c92-rs-responsive-typography-DEZwlH5I.css",
+      "content_type": "text/css",
+      "source_sha256": "e3beaeb944f78e2acafc8508ca52f808c799b4c10a216026f39dfd5bbd568871",
+      "local_sha256": "e3beaeb944f78e2acafc8508ca52f808c799b4c10a216026f39dfd5bbd568871",
+      "bytes": 69021,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/secondary-menu-7tMfoj1R.css": {
+      "path": "idea-lp-assets/d6d53110b8-secondary-menu-7tMfoj1R.css",
+      "content_type": "text/css",
+      "source_sha256": "a2c9dd36796a052730f00c871a36706f9c2269bd52c881ae7648826e374bd35c",
+      "local_sha256": "a2c9dd36796a052730f00c871a36706f9c2269bd52c881ae7648826e374bd35c",
+      "bytes": 6501,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/section-tag-otA1dmB_.css": {
+      "path": "idea-lp-assets/88504e7d12-section-tag-otA1dmB_.css",
+      "content_type": "text/css",
+      "source_sha256": "16f5a30762bde21e31ddc414ae03bc92af5391dc0aa2e22335ea634e2c6e2485",
+      "local_sha256": "16f5a30762bde21e31ddc414ae03bc92af5391dc0aa2e22335ea634e2c6e2485",
+      "bytes": 453,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/security-data-Cmjt0FUZ.css": {
+      "path": "idea-lp-assets/7ca05b6436-security-data-Cmjt0FUZ.css",
+      "content_type": "text/css",
+      "source_sha256": "45684cbbfba113e7a3234b1d8305b5f7b81ffdb069f25dace168b766670fbcfd",
+      "local_sha256": "45684cbbfba113e7a3234b1d8305b5f7b81ffdb069f25dace168b766670fbcfd",
+      "bytes": 8451,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/security-section-Dn8XsQqi.css": {
+      "path": "idea-lp-assets/76cf5f07c0-security-section-Dn8XsQqi.css",
+      "content_type": "text/css",
+      "source_sha256": "5499517b955106a952ac28d07c152637c722dbc82753253cd2d1478246e87641",
+      "local_sha256": "5499517b955106a952ac28d07c152637c722dbc82753253cd2d1478246e87641",
+      "bytes": 349,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/session-bg-BeLojRvE.png": {
+      "path": "idea-lp-assets/9aad5152f1-session-bg-BeLojRvE.png",
+      "content_type": "image/png",
+      "source_sha256": "f8664eb09f32184f3cebf897257d6cdd3f8c81b6e14ad45eeaaec0a598fa3e03",
+      "local_sha256": "f8664eb09f32184f3cebf897257d6cdd3f8c81b6e14ad45eeaaec0a598fa3e03",
+      "bytes": 443701,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/session-bg-CcLeXAbK.webp": {
+      "path": "idea-lp-assets/388f5fe9fb-session-bg-CcLeXAbK.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "c6e6bd0b83150c7a16fb457bf803ece9c39bbc46c3fa38ffc26279a5dd5512bb",
+      "local_sha256": "c6e6bd0b83150c7a16fb457bf803ece9c39bbc46c3fa38ffc26279a5dd5512bb",
+      "bytes": 141794,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/slide-B-pAQLnR.css": {
+      "path": "idea-lp-assets/2dd3043565-slide-B-pAQLnR.css",
+      "content_type": "text/css",
+      "source_sha256": "a5ef0e02b09f2ca0b92c55bec433df4957ece260882ba05c02c5e7dad538333a",
+      "local_sha256": "a5ef0e02b09f2ca0b92c55bec433df4957ece260882ba05c02c5e7dad538333a",
+      "bytes": 203,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/slideshow-DX4YJqOY.css": {
+      "path": "idea-lp-assets/0bf4f48426-slideshow-DX4YJqOY.css",
+      "content_type": "text/css",
+      "source_sha256": "5f70ce48e45e9052c899a1f22b69a8b83d3e6b0e98f22188b4230dc59578131a",
+      "local_sha256": "5f70ce48e45e9052c899a1f22b69a8b83d3e6b0e98f22188b4230dc59578131a",
+      "bytes": 2962,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/slideshow-Db6kMBWN.css": {
+      "path": "idea-lp-assets/c3b8b6ea80-slideshow-Db6kMBWN.css",
+      "content_type": "text/css",
+      "source_sha256": "1693e704633c75c3229d72fe10d389a2c34b3ccba44bd1ce79a11770f2ae835c",
+      "local_sha256": "1693e704633c75c3229d72fe10d389a2c34b3ccba44bd1ce79a11770f2ae835c",
+      "bytes": 1349,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/snap-carousel-BZ2EZdET.css": {
+      "path": "idea-lp-assets/41c32fe0ab-snap-carousel-BZ2EZdET.css",
+      "content_type": "text/css",
+      "source_sha256": "9e9a0305dde0efe31440499bf0df44ab6bd35d3d73228846ccc914d8e996996f",
+      "local_sha256": "9e9a0305dde0efe31440499bf0df44ab6bd35d3d73228846ccc914d8e996996f",
+      "bytes": 893,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/text-alignment-CWC2kOnF.css": {
+      "path": "idea-lp-assets/d93affc9a4-text-alignment-CWC2kOnF.css",
+      "content_type": "text/css",
+      "source_sha256": "e70da9c7ec6e5f4bea24ce8ae280ce49aec0d85b39e9197f95f2047772c1f5f0",
+      "local_sha256": "e70da9c7ec6e5f4bea24ce8ae280ce49aec0d85b39e9197f95f2047772c1f5f0",
+      "bytes": 647,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/theme-switcher-B-yknIyl.css": {
+      "path": "idea-lp-assets/001eabff85-theme-switcher-B-yknIyl.css",
+      "content_type": "text/css",
+      "source_sha256": "83cc26e7c1e40608a538448dd66b93ee28e384adceadcedea0e5afa1e6e8ada9",
+      "local_sha256": "83cc26e7c1e40608a538448dd66b93ee28e384adceadcedea0e5afa1e6e8ada9",
+      "bytes": 77,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/use-cart-info-C6PWm-n_.css": {
+      "path": "idea-lp-assets/183dea6843-use-cart-info-C6PWm-n_.css",
+      "content_type": "text/css",
+      "source_sha256": "891b153c84a2c828d7487989baf27b8c82f3e3a5226be9ecaf2416962ab52594",
+      "local_sha256": "891b153c84a2c828d7487989baf27b8c82f3e3a5226be9ecaf2416962ab52594",
+      "bytes": 447,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/use-page-i18n-CzEIXjsK.css": {
+      "path": "idea-lp-assets/681e0f5098-use-page-i18n-CzEIXjsK.css",
+      "content_type": "text/css",
+      "source_sha256": "66aa59dc6153a32ed6b67c71987cedd5c1418963855a387e63fca16ca431fc69",
+      "local_sha256": "66aa59dc6153a32ed6b67c71987cedd5c1418963855a387e63fca16ca431fc69",
+      "bytes": 30697,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/use-themed-value-C2d0BQtL.css": {
+      "path": "idea-lp-assets/74bea8c8b2-use-themed-value-C2d0BQtL.css",
+      "content_type": "text/css",
+      "source_sha256": "19815227b012b2eb4f70475eb289e43c50ad80fca56ae9add819f37556f51ce1",
+      "local_sha256": "19815227b012b2eb4f70475eb289e43c50ad80fca56ae9add819f37556f51ce1",
+      "bytes": 4035,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/varij-kapil-BWvCsn4_.webp": {
+      "path": "idea-lp-assets/a3f5910fd1-varij-kapil-BWvCsn4_.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "54892259b76fc7f39375247026410991ceb0ea1eef80eb6c3dc32cad60341527",
+      "local_sha256": "54892259b76fc7f39375247026410991ceb0ea1eef80eb6c3dc32cad60341527",
+      "bytes": 11686,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/varij-kapil-DDrSwwVm.jpg": {
+      "path": "idea-lp-assets/ba54a0e380-varij-kapil-DDrSwwVm.jpg",
+      "content_type": "image/jpeg",
+      "source_sha256": "571b8f3d19be13b3abe95c9df7c85e1aa5981e4149144dcd9339d44b0d247903",
+      "local_sha256": "571b8f3d19be13b3abe95c9df7c85e1aa5981e4149144dcd9339d44b0d247903",
+      "bytes": 46591,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/video-bg-BSMC8O_A.png": {
+      "path": "idea-lp-assets/112ddda85e-video-bg-BSMC8O_A.png",
+      "content_type": "image/png",
+      "source_sha256": "2f72ad6dded20fefc0bc964c3f18fba065e9ac164064828abcd2ba5c4eb84ad0",
+      "local_sha256": "2f72ad6dded20fefc0bc964c3f18fba065e9ac164064828abcd2ba5c4eb84ad0",
+      "bytes": 916120,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/video-bg-DdgjJLj9.webp": {
+      "path": "idea-lp-assets/fa07882d8e-video-bg-DdgjJLj9.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "518b37ff2bb43d81842031d57188321bf35cd355c32cfb82293987ab88904ab5",
+      "local_sha256": "518b37ff2bb43d81842031d57188321bf35cd355c32cfb82293987ab88904ab5",
+      "bytes": 376178,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/wechat-contact-widget-B2TqDIak.css": {
+      "path": "idea-lp-assets/720d50c443-wechat-contact-widget-B2TqDIak.css",
+      "content_type": "text/css",
+      "source_sha256": "09d140636742891a4ef6e52243c1b7198e5e584fcac682ce59e994653c3828c7",
+      "local_sha256": "09d140636742891a4ef6e52243c1b7198e5e584fcac682ce59e994653c3828c7",
+      "bytes": 801,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/yasuaki-kato-BpuGaiOH.jpg": {
+      "path": "idea-lp-assets/b36b44b5fe-yasuaki-kato-BpuGaiOH.jpg",
+      "content_type": "image/jpeg",
+      "source_sha256": "c00adbe3b44d598467a24ec14dd5d58cbce7a61524cf6ab715cd7e582bdd2bd6",
+      "local_sha256": "c00adbe3b44d598467a24ec14dd5d58cbce7a61524cf6ab715cd7e582bdd2bd6",
+      "bytes": 223015,
+      "css_urls_rewritten": false
+    },
+    "https://www.jetbrains.com/_assets/rr/yasuaki-kato-CPzpvsNU.webp": {
+      "path": "idea-lp-assets/470743d529-yasuaki-kato-CPzpvsNU.webp",
+      "content_type": "binary/octet-stream",
+      "source_sha256": "42d58c32debc08a64c49c1ec5b518eda8dce47002eaefef0e0e85cce66c425dc",
+      "local_sha256": "42d58c32debc08a64c49c1ec5b518eda8dce47002eaefef0e0e85cce66c425dc",
+      "bytes": 133220,
+      "css_urls_rewritten": false
+    }
+  },
+  "missing": {},
+  "excluded": [
+    {
+      "url": "https://www.jetbrains.com/favicon.svg",
+      "reason": "Source route returned HTTP 404; use an embedded favicon instead."
+    }
+  ],
+  "video_files_omitted": true
+}

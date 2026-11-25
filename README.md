@@ -33,6 +33,18 @@ The published artifact is `release/site/index.html`; it contains all runtime ass
 
 Deployment uses the committed `dist/` snapshots. After changing the prototype, commit and push to `main` to publish a new version. Refreshing project/session snapshots with `npm run snapshot` remains a local maintenance task because it reads the original IntelliJ session files and Java project. Generated releases and verification evidence are excluded from Git.
 
+## IntelliJ IDEA landing-page study
+
+**[Open the separate landing-page prototype](https://antonarhipov.com/intellij-interactive-widget/idea-lp.html)**. Locally, open **http://127.0.0.1:4173/idea-lp.html** using the same preview server.
+
+`dist/idea-lp.html` reproduces the current [IntelliJ IDEA landing page](https://www.jetbrains.com/idea/), retaining its navigation, branding, download section, artwork, feature sections, testimonials and footer. On desktop, the main video below the download button is replaced by the original interactive IDE in an iframe. The expand control opens the widget in fullscreen. Its file tabs, sessions, diffs, debugger and Database remain interactive. On mobile (760px and below), the widget is hidden and unloaded; the original IntelliJ IDEA overview video appears in the same position, with play/pause, seeking, mute and fullscreen controls. Video media loads from JetBrains only when played.
+
+The original prototype stays at the root URL. The landing page uses the `idea-lp` workspace to keep its browsing state and preferences separate. It loads the widget as the demo scrolls into view, so automatic playback starts near the demonstration. No original widget source files are modified by the landing-page wrapper.
+
+The page's fonts, images and styles are captured locally under `dist/idea-lp-assets/`, with source URLs and hashes in `manifest.json`. Original JetBrains application and tracking scripts are excluded. Navigation links lead to the official JetBrains pages, while the other feature-video previews link to their original movies. This is a separate, static design study and includes a noindex directive.
+
+`npm run build:pages` now exports the original widget as before, then adds `idea-lp.html`, its local behavior/styles and visual assets to the same Pages deployment. The original standalone HTML export remains unchanged. Run `npm run verify:landing` to verify local assets, page layout and embedded IDE interactions. Maintenance captures use `scripts/capture-idea-lp-assets.py` and `scripts/create-idea-lp.py`; regenerating the latter from a hydrated reference DOM requires Python's `lxml` package. Building and browsing the committed page require no new dependencies.
+
 ## Opening scene
 
 Four tabs are open:
