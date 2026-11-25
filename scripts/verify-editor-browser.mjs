@@ -22,8 +22,11 @@ const code=String.raw`async page => {
     const colors=await page.locator('.run-widget').evaluate(e=>['.restart-filled','.stop-filled'].map(s=>getComputedStyle(e.querySelector(s)).backgroundColor));
     check(colors[0]==='rgb(44, 133, 82)'&&colors[1]==='rgb(198, 78, 92)','Restart Debug and Stop use the native green and red filled widgets');
     const tabs=await page.locator('.tab-scroll').innerText();
-    for(const name of ['Notifications','Database','Maven'])await page.getByRole('button',{name,exact:true}).click();
-    check(await page.locator('.right-rail button').count()===4&&await page.locator('.tab-scroll').innerText()===tabs&&await page.locator('#overlay-root').innerText()==='','Right rail keeps Notifications, Database and Maven without opening content');
+    for(const name of ['Notifications','Maven'])await page.getByRole('button',{name,exact:true}).click();
+    check(await page.locator('.right-rail button').count()===4&&await page.locator('.tab-scroll').innerText()===tabs&&await page.locator('#overlay-root').innerText()==='','Notifications and Maven remain decorative right-rail controls');
+    await page.getByRole('button',{name:'Database',exact:true}).click();
+    check(await page.getByRole('tree',{name:'Database objects',exact:true}).isVisible(),'Database rail opens its read-only schema browser');
+    await page.getByRole('button',{name:'Hide Database',exact:true}).click();
     await config.click();
     const menu=page.getByRole('menu',{name:'Run / Debug Configurations',exact:true});
     check((await menu.innerText()).includes('NotifyHubApplication\nCurrent File\nEdit Configurations…'),'Configuration dropdown follows the native row order');

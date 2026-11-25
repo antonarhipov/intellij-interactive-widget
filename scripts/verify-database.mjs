@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+
+const root=new URL('../',import.meta.url),database=JSON.parse(readFileSync(new URL('dist/database.json',root),'utf8'));
+const context={data:{database},state:{tabs:[]},innerWidth:1920};
+vm.createContext(context);vm.runInContext(readFileSync(new URL('dist/database.js',root),'utf8'),context);
+const checks=[],check=(ok,message)=>{assert.ok(ok,message);checks.push(message)};
+const templates=context.dbTable('notification_template'),logs=context.dbTable('notification_log'),flyway=context.dbTable('flyway_schema_history');
+check(templates.rows.length===7&&logs.rows.length===474&&flyway.rows.length===2,'Exact screenshot table counts: 7 templates, 474 notifications, 2 migrations');
+check(templates.rows[1].locale==='es'&&templates.rows[3].subject_template===null&&templates.rows.every(r=>r.active===true),'Original multilingual templates, SQL nulls and booleans');
+check(logs.rows[0].notification_id==='1f9557b8-a45d-427b-bd50-981ad14940d1'&&logs.rows[2].status==='BLOCKED'&&logs.rows.at(-1).id===474,'Captured log identities, statuses and final row');
+check(flyway.rows[0].script==='V1__create_notification_schema.sql'&&flyway.rows[1].script==='V2__seed_notification_templates.sql','Flyway version and script provenance');
+check(logs.columns.length===9&&logs.keys.length===1&&logs.indexes.length===4&&logs.indexes[0].name==='notification_log_pkey','Real PostgreSQL columns, keys and primary-first indexes');
+check(database.sequences.length===2&&database.objects.casts.length===229&&database.objects['access methods'].length===7,'Reference schema groups and object counts');
+check(logs.columns.find(c=>c.name==='sent_at').default==='CURRENT_TIMESTAMP'&&logs.columns.find(c=>c.name==='recipient').type==='varchar(255)','Column types and default expressions');
+check(context.dbColumnIcon(logs.columns[0])==='column-key'&&context.dbColumnIcon(logs.columns[1])==='column-index'&&context.dbColumnIcon(logs.columns[3])==='column-required'&&context.dbColumnIcon(logs.columns[4])==='column','Correct primary-key, index, required and nullable glyphs');
+const filter=where=>{const parsed=context.databaseFilter(templates,where);assert.ifError(parsed.error);return templates.rows.filter(parsed.test)};
+check(filter("channel = 'email'").length===3&&filter("channel = 'email' AND locale = 'es'").length===1,'Column equality and compound WHERE predicates');
+check(filter("subject_template IS NULL").length===2&&filter("subject_template IS NOT NULL").length===5,'SQL NULL predicates');
+check(filter("active = true AND id >= 3 AND id < 6").length===3,'Boolean and numeric comparisons');
+check(filter("subject_template ILIKE '%notifyhub%'").length===2&&filter("template_code LIKE 'welcom_'").length===4,'LIKE and ILIKE wildcards');
+const apostrophes={columns:[{name:'value'}],rows:[{value:"Rock 'n' roll AND more"}]};
+check(context.databaseFilter(apostrophes,"value = 'Rock ''n'' roll AND more'").test(apostrophes.rows[0]),'Quoted apostrophes and AND inside literals remain data');
+for(const query of ["id = 1; DELETE FROM notification_template","unknown = 'email'","channel = email","id = 1 OR true","active IS NULL extra"]){check(!!context.databaseFilter(templates,query).error,'Reject invalid predicate: '+query)}
+const sorted=context.databaseRows({table:'notification_template',dbOrder:'id DESC'});
+check(sorted.rows[0].id===7&&templates.rows[0].id===1,'Sorting never mutates the captured rows');
+check(context.databaseRows({table:'notification_template',dbOrder:'locale DESC, id ASC'}).rows[0].id===2,'Multiple ORDER BY columns');
+check(context.databaseRows({table:'notification_template',dbOrder:'id; DROP TABLE notification_log'}).orderError,'Invalid ORDER BY cannot execute code');
+context.initDatabaseState();const nodes=context.databaseNodes();
+check(context.state.databaseWidth===538&&!context.state.showDatabase&&nodes[0].label==='notifyhub@localhost','Database is initially hidden with a responsive dock width');
+const ids=[];function visit(nodes){for(const node of nodes){ids.push(node.id);if(node.children)visit(node.children)}}visit(nodes);
+check(new Set(ids).size===ids.length&&ids.includes('table/notification_log/column/recipient'),'Unique tree nodes and complete column branches');
+console.log(JSON.stringify({result:'PASS',checks},null,2));

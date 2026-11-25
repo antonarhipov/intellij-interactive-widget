@@ -184,6 +184,7 @@ class AutomaticTour{
   async walk(signal){
     const scene=(name,run)=>this.scene(name,run,signal);
     // Reset only the presentation details needed for this demonstration.
+    if(state.showDatabase){state.showDatabase=false;renderDatabaseVisibility()}
     state.sessionQuery='';$('#session-search').value='';$('.sessions-actions').hidden=false;$('.sessions-search-tools').hidden=true;renderSessionList();
     for(const t of state.tabs.filter(t=>t.type==='session')){t.scroll=0;t.activityOpen=false;t.toolGroups={};t.toolEntries={};t.toolOutputExpanded={};t.terminalTools={}}
     await scene('agent-sessions',async()=>{await this.sessions(signal)});

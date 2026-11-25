@@ -11,6 +11,7 @@ const scriptText=text=>text.replace(/<\/script/gi,'<\\/script');
 
 let html=await readFile(new URL('index.html',dist),'utf8');
 const snapshot=JSON.parse(await readFile(new URL('data.json',dist),'utf8'));
+snapshot.database=JSON.parse(await readFile(new URL('database.json',dist),'utf8'));
 snapshot.logicalLibraries=JSON.parse(await readFile(new URL('logical-libraries.json',dist),'utf8'));
 const assets={};
 async function collectAssets(directory){
