@@ -12,7 +12,7 @@ const server=http.createServer(async (req,res)=>{
     const file = resolve(root, '.'+(path==='/'?'/index.html':path));
     if(!file.startsWith(root+sep)){res.writeHead(403);return res.end('Forbidden');}
     const bytes=await readFile(file);
-    const landingMedia=path==='/idea-lp.html'?'; media-src https://resources.jetbrains.com':'';
+    const landingMedia=['/idea-lp.html','/v2.html'].includes(path)?'; media-src https://resources.jetbrains.com':'';
     res.writeHead(200,{'Content-Type':types[extname(file)]||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; frame-ancestors 'self'"+landingMedia,'Content-Length':bytes.length});
     res.end(req.method==='HEAD'?undefined:bytes);
   } catch {res.writeHead(404);res.end('Not found');}

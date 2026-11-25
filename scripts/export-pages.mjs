@@ -20,3 +20,16 @@ for(const [file,reference] of [['index.html','./index.html?workspace=idea-lp'],[
 await writeFile(new URL('idea-lp.html',site),landing);
 await cp(new URL('dist/idea-lp-assets/',root),new URL('idea-lp-assets/',site),{recursive:true});
 console.log('Separate landing page: release/site/idea-lp.html');
+
+// Package the mascot alternative without changing the existing page or widget.
+await Promise.all(['v2.css','v2.js'].map(name=>copyFile(new URL('dist/'+name,root),new URL(name,site))));
+let variant=await readFile(new URL('dist/v2.html',root),'utf8');
+for(const [file,reference] of [['index.html','./index.html?workspace=idea-lp-v2'],...['idea-lp.js','idea-lp.css','v2.js','v2.css'].map(name=>[name,name])]){
+  const hash=createHash('sha256').update(await readFile(new URL(file,site))).digest('hex').slice(0,16);
+  const original='"'+reference+'"',versioned='"'+reference+(reference.includes('?')?'&amp;':'?')+'v='+hash+'"';
+  if(!variant.includes(original))throw Error('Missing v2 resource: '+reference);
+  variant=variant.replace(original,versioned);
+}
+await writeFile(new URL('v2.html',site),variant);
+await cp(new URL('dist/v2-assets/',root),new URL('v2-assets/',site),{recursive:true});
+console.log('Runzo alternative: release/site/v2.html');

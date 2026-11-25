@@ -1,0 +1,22 @@
+{
+  "source": "User-supplied Runzo portrait, codex-clipboard-c50cc5e4-83ba-4c67-b793-855741c70b73.png",
+  "source_sha256": "d888df1a7543f94990eb7fc15e3f4147fac63e397203f79bf827d9d5cadd2503",
+  "processing": "Connected black background removed; original face/artwork retained. Three transparent layers for CSS leg motion.",
+  "assets": {
+    "body": {
+      "path": "v2-assets/runzo-body.277cfda53199.webp",
+      "sha256": "277cfda53199c962c6c8cdf88b942d88e5f05af1c89f5e18cea69e2fc728f227",
+      "bytes": 41252
+    },
+    "left-leg": {
+      "path": "v2-assets/runzo-left-leg.bdd9e0b5c008.webp",
+      "sha256": "bdd9e0b5c0085fd290e116f7afc58296041c80def4d9e1ce1a1cdf7cd52f5772",
+      "bytes": 6786
+    },
+    "right-leg": {
+      "path": "v2-assets/runzo-right-leg.db0a734fb383.webp",
+      "sha256": "db0a734fb3833caf296a5a3eaeb8415542c1eb6184275a1b27ccb65148727493",
+      "bytes": 6792
+    }
+  }
+}

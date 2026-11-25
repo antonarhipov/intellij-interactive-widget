@@ -45,6 +45,12 @@ The page's fonts, images and styles are captured locally under `dist/idea-lp-ass
 
 `npm run build:pages` now exports the original widget as before, then adds `idea-lp.html`, its local behavior/styles and visual assets to the same Pages deployment. The exported landing page versions its iframe, script and stylesheet URLs with their content hashes, so an older cached widget cannot retain outdated playback behavior after an update. The original standalone HTML export remains unchanged. Run `npm run verify:landing` to verify local assets, page layout and embedded IDE interactions. `npm run verify:landing-cache` exercises an update with an older iframe already cached, then checks real hover and click takeover against the exported widget. Maintenance captures use `scripts/capture-idea-lp-assets.py` and `scripts/create-idea-lp.py`; regenerating the latter from a hydrated reference DOM requires Python's `lxml` package. Building and browsing the committed page require no new dependencies.
 
+## Runzo alternative
+
+**[Open v2.html](https://antonarhipov.com/intellij-interactive-widget/v2.html)** for a separate landing-page variant with Runzo inviting visitors to explore. On wider desktop windows he jogs around the IDE frame, pauses with “Psst… this IDE is clickable”, and waits under the pointer so he is easy to click. Hover does not pause the IDE tour. Clicking Runzo or his speech bubble enters explicit exploration until **Resume tour** is chosen. He settles above the frame while someone browses, and stays out of fullscreen. Reduced-motion and narrower desktop windows use a stationary mascot. Mobile keeps the original video.
+
+The original `idea-lp.html` and standalone widget are preserved. V2 uses a separate `idea-lp-v2` browsing workspace. The supplied Runzo portrait is retained as transparent WebP layers under `dist/v2-assets/`; the face and artwork are not regenerated. CSS animates the legs and body. Asset provenance and hashes are in its manifest. `scripts/prepare-runzo.py <portrait.png>` prepares those layers using Pillow; `node scripts/create-v2.mjs` regenerates only the separate v2 page. Building and browsing need no additional dependencies. Run `npm run verify:v2` with the preview server running to check movement, hover, takeover, sessions/diffs, reduced motion, keyboard activation, fullscreen and mobile video.
+
 ## Opening scene
 
 Four tabs are open:

@@ -1,0 +1,12 @@
+import {readFile,writeFile} from 'node:fs/promises';
+const root=new URL('../dist/',import.meta.url),art=JSON.parse(await readFile(new URL('v2-assets/manifest.json',root),'utf8'));
+let html=await readFile(new URL('idea-lp.html',root),'utf8');
+const layers=['left-leg','right-leg','body'].map(name=>`<img class="runzo-${name}" data-runzo-src="${art.assets[name].path}" alt="" width="448" height="665">`).join('');
+const mascot=`<div class="runzo-stage" id="runzo-stage" hidden><button class="runzo-invite" id="runzo-invite" type="button" aria-label="Click Runzo to explore the IDE"><span class="runzo-figure">${layers}</span></button><button class="runzo-bubble" id="runzo-bubble" type="button"><strong>Psst… this IDE is clickable.</strong><span>Click me to explore.</span></button></div>`;
+html=html.replace('<body','<body data-runzo-version="2"').replace('IntelliJ IDEA — Interactive landing page prototype','IntelliJ IDEA — Runzo interactive demo');
+html=html.replace('./index.html?workspace=idea-lp','./index.html?workspace=idea-lp-v2');
+html=html.replaceAll('href="idea-lp.html"','href="v2.html"');
+html=html.replace('<link rel="stylesheet" href="idea-lp.css">','<link rel="stylesheet" href="idea-lp.css"><link rel="stylesheet" href="v2.css">');
+html=html.replace('</body>',mascot+'<script src="v2.js" defer></script></body>');
+await writeFile(new URL('v2.html',root),html);
+console.log('Created separate dist/v2.html with the supplied Runzo artwork.');
