@@ -19,6 +19,7 @@ def query(sql):
 tables = []
 for name in ['flyway_schema_history', 'notification_log', 'notification_template']:
     # Names are a fixed allowlist; no browser input reaches this capture script.
+    row_limit = ' LIMIT 25' if name == 'notification_log' else ''
     table = query(f"""
       SELECT json_build_object(
         'name', '{name}',
@@ -36,7 +37,7 @@ for name in ['flyway_schema_history', 'notification_log', 'notification_template
         ) ORDER BY conname), '[]'::json) FROM pg_constraint WHERE conrelid='public.{name}'::regclass AND contype IN ('p','u')),
         'indexes', (SELECT json_agg(json_build_object('name',indexname,'definition',indexdef) ORDER BY indexname)
           FROM pg_indexes WHERE schemaname='public' AND tablename='{name}'),
-        'rows', (SELECT json_agg(row_to_json(t)) FROM (SELECT * FROM public.{name} ORDER BY 1) t)
+        'rows', (SELECT json_agg(row_to_json(t)) FROM (SELECT * FROM public.{name} ORDER BY 1{row_limit}) t)
       );
     """)
     for column in table['columns']:

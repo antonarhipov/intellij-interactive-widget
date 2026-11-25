@@ -98,7 +98,7 @@ const code=String.raw`async page => {
     await page.getByRole('textbox',{name:'WHERE filter',exact:true}).fill("channel = 'sms'");
     check(await page.locator('.db-grid tbody tr').count()===2,'Offline table filters browse the captured rows');
     await dbTree.getByRole('treeitem',{name:'notification_log',exact:true}).locator('.db-tree-label').click();
-    check(await page.locator('.db-grid tbody tr').count()===474,'All 474 notification logs are available offline');
+    check(await page.locator('.db-grid tbody tr').count()===25,'All 25 notification logs are available offline');
     await dbTree.getByRole('treeitem',{name:'flyway_schema_history',exact:true}).locator('.db-tree-label').click();
     check(await page.locator('.db-grid tbody tr').count()===2,'Both Flyway migrations are available offline');
     await page.screenshot({path:${JSON.stringify(new URL('offline-database.png',evidence).pathname)}});

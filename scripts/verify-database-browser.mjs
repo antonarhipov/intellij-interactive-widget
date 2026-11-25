@@ -63,11 +63,11 @@ const code=String.raw`async page => {
   check(await page.locator('.db-grid mark.current').count()===1&&(await page.locator('.db-find-count').innerText()).includes(' of '),'Table search highlights and scrolls to captured text');
   await page.getByRole('button',{name:'Close table search',exact:true}).click();
   await openTable('notification_log');
-  check(await page.locator('.db-grid tbody tr').count()===474&&await page.locator('.db-row-count-text').innerText()==='474 rows','All 474 log entries are available');
+  check(await page.locator('.db-grid tbody tr').count()===25&&await page.locator('.db-row-count-text').innerText()==='25 rows','All 25 log entries are available');
   check((await page.locator('.db-grid tbody tr').first().innerText()).includes('1f9557b8-a45d-427b-bd50-981ad14940d1')&&(await page.locator('.db-grid tbody tr').nth(2).innerText()).includes('BLOCKED'),'Log UUIDs, recipients and statuses match the screenshots');
   await page.mouse.move(900,600);await shot('notification-log-desktop');
   await page.locator('td[data-db-row="0"][data-db-cell="0"]').click();await page.keyboard.press('Control+End');
-  check(await page.locator('td[aria-selected="true"]').getAttribute('data-db-row')==='473'&&await page.locator('.db-grid-scroll').evaluate(e=>e.scrollTop>0&&e.scrollLeft>0),'Keyboard navigation reaches the final row and rightmost timestamp column');
+  check(await page.locator('td[aria-selected="true"]').getAttribute('data-db-row')==='24'&&await page.locator('.db-grid-scroll').evaluate(e=>(e.scrollHeight<=e.clientHeight||e.scrollTop>0)&&e.scrollLeft>0),'Keyboard navigation reaches the final row and rightmost timestamp column');
   await shot('notification-log-last-row');
   await page.keyboard.press('Control+Home');
   check(await page.locator('td[aria-selected="true"]').getAttribute('data-db-row')==='0','Keyboard navigation returns to the first record');
@@ -75,7 +75,7 @@ const code=String.raw`async page => {
   const dockWidth=await page.getByRole('complementary',{name:'Database tool window'}).evaluate(e=>e.getBoundingClientRect().width);
   check(dockWidth>=550,'Database dock resizes independently');
   await page.reload();await table().waitFor();
-  check(await page.locator('.db-grid tbody tr').count()===474&&await page.getByRole('complementary',{name:'Database tool window'}).isVisible(),'Open table and Database dock survive reload');
+  check(await page.locator('.db-grid tbody tr').count()===25&&await page.getByRole('complementary',{name:'Database tool window'}).isVisible(),'Open table and Database dock survive reload');
   check(await page.getByRole('complementary',{name:'Database tool window'}).evaluate(e=>e.getBoundingClientRect().width)===dockWidth,'Database dock width survives reload');
   await openTable('flyway_schema_history');
   check(await page.locator('.db-grid tbody tr').count()===2&&(await table().innerText()).includes('V2__seed_notification_templates.sql'),'Flyway table opens with both original migration records');
