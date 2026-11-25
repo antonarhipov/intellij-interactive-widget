@@ -32,4 +32,4 @@
 @media(pointer:coarse){.sv-touch-controls{display:grid}.sv-controls{left:auto;right:18px;transform:none}.sv-controls .sv-keycaps,.sv-controls .sv-keycaps+span,.sv-controls i:first-of-type{display:none}}
 @media(prefers-reduced-motion:reduce){.sv-upgrade:hover{transform:none}}
 .survivors-overlay:focus-visible{outline:none;border-radius:0}
-@media(max-width:760px){.right-rail{display:flex;width:30px}.right-rail>.icon-button:not(.survivors-tool){display:none}.right-rail .survivors-tool{margin-top:0;width:26px;height:28px}.right-rail .survivors-tool>.icon{width:19px;height:19px}}
+@media(max-width:760px){.right-rail:has(.survivors-tool:not([hidden])){display:flex;width:30px}.right-rail>.icon-button:not(.survivors-tool){display:none}.right-rail .survivors-tool{margin-top:0;width:26px;height:28px}.right-rail .survivors-tool>.icon{width:19px;height:19px}}

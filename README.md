@@ -61,7 +61,7 @@ The **Mappings** tab reproduces IDEA's bordered **Path / Method** grid, compact 
 
 ## IDE Survivors easter egg
 
-Click the **Runzo icon** beneath Maven on the right rail, then **Start run**. Runzo moves over the current IDE scene with **W A S D** or arrow keys and automatically shoots nearby bugs, glitches and freezes. Collect dropped coins to fill the experience bar, then choose one of three upgrades with the mouse or **1 / 2 / 3**. Eight upgrade types combine damage, fire rate, extra projectiles, movement, coin attraction, healing, orbiting breakpoints and slowing shots. Enemy waves become stronger over time.
+The top-right settings popup has an **IDE Survivors** toggle, enabled by default. Turning it off hides the Runzo tool button; the choice survives reloads. Click the **Runzo icon** beneath Maven on the right rail, then **Start run**. Runzo moves over the current IDE scene with **W A S D** or arrow keys and automatically shoots nearby bugs, glitches and freezes. Collect dropped coins to fill the experience bar, then choose one of three upgrades with the mouse or **1 / 2 / 3**. Eight upgrade types combine damage, fire rate, extra projectiles, movement, coin attraction, healing, orbiting breakpoints and slowing shots. Enemy waves become stronger over time.
 
 **Esc** pauses and resumes. Losing focus or resizing pauses safely. The pause menu can restart or return to the IDE; the end-of-run screen shows survival time, defeated enemies and level. Personal best is stored in this browser. Touch devices have a movement pad. Exiting releases the canvas, animation and game input and restores the existing IDE scene. Automatic tour is suspended for the entire game without changing its setting.
 

@@ -95,6 +95,15 @@ const code=String.raw`async page => {
     await page.setViewportSize({width:1280,height:800});
     check(await page.getByLabel('Claude Code Air TUI transcript',{exact:true}).isVisible(),'Portable UI remains usable at laptop size');
     await page.screenshot({path:${JSON.stringify(new URL('offline-laptop.png',evidence).pathname)}});
+    await page.getByRole('button',{name:'IDE and Project Settings',exact:true}).click();
+    await page.getByRole('menuitemcheckbox',{name:'IDE Survivors',exact:true}).click();
+    check(await page.locator('.survivors-tool').isHidden(),'Offline settings can hide the game tool button');
+    await page.reload();
+    await page.getByRole('button',{name:'IDE and Project Settings',exact:true}).waitFor();
+    check(await page.locator('.survivors-tool').isHidden(),'Disabled game preference survives an offline reload');
+    await page.getByRole('button',{name:'IDE and Project Settings',exact:true}).click();
+    await page.getByRole('menuitemcheckbox',{name:'IDE Survivors',exact:true}).click();
+    check(await page.getByRole('button',{name:'IDE Survivors',exact:true}).isVisible(),'Offline settings can restore the game tool button');
     await page.getByRole('button',{name:'IDE Survivors',exact:true}).click();
     await page.getByRole('button',{name:'Start run',exact:true}).waitFor();
     check(await page.locator('.sv-hero').evaluate(img=>img.src.startsWith('data:')),'Runzo artwork is embedded in the offline easter egg');

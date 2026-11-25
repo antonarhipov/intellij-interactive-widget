@@ -23,14 +23,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-let survivorsGame=null,survivorImagesPromise=null;
+let survivorsGame=null,survivorImagesPromise=null,survivorsEnabledPreference;
 const survivorArt=name=>assetURL('icons/survivors/'+name);
+function survivorsEnabled(){
+  if(typeof survivorsEnabledPreference!=='boolean'){try{survivorsEnabledPreference=JSON.parse(localStorage.getItem(storageKey+'-survivors-enabled'))!==false}catch{survivorsEnabledPreference=true}}
+  return survivorsEnabledPreference;
+}
+function setSurvivorsEnabled(enabled){
+  survivorsEnabledPreference=!!enabled;try{localStorage.setItem(storageKey+'-survivors-enabled',JSON.stringify(survivorsEnabledPreference))}catch{}
+  if(!survivorsEnabledPreference)survivorsGame?.close();
+  const button=$('[data-action="survivors-toggle"]');if(button)button.hidden=!survivorsEnabledPreference;
+}
+function survivorsSettingsMenu(){return `<button role="menuitemcheckbox" aria-checked="${survivorsEnabled()}" data-action="toggle-survivors-enabled"><span>IDE Survivors</span><span class="grow"></span>${survivorsEnabled()?icon('check'):''}</button>`}
 function survivorTime(seconds){return Math.floor(seconds/60)+':'+String(Math.floor(seconds%60)).padStart(2,'0')}
 function loadSurvivorImages(){
   if(!survivorImagesPromise)survivorImagesPromise=Promise.all(['runzo-idle','runzo-move','runzo-hurt','bug','coin'].map(async name=>{const img=new Image();img.src=survivorArt(name+'.png');await img.decode();return [name,img]})).then(Object.fromEntries).catch(e=>{survivorImagesPromise=null;throw e});
   return survivorImagesPromise;
 }
-function openSurvivors(){if(survivorsGame){survivorsGame.close();return}closeOverlay();survivorsGame=new SurvivorsGame();survivorsGame.open()}
+function openSurvivors(){if(!survivorsEnabled())return;if(survivorsGame){survivorsGame.close();return}closeOverlay();survivorsGame=new SurvivorsGame();survivorsGame.open()}
 class SurvivorsGame{
   constructor(){this.keys=new Set();this.scope=new AbortController();this.closed=false;this.ready=false;this.frame=0;this.lastHud=0;this.best=0;this.recordKey=storageKey+'-survivors-best';this.reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;try{const best=JSON.parse(localStorage.getItem(this.recordKey));if(Number.isFinite(best?.seconds))this.best=Math.max(0,best.seconds)}catch{}}
   listen(target,type,handler,options={}){target.addEventListener(type,handler,{...options,signal:this.scope.signal})}
