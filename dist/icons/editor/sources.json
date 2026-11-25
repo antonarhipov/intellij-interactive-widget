@@ -25,11 +25,11 @@
   },
   "search": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/general/search@20x20_dark.svg"
+    "resource": "expui/general/search_dark.svg"
   },
   "settings": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/general/settings@20x20_dark.svg"
+    "resource": "expui/general/settings_dark.svg"
   },
   "settings-small": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
@@ -41,7 +41,7 @@
   },
   "notifications": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/toolwindows/notifications@20x20_dark.svg"
+    "resource": "expui/toolwindows/notifications_dark.svg"
   },
   "chevron": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
@@ -61,11 +61,11 @@
   },
   "database": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/DatabaseTools/lib/modules/intellij.database.jar",
-    "resource": "icons/expui/dbms@20x20_dark.svg"
+    "resource": "icons/expui/dbms_dark.svg"
   },
   "maven": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/maven-plugin/lib/intellij.maven.jar",
-    "resource": "images/expui/toolwindow/maven@20x20_dark.svg"
+    "resource": "images/expui/toolwindow/maven_dark.svg"
   },
   "usage-details": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar",
@@ -157,27 +157,27 @@
   },
   "tool-build": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/toolwindows/build@20x20_dark.svg"
+    "resource": "expui/toolwindows/build_dark.svg"
   },
   "tool-run": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/toolwindows/run@20x20_dark.svg"
+    "resource": "expui/toolwindows/run_dark.svg"
   },
   "tool-services": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/toolwindows/services@20x20_dark.svg"
+    "resource": "expui/toolwindows/services_dark.svg"
   },
   "tool-problems": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/toolwindows/problems@20x20_dark.svg"
+    "resource": "expui/toolwindows/problems_dark.svg"
   },
   "tool-vcs": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/toolwindows/vcs@20x20_dark.svg"
+    "resource": "expui/toolwindows/vcs_dark.svg"
   },
   "tool-terminal": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/terminal/lib/terminal.jar",
-    "resource": "icons/expui/toolwindow/terminal@20x20_dark.svg"
+    "resource": "icons/expui/toolwindow/terminal_dark.svg"
   },
   "mapping-web": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
@@ -250,5 +250,25 @@
   "spring-health": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/spring-boot-plugin/lib/modules/intellij.spring.boot.run.jar",
     "resource": "icons/expui/springBootHealth_dark.svg"
+  },
+  "tool-commit": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/commit_dark.svg"
+  },
+  "tool-project": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/project_dark.svg"
+  },
+  "tool-structure": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/structure_dark.svg"
+  },
+  "tool-debug": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/toolwindows/debug_dark.svg"
+  },
+  "tool-sessions": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar",
+    "resource": "icons/air_dark.svg"
   }
 }

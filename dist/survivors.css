@@ -1,5 +1,5 @@
 /* The game is a transparent layer over the existing IDE, isolated until opened. */
-.right-rail .survivors-tool{margin-top:5px}.right-rail .survivors-tool>.icon{width:20px;height:20px;image-rendering:pixelated}
+.right-rail .survivors-tool{margin-top:0}.right-rail .survivors-tool>.icon{width:20px;height:20px;image-rendering:pixelated}
 .survivors-overlay{position:fixed;inset:0;z-index:80;overflow:hidden;background:#0d101846;outline:none;color:#ced0d6;font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;isolation:isolate;touch-action:manipulation}
 .survivors-overlay [hidden]{display:none!important}.survivors-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 .sv-hud{position:absolute;top:48px;left:50%;transform:translateX(-50%);width:min(980px,calc(100% - 104px));display:flex;align-items:center;gap:20px;padding:10px 12px;background:#22252aef;border:1px solid #474b54;border-radius:10px;box-shadow:0 6px 24px #0005;backdrop-filter:blur(8px)}
