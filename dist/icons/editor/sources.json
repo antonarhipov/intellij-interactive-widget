@@ -270,5 +270,9 @@
   "tool-sessions": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/air-plugin/lib/modules/intellij.air.frontend.session.toolwindow.jar",
     "resource": "icons/air_dark.svg"
+  },
+  "stack-frame": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
+    "resource": "expui/debugger/frame_dark.svg"
   }
 }

@@ -48,6 +48,7 @@ assets = {name: (platform, resource) for name, resource in {
     'vcs-fetch': 'expui/vcs/fetch_dark.svg',
     'vcs-favorite': 'expui/nodes/star_dark.svg',
     'step-over': 'expui/run/stepOver_dark.svg',
+    'stack-frame': 'expui/debugger/frame_dark.svg',
     'run-coverage': 'expui/run/runWithCoverage_dark.svg',
     'run-profiler': 'expui/run/profile_dark.svg',
     'spring-success': 'expui/general/greenCheckmark_dark.svg',
