@@ -19,6 +19,7 @@ const code=String.raw`async page=>{
     await page.getByRole('button',{name:'Agent Sessions (⌘2)',exact:true}).click();
     const codex=page.locator('.session-item[data-session="acp:eccab739"]');await codex.click();
     check(await page.locator('.session-item').count()===2&&await page.locator('.session-item time').count()===2,'Both captured sessions show a time on the right');
+    check(JSON.stringify(await page.locator('.session-cost').allTextContents())===JSON.stringify(['$0.06','$0.53']),'Both session rows show dollar costs with two decimals and no tilde');
     check(await page.locator('.session-item time').evaluateAll(times=>times.every(t=>/^\d+(m|h|d|mo|y)$|^now$/.test(t.textContent)&&Number.isFinite(Date.parse(t.dateTime))&&t.title)),'Relative ages use valid recorded timestamps and expose full dates');
     check(await page.locator('.session-item').first().evaluate(e=>e.getBoundingClientRect().height===28),'Session rows use the native compact height');await shot('sessions-desktop');
     await page.getByRole('button',{name:'Search Sessions',exact:true}).click();
@@ -43,6 +44,9 @@ const code=String.raw`async page=>{
     await choose('show','Time','menuitemcheckbox');check(await page.locator('.session-item time').count()===0,'Show Time toggles the row timestamps');
     await page.reload();await filters().waitFor();check(await page.locator('.session-item time').count()===0,'View preferences survive reload');
     await choose('show','Time','menuitemcheckbox');
+    await choose('show','Cost','menuitemcheckbox');check(await page.locator('.session-cost').count()===0,'Show Cost hides the price indicators');
+    await page.reload();await filters().waitFor();check(await page.locator('.session-cost').count()===0,'The hidden-cost preference survives reload');
+    await choose('show','Cost','menuitemcheckbox');check(await page.locator('.session-cost').count()===2,'Show Cost restores both indicators');
     await choose('limit','5 Sessions');await filters().click();check((await menu().locator('[data-key="limit"]').innerText()).includes('5'),'Sessions Visible displays the selected count');await page.keyboard.press('Escape');await choose('limit','15 Sessions');
     await choose('group','Project');check(await page.locator('.session-group-heading').count()===1&&(await page.locator('.session-group-heading').innerText()).includes('notify-hub'),'Grouping displays the captured project heading');
     await page.locator('.session-group-heading').click();check(await page.locator('.session-item').count()===0,'A group heading collapses its sessions');await page.locator('.session-group-heading').click();await choose('group','None');

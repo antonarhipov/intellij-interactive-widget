@@ -81,6 +81,10 @@ for f in review_findings:
 claude_prompt='Review this project for code quality issues. Focus on correctness, security and configuration that does not match the implementation. Give concrete findings with file and line references. Do not change any files.'
 claude={'id':'claude-review','title':'Review project quality','tabTitle':'Project review · Claude Code','agent':'claude','model':'Claude Sonnet 4.5','cwd':str(MAIN),'archived':False,'createdAt':now-300000,'updatedAt':now-100000,'turns':[{'id':'quality-review-turn','timestamp':now-300000,'prompt':claude_prompt,'attachments':[],'activity':[],'answer':'Review complete. 4 findings, no files changed.','changes':[],'endedAt':now-100000}],'changes':[],'events':[],'eventCount':0,'eventTypes':{},'fixture':True,'findings':review_findings}
 
+# Illustrative USD totals: the ACP recording contains tokens, not billing data.
+for agent_session, cost in [(codex, 0.06), (claude, 0.53)]:
+    agent_session.update(cost=cost, costSource='demo')
+
 from debugger_snapshot import debugger_snapshot
 debugger = debugger_snapshot(controller, dispatcher, p['files'])
 
