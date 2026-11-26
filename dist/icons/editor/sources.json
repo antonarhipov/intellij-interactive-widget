@@ -273,6 +273,6 @@
   },
   "stack-frame": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
-    "resource": "expui/debugger/frame_dark.svg"
+    "resource": "actions/inlineDropFrame_dark.svg"
   }
 }
