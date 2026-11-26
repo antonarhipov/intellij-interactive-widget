@@ -34,18 +34,22 @@
   function tick(now){
     raf=0;if(!canShow()){stage.hidden=true;return}
     stage.hidden=false;
-    const manual=container.dataset.exploring==='true',stationary=manual||motion.matches||innerWidth<1100;
+    const manual=container.dataset.exploring==='true',staticPose=motion.matches||innerWidth<1100,stationary=manual||staticPose;
     const hovered=mascot.matches(':hover,:focus-visible')||bubble.matches(':hover,:focus-visible');
     const delta=last?Math.min(50,now-last):0;last=now;
     if(!stationary&&!hovered)elapsed+=delta;
     const running=!stationary&&!hovered&&elapsed%13000>=4000;
     if(running)distance=(distance+delta*.09)%pathLength;
-    mascot.classList.toggle('runzo-running',running);mascot.disabled=explicitExploration;
+    // Keep both the route progress and the gait pose while a visitor takes over.
+    // Only responsive/reduced-motion layouts use the fixed resting position.
+    mascot.classList.toggle('runzo-paused',manual||hovered);
+    if(!manual&&!hovered)mascot.classList.toggle('runzo-running',running);
+    mascot.disabled=explicitExploration;
     mascot.setAttribute('aria-label',explicitExploration?'Runzo: you’re exploring':'Click Runzo to explore the IDE');
-    if(stationary)position({x:geometry.width-42,y:geometry.top+12},0,!manual);
+    if(staticPose)position({x:geometry.width-42,y:geometry.top+12},0,!manual);
     else{
       const p=route.getPointAtLength(distance),next=route.getPointAtLength((distance+1)%pathLength),angle=Math.atan2(next.y-p.y,next.x-p.x)*180/Math.PI;
-      position(p,angle,!running||hovered);
+      position(p,angle,!manual&&(!running||hovered));
     }
     if(!stationary)raf=requestAnimationFrame(tick);
   }

@@ -23,13 +23,35 @@ const code=String.raw`async page=>{
   const before=await mascot.getAttribute('style');await page.waitForTimeout(600);
   check(await mascot.getAttribute('style')!==before,'Runzo actually moves along the widget perimeter');
   check(await page.locator('.runzo-figure').evaluate(e=>e.getAnimations({subtree:true}).length===3),'Legs and body animate with the running gait');await shot('running');
+  const clicked=await mascot.boundingBox();
+  await frame.getByRole('button',{name:'Project (⌘1)',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('#idea-demo').dataset.exploring==='true'&&document.querySelector('#runzo-invite').classList.contains('runzo-paused'));
+  const paused=await mascot.boundingBox(),pausedStyle=await mascot.getAttribute('style');
+  check(Math.hypot(paused.x-clicked.x,paused.y-clicked.y)<15,'A click inside the IDE pauses Runzo at the point of takeover without teleporting');
+  check(await page.locator('#runzo-bubble').isHidden(),'The invitation stays out of the way during takeover');
+  await page.evaluate(()=>{
+    window.runzoResumedPosition=null;const container=document.querySelector('#idea-demo');
+    const observer=new MutationObserver(()=>{if(container.dataset.exploring==='false'){
+      observer.disconnect();requestAnimationFrame(()=>window.runzoResumedPosition=document.querySelector('#runzo-invite').getBoundingClientRect().toJSON());
+    }});observer.observe(container,{attributes:true,attributeFilter:['data-exploring']});
+  });
+  await page.waitForTimeout(8000);
+  check(await mascot.getAttribute('style')===pausedStyle,'Runzo stays frozen at the same position throughout ordinary click takeover');await shot('click-paused');
+  await page.waitForFunction(()=>window.runzoResumedPosition,null,{timeout:4500});
+  const resumed=await page.evaluate(()=>window.runzoResumedPosition);
+  check(Math.hypot(resumed.x-paused.x,resumed.y-paused.y)<15,'Automatic playback resumes Runzo from his paused position without a jump');
+  await frame.locator('html[data-auto-tour="playing"]').waitFor();
+  const resumedStyle=await mascot.getAttribute('style');await page.waitForTimeout(300);
+  check(await mascot.getAttribute('style')!==resumedStyle,'Runzo continues moving after the ten-second takeover ends');await shot('click-resumed');
   const target=await mascot.boundingBox();await page.mouse.move(target.x+target.width/2,target.y+target.height/2);
   await page.waitForTimeout(150);const frozen=await mascot.getAttribute('style');await page.waitForTimeout(400);
   check(await mascot.getAttribute('style')===frozen,'Runzo waits under the pointer so visitors can click him');
   check(await frame.locator('html').getAttribute('data-auto-tour')==='playing','Hovering Runzo leaves the IDE tour running');
   check(await page.getByText('Psst… this IDE is clickable.',{exact:true}).isVisible(),'Runzo pauses with a clear invitation to interact');
   check(await page.locator('#runzo-bubble').evaluate(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=78&&r.bottom<=innerHeight}),'The speech bubble stays visible inside the viewport');
+  const hoverPosition=await mascot.getAttribute('style');
   await mascot.click();await frame.locator('html[data-auto-tour="exploring"]').waitFor();
+  check(await mascot.getAttribute('style')===hoverPosition,'Clicking Runzo freezes his current route position instead of moving him to a corner');
   check(await page.getByRole('button',{name:'Resume tour',exact:true}).isVisible(),'Clicking Runzo starts explicit exploration and reveals Resume tour');
   check(await frame.locator('.survivors-overlay').count()===0,'The invitation does not launch the game');
   if(!await frame.locator('.sessions-panel').isVisible())await frame.getByRole('button',{name:'Agent Sessions (⌘2)',exact:true}).click();
@@ -39,7 +61,8 @@ const code=String.raw`async page=>{
   await frame.getByText('Worked for 43s',{exact:true}).click();await frame.locator('.air-changes-card .change-row').click();
   check(await frame.locator('.jd-split').isVisible(),'Codex activity and SecurityConfig diffs remain accessible');
   await page.waitForTimeout(11000);
-  check(await frame.locator('html').getAttribute('data-auto-tour')==='exploring'&&!await mascot.evaluate(e=>e.classList.contains('runzo-running')),'Runzo settles and exploration stays paused beyond ten seconds');await shot('exploring');
+  check(await frame.locator('html').getAttribute('data-auto-tour')==='exploring'&&await mascot.getAttribute('style')===hoverPosition,'Runzo stays at the same route position throughout manual exploration');
+  check(await page.locator('.runzo-figure').evaluate(e=>{const animations=e.getAnimations({subtree:true});return animations.length===3&&animations.every(a=>a.playState==='paused')}),'Pausing also freezes the running gait without resetting the pose');await shot('exploring');
   await page.getByRole('button',{name:'Expand IDE widget',exact:true}).click();await page.waitForFunction(()=>!!document.fullscreenElement);
   await page.locator('#runzo-stage').waitFor({state:'hidden'});
   check(await page.getByRole('button',{name:'Resume tour',exact:true}).isVisible(),'Fullscreen clears the mascot and keeps tour controls available');

@@ -17,6 +17,7 @@
 .runzo-running .runzo-body{animation:runzo-bob .24s ease-in-out infinite alternate}
 .runzo-running .runzo-left-leg{animation:runzo-stride .48s ease-in-out infinite alternate}
 .runzo-running .runzo-right-leg{animation:runzo-stride .48s ease-in-out infinite alternate-reverse}
+.runzo-paused .runzo-figure img{animation-play-state:paused}
 .runzo-bubble{position:absolute;max-width:245px;padding:12px 16px;border:1px solid #19191c22;border-radius:16px;background:#fff;color:#19191c;box-shadow:0 6px 24px #19191c18;text-align:left;pointer-events:auto;cursor:pointer;font-family:inherit;font-size:14px;line-height:21px}
 .runzo-bubble[hidden]{display:none}.runzo-bubble strong{display:block;font-size:15px;font-weight:600;white-space:nowrap}.runzo-bubble span{display:block;font-size:14px;margin-top:3px;color:#535258}.runzo-bubble:hover{border-color:#6b57ff}.runzo-bubble:focus-visible{outline:2px solid #6b57ff;outline-offset:3px}
 @keyframes runzo-stride{from{transform:rotate(-18deg) scaleY(.95)}to{transform:rotate(20deg) scaleY(1.02)}}
