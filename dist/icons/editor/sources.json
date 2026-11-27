@@ -274,5 +274,9 @@
   "stack-frame": {
     "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/lib/intellij.platform.icons.jar",
     "resource": "actions/inlineDropFrame_dark.svg"
+  },
+  "spring-method": {
+    "jar": "/Users/anton/Applications/IntelliJ IDEA 2026.3.app/Contents/plugins/Spring/lib/modules/intellij.spring.jar",
+    "resource": "icons/expui/gutter/springBeanMethod@14x14_dark.svg"
   }
 }

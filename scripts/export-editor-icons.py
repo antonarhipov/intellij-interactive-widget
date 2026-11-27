@@ -65,6 +65,7 @@ assets.update({
     'vcs-current': ('lib/intellij.platform.vcs.dvcs.impl.shared.jar', 'icons/new/currentBranchFavoriteLabel_dark.svg'),
     'vcs-tag': ('lib/intellij.platform.vcs.dvcs.impl.shared.jar', 'icons/new/branchLabel_dark.svg'),
     'spring-property': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/gutter/springProperty@14x14_dark.svg'),
+    'spring-method': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/gutter/springBeanMethod@14x14_dark.svg'),
     'spring-web': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/springWeb_dark.svg'),
     'spring-profile': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/springProfile_dark.svg'),
     'spring-java-config': ('plugins/Spring/lib/modules/intellij.spring.jar', 'icons/expui/springJavaConfig_dark.svg'),
